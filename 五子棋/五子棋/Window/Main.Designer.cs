@@ -115,6 +115,7 @@ namespace 五子棋
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(907, 715);
             this.Controls.Add(this.TestButton);
             this.Controls.Add(this.label2);

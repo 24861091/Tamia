@@ -117,7 +117,7 @@ namespace 五子棋
                 for(int j = 0; j < chess[i].Length; j ++)
                 {
                     DrawPosition(i, j, chess[i][j], graphics);
-                    DrawBlank(i, j , graphics);
+                    //DrawBlank(i, j , graphics);
                 }
             }
             
@@ -151,8 +151,8 @@ namespace 五子棋
             }
 
             graphics.FillEllipse(brush, left + x * interval - interval * 0.4f, top + y * interval - interval * 0.4f, interval * 0.8f, interval * 0.8f);
-            DrawMark(x, y, graphics);
-            DrawBlank(x, y, graphics);
+            //DrawMark(x, y, graphics);
+            //DrawBlank(x, y, graphics);
         }
         private void DrawMark(int x, int y, Graphics graphics)
         {
