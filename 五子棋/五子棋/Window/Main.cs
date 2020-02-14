@@ -1,0 +1,264 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace 五子棋
+{
+    public partial class Main : Form , IListener
+    {
+        private int sizeX = 15;
+        private int sizeY = 15;
+        private int left = 550;
+        private int top = 50;
+
+        private int interval = 50;
+
+        private Rule rule = null;
+        private DebugForm debugForm = null;
+
+        private 棋子[][] Chess
+        {
+            get
+            {
+                return rule.GetPanel().positions;
+            }
+        }
+        
+        private List<Position> Mark
+        {
+            get
+            {
+                return rule.GetPanel().Mark;
+            }
+        }
+        public bool CanShowTestButton = true;
+        public Main()
+        {
+            
+            InitializeComponent();
+            SetPlayersBox();
+
+            this.Width = left + sizeX * interval + interval * 2;
+            this.Height = top + sizeY * interval + interval * 2;
+
+            Messager.Instance.Register(MessageKey.ChangeTurn, this);
+            Messager.Instance.Register(MessageKey.Finish, this);
+            Messager.Instance.Register(MessageKey.MakeStep, this);
+            Messager.Instance.Register(MessageKey.Restart, this);
+
+            rule = new Rule();
+            rule.Initialize(sizeX, sizeY);
+            debugForm = new DebugForm();
+        }
+
+        private ChessPlayer CreateBlackPlayer()
+        {
+            string typeName = BlackPlayersBox.Text;
+            Type type = Type.GetType("五子棋." + typeName);
+            if(type != null)
+            {
+                return Activator.CreateInstance(type) as ChessPlayer;
+            }
+            return null;
+        }
+        private ChessPlayer CreateWhitePlayer()
+        {
+            string typeName = WhitePlayersBox.Text;
+            Type type = Type.GetType("五子棋." + typeName);
+            if (type != null)
+            {
+                return Activator.CreateInstance(type) as ChessPlayer;
+            }
+            return null;
+        }
+
+        public void TakeTurn(棋子 side)
+        {
+
+        }
+        public void Finish(棋子 side)
+        {
+            DisplayLabel.Text = side.ToString() + " Win!";
+            BlackPlayersBox.Enabled = true;
+            WhitePlayersBox.Enabled = true;
+        }
+
+        private void DrawPanel(Graphics graphics)
+        {
+            if(graphics == null)
+                return;
+            Point start;
+            Point end;
+            for (int i = 0; i < sizeX; i++)
+            {
+                start = new Point(left, top + i * interval);
+                end = new Point(left + sizeX * interval - interval, top + i * interval);
+                graphics.DrawLine(Pens.Black, start, end);
+
+                start = new Point(left + i * interval , top);
+                end = new Point(left + i * interval, top + sizeY * interval - interval);
+                graphics.DrawLine(Pens.Black, start, end);
+            }
+        }
+
+        private void DrawChess(Graphics graphics)
+        {
+            if (rule == null) return;
+            棋子[][] chess = Chess;
+            for(int i = 0; i < chess.Length; i ++)
+            {
+                for(int j = 0; j < chess[i].Length; j ++)
+                {
+                    DrawPosition(i, j, chess[i][j], graphics);
+                    DrawBlank(i, j , graphics);
+                }
+            }
+            
+        }
+        private void DrawLast(Graphics graphics)
+        {
+            棋子[][] chess = Chess;
+            for (int i = 0; i < Mark.Count; i ++)
+            {
+                Position p = Mark[i];
+                if(chess[p.X][p.Y] != 棋子.无)
+                {
+                    DrawMark(p.X, p.Y, graphics);
+                }
+            }
+        }
+        private void DrawPosition(int x, int y, 棋子 side, Graphics graphics)
+        {
+            Brush brush = null;
+            if(side == 棋子.白子)
+            {
+                brush = Brushes.White;
+            }
+            else if(side == 棋子.黑子)
+            {
+                brush = Brushes.Black;
+            }
+            else
+            {
+                return;
+            }
+
+            graphics.FillEllipse(brush, left + x * interval - interval * 0.4f, top + y * interval - interval * 0.4f, interval * 0.8f, interval * 0.8f);
+            DrawMark(x, y, graphics);
+            DrawBlank(x, y, graphics);
+        }
+        private void DrawMark(int x, int y, Graphics graphics)
+        {
+            Pen pen = Pens.Purple;
+            graphics.DrawRectangle(pen, left + x * interval - interval * 0.4f, top + y * interval - interval * 0.4f, interval * 0.8f, interval * 0.8f);
+        }
+        private void DrawBlank(int x, int y, Graphics graphics)
+        {
+            Pen pen = Pens.White;
+            graphics.DrawRectangle(pen, left + x * interval - interval * 0.4f, top + y * interval - interval * 0.4f, interval * 0.8f, interval * 0.8f);
+        }
+
+        private void OnPaint(object sender, PaintEventArgs e)
+        {
+            DrawPanel(e.Graphics);
+            DrawChess(e.Graphics);
+            DrawLast(e.Graphics);
+        }
+
+        public void OnMessage(MessageKey name, object param)
+        {
+            switch(name)
+            {
+                case MessageKey.ChangeTurn:
+                    棋子 turn = (棋子)(param);
+                    TakeTurn(turn);
+                    break;
+                case MessageKey.Finish:
+                    棋子 side = (棋子)(param);
+                    Finish(side);
+                    TestButton.Visible = false;
+                    break;
+                case MessageKey.MakeStep:
+                    this.Invalidate();
+                    break;
+                case MessageKey.Restart:
+                    this.Restart();
+                    break;
+            }
+        }
+
+        private void OnMouseDown(object sender, MouseEventArgs e)
+        {
+            int indexX = -1;
+            int indexY = -1;
+
+            int deltaX = e.X - left + interval / 2;
+            if (deltaX < 0) return;
+            indexX = deltaX / interval;
+            
+            int deltaY = e.Y - top + interval / 2;
+            if (deltaY < 0) return;
+            indexY = deltaY / interval;
+
+            Messager.Instance.SendMessage(MessageKey.MouseDown, new int[] { indexX, indexY });
+        }
+
+        private void OnClickStartButton(object sender, EventArgs e)
+        {
+            BlackPlayersBox.Enabled = false;
+            WhitePlayersBox.Enabled = false;
+
+            Restart();
+
+            TestButton.Visible = CanShowTestButton;
+        }
+        public void Restart()
+        {
+            this.DisplayLabel.Text = "开始！";
+            rule.Clear();
+            rule.SetChessPlayers(CreateBlackPlayer(), CreateWhitePlayer());
+            rule.ChangeTurn();
+            rule.OnYourTurn();
+            
+            this.Invalidate();
+
+        }
+        private void SetPlayersBox()
+        {
+            BlackPlayersBox.Items.Clear();
+            WhitePlayersBox.Items.Clear();
+            Assembly assembly = Assembly.GetAssembly(typeof(ChessPlayer));
+            Type[] types = assembly.GetTypes();
+            for(int i = 0; i < types.Length; i ++)
+            {
+                Type type = types[i];
+                if(type.IsSubclassOf(typeof(ChessPlayer)) && !type.IsAbstract)
+                {
+                    BlackPlayersBox.Items.Add(type.Name);
+                    WhitePlayersBox.Items.Add(type.Name);
+                }
+            }
+            if(BlackPlayersBox.Items.Count > 0)
+            {
+                BlackPlayersBox.Text = typeof(HumanChessPlayer).Name;/*BlackPlayersBox.Items[0].ToString();*/
+            }
+            if (WhitePlayersBox.Items.Count > 0)
+            {
+                WhitePlayersBox.Text = typeof(程序测试用AI).Name; /*WhitePlayersBox.Items[0].ToString();*/
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            debugForm.Refresh(程序测试用AI.sTest);
+            this.debugForm.Show();
+        }
+    }
+}
