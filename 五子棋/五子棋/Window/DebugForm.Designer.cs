@@ -1,4 +1,4 @@
-﻿namespace 五子棋
+namespace 五子棋
 {
     partial class DebugForm
     {
@@ -37,6 +37,7 @@
             this.ClientSize = new System.Drawing.Size(737, 604);
             this.Name = "DebugForm";
             this.Text = "DebugForm";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DebugForm_FormClosing);
             this.ResumeLayout(false);
 
         }

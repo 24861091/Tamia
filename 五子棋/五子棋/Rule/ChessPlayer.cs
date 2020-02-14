@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace 五子棋
 {
-    abstract class ChessPlayer
+    public abstract class ChessPlayer
     {
         protected 棋子 side;
         public void SetSide(棋子 side)

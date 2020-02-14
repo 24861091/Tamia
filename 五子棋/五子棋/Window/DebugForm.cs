@@ -12,18 +12,24 @@ namespace 五子棋
 {
     public partial class DebugForm : Form , IListener
     {
-        private int interval = 50;
-        private int left = 100;
-        private int top = 100;
-        private Label[][] labels = null;
-        private 棋子[][] chess;
+        private int blackInterval = 30;
+        private int blackLeft = 30;
+        private int blackTop = 30;
+        private Label[][] blackLabels = null;
+
+        private int whiteInterval = 30;
+        private int whiteLeft = 30;
+        private int whiteTop = 30;
+        private Label[][] whiteLabels = null;
+
         public DebugForm()
         {
             InitializeComponent();
             Messager.Instance.Register(MessageKey.FinishTurn, this);
+            Messager.Instance.Register(MessageKey.RefreshDebug, this);
         }
 
-        public void DrawPanel<T>(T[][] positions)
+        public void DrawPanel<T>(T[][] positions, int left, int top, int interval,ref Label[][] labels)
         {
             labels = new Label[positions.Length][];
             for (int i = 0; i < positions.Length; i ++)
@@ -35,35 +41,61 @@ namespace 五子棋
                     labels[i][j] = l;
                     l.Left = left + i * interval;
                     l.Top = top + j * interval;
-                    l.Width = interval / 2;
+                    //l.Width = interval;
+                    l.AutoSize = true;
                     l.Height = interval / 2;
                     l.Text = positions[i][j].ToString();
                     this.Controls.Add(l);
                     l.Show();
                 }
             }
-            this.Width = left + positions.Length * interval;
-            this.Height = top + positions[0].Length * interval;
         }
-
         public void OnMessage(MessageKey name, object param)
         {
             switch(name)
             {
-                case MessageKey.FinishTurn:
-                    Refresh(程序测试用AI.sTest);
+                case MessageKey.RefreshDebug:
+                    object[] test = param as object[];
+                    int[][] black = test[0] as int[][];
+                    int[][] white = test[1] as int[][];
+                    Refresh(black, white);
+                    
                     break;
                 default:
                     break;
             }
 
         }
-
-        public void Refresh<T>(T[][] positions)
+        public void Refresh<T>(T[][] black, T[][] white)
         {
+            int top = black.Length * blackInterval + blackTop + blackInterval * 3 + whiteTop;
+            Refresh(black, blackLeft, blackTop, blackInterval,ref blackLabels);
+            Refresh(white, whiteLeft, top, whiteInterval,ref whiteLabels);
+
+            if(black !=null)
+            {
+                this.Width = blackLeft + black[0].Length * blackInterval + blackInterval;
+            }
+            if(white != null)
+            {
+                this.Height = top + white.Length * whiteInterval + whiteInterval;
+            }
+            else
+            {
+                this.Height = blackTop + black.Length * blackInterval + blackInterval;
+            }
+            
+        }
+
+        public void Refresh<T>(T[][] positions, int left, int top, int interval,ref Label[][] labels)
+        {
+            if(positions == null)
+            {
+                return;
+            }
             if(labels == null)
             {
-                DrawPanel(positions);
+                DrawPanel(positions, left, top, interval,ref labels);
             }
             for (int i = 0; i < positions.Length; i++)
             {
@@ -79,7 +111,18 @@ namespace 五子棋
                     l.Show();
                 }
             }
+        }
 
+        private void DebugForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            
+            MessageBox.Show(e.CloseReason.ToString());
+        }
+
+        private void DebugForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            this.MinimizeBox = true;
         }
     }
 }

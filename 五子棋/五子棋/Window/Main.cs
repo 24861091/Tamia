@@ -71,7 +71,7 @@ namespace 五子棋
         private ChessPlayer CreateWhitePlayer()
         {
             string typeName = WhitePlayersBox.Text;
-            Type type = Type.GetType("五子棋." + typeName);
+            Type type = Type.GetType("五子棋.AI." + typeName);
             if (type != null)
             {
                 return Activator.CreateInstance(type) as ChessPlayer;
@@ -251,14 +251,21 @@ namespace 五子棋
             }
             if (WhitePlayersBox.Items.Count > 0)
             {
-                WhitePlayersBox.Text = typeof(程序测试用AI).Name; /*WhitePlayersBox.Items[0].ToString();*/
+                WhitePlayersBox.Text = typeof(AI.程序测试用AI).Name; /*WhitePlayersBox.Items[0].ToString();*/
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            debugForm.Refresh(程序测试用AI.sTest);
-            this.debugForm.Show();
+            if(this.debugForm.IsDisposed)
+            {
+                
+            }
+            else
+            {
+                this.debugForm.Show();
+            }
+            
         }
     }
 }

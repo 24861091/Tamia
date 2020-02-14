@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace 五子棋
+namespace 五子棋.AI
 {
 
-    abstract class AIPlayer : ChessPlayer
+    public abstract class AIPlayer : ChessPlayer
     {
         public override void OnYourTurn(棋子[][] positions, List<Position> blacks, List<Position> whites)
         {
@@ -19,7 +19,7 @@ namespace 五子棋
         public abstract AIResult MakeTurn(棋子[][] positions, List<Position> blacks, List<Position> whites);
     }
 
-    struct AIResult
+    public struct AIResult
     {
         public int X;
         public int Y;

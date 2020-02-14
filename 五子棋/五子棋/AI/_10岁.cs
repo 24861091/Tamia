@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace 五子棋.AI
 {
-    class 程序测试用AI : AIPlayer
+    public class _10岁 : AIPlayer
     {
         public static int[][] sTest = null;
         private int[][] datas = null;
@@ -63,11 +63,11 @@ namespace 五子棋.AI
             }
             else
             {
-                for(int i = 0; i < positions.Length; i ++)
+                for (int i = 0; i < positions.Length; i++)
                 {
-                    for (int j = 0;j < positions[0].Length; j ++)
+                    for (int j = 0; j < positions[0].Length; j++)
                     {
-                        if(positions[i][j] == 棋子.无)
+                        if (positions[i][j] == 棋子.无)
                         {
                             x = i;
                             y = j;
@@ -87,7 +87,6 @@ namespace 五子棋.AI
             }
 
             CalculateAroudPosition(new Position(x, y), GetOpposite(side), positions);
-            Messager.Instance.SendMessage(MessageKey.RefreshDebug, new object[] { sTest, null });
             return new AIResult(side, x, y);
         }
 
@@ -104,7 +103,7 @@ namespace 五子棋.AI
                 {
                     int deltaX = Math.Abs(p.X - i);
                     int deltaY = Math.Abs(p.Y - j);
-                    if(datas[i][j] >= 0)
+                    if (datas[i][j] >= 0)
                     {
                         if (deltaX == 0 && deltaY == 0)
                         {
@@ -132,9 +131,9 @@ namespace 五子棋.AI
 
         }
 
-        private int CalculateValue(int x, int y, 棋子[][] positions,Position p,int delta)
+        private int CalculateValue(int x, int y, 棋子[][] positions, Position p, int delta)
         {
-            if(positions[x][y] != 棋子.无)
+            if (positions[x][y] != 棋子.无)
             {
                 return -1;
             }
@@ -161,14 +160,14 @@ namespace 五子棋.AI
                 return 棋子.白子;
             return 棋子.无;
         }
-        public 棋子 GetSide(int x, int y,int sizeX, int sizeY, 棋子[][] positions)
+        public 棋子 GetSide(int x, int y, int sizeX, int sizeY, 棋子[][] positions)
         {
             if (x < 0 || x >= sizeX) return 棋子.无;
             if (y < 0 || y >= sizeY) return 棋子.无;
             return positions[x][y];
         }
 
-        private int CalculateLine(棋子[][] positions,int deltaX, int deltaY, int x, int y, 棋子 side, Position p, int delta)
+        private int CalculateLine(棋子[][] positions, int deltaX, int deltaY, int x, int y, 棋子 side, Position p, int delta)
         {
             if (side == 棋子.无) return 0;
 
@@ -200,22 +199,22 @@ namespace 五子棋.AI
                 }
             }
             return CalculateValue(leftNum, rightNum, left, right, p, delta);
-            
+
         }
-        private int CalculateValue(int left,int right,bool isLeftAlive, bool isRightAlive, Position p, int delta)
+        private int CalculateValue(int left, int right, bool isLeftAlive, bool isRightAlive, Position p, int delta)
         {
 
             if (left + right == 4)
             {
                 return 10000;
             }
-            if(!isLeftAlive || !isRightAlive)
+            if (!isLeftAlive || !isRightAlive)
             {
                 return 1;
             }
             int num = left + right;
             int v = 1;
-            for(int i = 1; i <= num; i ++)
+            for (int i = 1; i <= num; i++)
             {
                 v *= (i) * 4;
             }
