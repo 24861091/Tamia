@@ -22,7 +22,7 @@ namespace 五子棋.AI
         {
             if(positions[x][y] == 棋子.无)
             {
-                Messager.Instance.SendMessage(MessageKey.MakeStep, new object[] { side, x, y });
+                Messager.Instance.SendMessage(MessageKey.MakeStep, new object[] { selfSide, x, y });
                 FinishTurn(x, y);
             }
         }

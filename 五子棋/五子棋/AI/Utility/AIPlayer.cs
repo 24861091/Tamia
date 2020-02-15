@@ -12,6 +12,7 @@ namespace 五子棋.AI
         public override void OnYourTurn(棋子[][] positions, List<Position> blacks, List<Position> whites)
         {
             AIResult result = MakeTurn(positions, blacks, whites);
+            result.Side = selfSide;
             MakeStep(result.X, result.Y);
             FinishTurn(result.X, result.Y);
         }

@@ -45,13 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI\Creater.cs" />
-    <Compile Include="AI\DNA.cs" />
-    <Compile Include="AI\_10岁.cs" />
-    <Compile Include="AI\AIPlayer.cs" />
+    <Compile Include="AI\Utility\Creater.cs" />
+    <Compile Include="AI\Utility\DNA.cs" />
+    <Compile Include="AI\DNAPlayer.cs" />
+    <Compile Include="AI\Utility\AIPlayer.cs" />
     <Compile Include="Rule\ChessPannel.cs" />
     <Compile Include="Rule\ChessPlayer.cs" />
-    <Compile Include="AI\DNAFile.cs" />
+    <Compile Include="AI\Utility\DNAFile.cs" />
     <Compile Include="Window\DebugForm.cs">
       <SubType>Form</SubType>
     </Compile>

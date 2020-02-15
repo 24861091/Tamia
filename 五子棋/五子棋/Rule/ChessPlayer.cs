@@ -8,21 +8,21 @@ namespace 五子棋
 {
     public abstract class ChessPlayer
     {
-        protected 棋子 side;
+        protected 棋子 selfSide;
         public void SetSide(棋子 side)
         {
-            this.side = side;
+            this.selfSide = side;
         }
         
         public abstract void GameStart(棋子[][] positions);
         protected void MakeStep(int x, int y)
         {
-            Messager.Instance.SendMessage(MessageKey.MakeStep, new object[] { side, x, y });
+            Messager.Instance.SendMessage(MessageKey.MakeStep, new object[] { selfSide, x, y });
         }
         public abstract void OnYourTurn(棋子[][] positions, List<Position> blacks, List<Position> whites);
         protected void FinishTurn(int x, int y)
         {
-            Messager.Instance.SendMessage(MessageKey.FinishTurn, new object[] { this.side, x, y });
+            Messager.Instance.SendMessage(MessageKey.FinishTurn, new object[] { this.selfSide, x, y });
         }
         public string Name { get; set; }
         public virtual void OnMouseClick(int x, int y)

@@ -27,11 +27,11 @@ namespace 五子棋.AI
             int y = 0;
             List<Position> enemy = null;
 
-            if (side == 棋子.白子)
+            if (selfSide == 棋子.白子)
             {
                 enemy = blacks;
             }
-            else if (side == 棋子.黑子)
+            else if (selfSide == 棋子.黑子)
             {
                 enemy = whites;
             }
@@ -42,7 +42,7 @@ namespace 五子棋.AI
             if (enemy.Count > 0)
             {
                 Position p = enemy[enemy.Count - 1];
-                CalculateAroudPosition(p, GetOpposite(side), positions);
+                CalculateAroudPosition(p, GetOpposite(selfSide), positions);
                 int max = -1;
 
                 for (int i = 0; i < datas.Length; i++)
@@ -76,19 +76,19 @@ namespace 五子棋.AI
                 }
             }
 
-            positions[x][y] = side;
-            if (side == 棋子.白子)
+            positions[x][y] = selfSide;
+            if (selfSide == 棋子.白子)
             {
                 whites.Add(new Position(x, y));
             }
-            else if (side == 棋子.黑子)
+            else if (selfSide == 棋子.黑子)
             {
                 blacks.Add(new Position(x, y));
             }
 
-            CalculateAroudPosition(new Position(x, y), GetOpposite(side), positions);
+            CalculateAroudPosition(new Position(x, y), GetOpposite(selfSide), positions);
             Messager.Instance.SendMessage(MessageKey.RefreshDebug, new object[] { sTest, null });
-            return new AIResult(side, x, y);
+            return new AIResult(selfSide, x, y);
         }
 
         private void CalculateAroudPosition(Position p, 棋子 side, 棋子[][] positions)
@@ -139,12 +139,12 @@ namespace 五子棋.AI
                 return -1;
             }
             int value = 0;
-            value += CalculateLine(positions, 0, 1, x, y, side, p, delta);
-            value += CalculateLine(positions, 1, 0, x, y, side, p, delta);
-            value += CalculateLine(positions, 1, 1, x, y, side, p, delta);
-            value += CalculateLine(positions, -1, 1, x, y, side, p, delta);
+            value += CalculateLine(positions, 0, 1, x, y, selfSide, p, delta);
+            value += CalculateLine(positions, 1, 0, x, y, selfSide, p, delta);
+            value += CalculateLine(positions, 1, 1, x, y, selfSide, p, delta);
+            value += CalculateLine(positions, -1, 1, x, y, selfSide, p, delta);
 
-            棋子 opp = GetOpposite(side);
+            棋子 opp = GetOpposite(selfSide);
 
             value += CalculateLine(positions, 0, 1, x, y, opp, p, delta);
             value += CalculateLine(positions, 1, 0, x, y, opp, p, delta);

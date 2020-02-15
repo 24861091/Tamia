@@ -40,6 +40,11 @@ namespace 五子棋.AI
             {
                 _file = file;
             }
+            string directory = Path.GetDirectoryName(_file);
+            if(!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
             _xml.Save(_file);
         }
 

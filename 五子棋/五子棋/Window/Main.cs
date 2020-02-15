@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -56,39 +57,48 @@ namespace 五子棋
             rule = new Rule();
             rule.Initialize(sizeX, sizeY);
             debugForm = new DebugForm();
-
-
-            
         }
 
         private void Register()
         {
             AI.Creater.Register("HumanChessPlayer", new AI.HumanChessPlayer());
             AI.Creater.Register("程序测试用AI", new AI.程序测试用AI());
-            AI.Creater.Register("10岁AI", new AI._10岁());
+            AI.Creater.Register("10岁AI", new AI.DNAPlayer());
         }
+        private ChessPlayer CreatePlayer(string typeName)
+        {
+            string[] s = typeName.Split('_');
+            if (s != null)
+            {
+                Type type = Type.GetType("五子棋.AI." + s[0]);
+                if (type != null)
+                {
+                    ChessPlayer player = Activator.CreateInstance(type) as ChessPlayer;
+                    if (s.Length == 2)
+                    {
+                        player.Name = s[1];
+                    }
+                    else
+                    {
+                        player.Name = s[0];
+                    }
 
+                    return player;
+                }
+
+            }
+            return null;
+
+        }
         private ChessPlayer CreateBlackPlayer()
         {
             string typeName = BlackPlayersBox.Text;
-            //return AI.Creater.GetPlayer(typeName);
-            Type type = Type.GetType("五子棋.AI." + typeName);
-            if (type != null)
-            {
-                return Activator.CreateInstance(type) as ChessPlayer;
-            }
-            return null;
+            return CreatePlayer(typeName);
         }
         private ChessPlayer CreateWhitePlayer()
         {
             string typeName = WhitePlayersBox.Text;
-            //return AI.Creater.GetPlayer(typeName);
-            Type type = Type.GetType("五子棋.AI." + typeName);
-            if (type != null)
-            {
-                return Activator.CreateInstance(type) as ChessPlayer;
-            }
-            return null;
+            return CreatePlayer(typeName);
         }
 
         public void TakeTurn(棋子 side)
@@ -255,8 +265,22 @@ namespace 五子棋
                 Type type = types[i];
                 if (type.IsSubclassOf(typeof(ChessPlayer)) && !type.IsAbstract)
                 {
-                    BlackPlayersBox.Items.Add(type.Name);
-                    WhitePlayersBox.Items.Add(type.Name);
+                    if(Directory.Exists(type.Name))
+                    {
+                        string[] files = Directory.GetFiles(type.Name);
+                        for(int j = 0; j < files.Length; j ++)
+                        {
+                            string file = files[j];
+                            file = Path.GetFileName(file);
+                            BlackPlayersBox.Items.Add(type.Name + "_" + file);
+                            WhitePlayersBox.Items.Add(type.Name + "_" + file);
+                        }
+                    }
+                    else
+                    {
+                        BlackPlayersBox.Items.Add(type.Name);
+                        WhitePlayersBox.Items.Add(type.Name);
+                    }
                 }
             }
 

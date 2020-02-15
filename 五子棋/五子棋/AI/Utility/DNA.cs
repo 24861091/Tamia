@@ -10,12 +10,15 @@ namespace 五子棋.AI
     {
         private Dictionary<string, float> _DNAValues = new Dictionary<string, float>();
         private DNAFile _file = null;
-        private string _name = "default.xml";
+        private string _path = "default.xml";
+        private string _name = "Base";
+        private int _generation = 1;
         private float _selfFactor = 1f;
 
-        public DNA(string fileName)
+        public DNA(string fileName, string name)
         {
-            _name = fileName;
+            _path = fileName;
+            _name = name;
             _file = new DNAFile();
             if(!Load())
             {
@@ -148,16 +151,16 @@ namespace 五子棋.AI
             }
             _file.SetString("name", _name);
             _file.SetFloat("selfFactor", _selfFactor);
-
-            _file.Save(_name);
+            _file.SetInt("generation", _generation);
+            _file.Save(_path);
         }
         public bool Load()
         {
-            if(_file.Load(_name))
+            if(_file.Load(_path))
             {
                 foreach (KeyValuePair<string, float> pairs in _file.GetAllDatas())
                 {
-                    if(pairs.Key == "name" || pairs.Key == "selfFactor")
+                    if(pairs.Key == "name" || pairs.Key == "selfFactor"|| pairs.Key == "generation")
                     {
                         continue;
                     }
@@ -165,6 +168,7 @@ namespace 五子棋.AI
                 }
                 _name = _file.GetString("name", _name);
                 _selfFactor = _file.GetFloat("selfFactor", _selfFactor);
+                _generation = _file.GetInt("generation", _generation);
                 return true;
             }
             return false;
