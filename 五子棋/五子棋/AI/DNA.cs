@@ -11,6 +11,8 @@ namespace 五子棋.AI
         private Dictionary<string, float> _DNAValues = new Dictionary<string, float>();
         private DNAFile _file = null;
         private string _name = "default.xml";
+        private float _selfFactor = 1f;
+
         public DNA(string fileName)
         {
             _name = fileName;
@@ -19,7 +21,7 @@ namespace 五子棋.AI
             {
                 InitDefaultValues();
             }
-            Save();
+            
         }
         private List<List<string>> GenerateKeys()
         {
@@ -145,6 +147,8 @@ namespace 五子棋.AI
                 _file.SetFloat(pairs.Key, pairs.Value);
             }
             _file.SetString("name", _name);
+            _file.SetFloat("selfFactor", _selfFactor);
+
             _file.Save(_name);
         }
         public bool Load()
@@ -155,7 +159,8 @@ namespace 五子棋.AI
                 {
                     _DNAValues[pairs.Key] = pairs.Value;
                 }
-                _name = _file.GetString("name");
+                _name = _file.GetString("name", _name);
+                _selfFactor = _file.GetFloat("selfFactor", _selfFactor);
                 return true;
             }
             return false;
