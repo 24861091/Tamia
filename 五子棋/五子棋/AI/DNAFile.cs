@@ -86,7 +86,7 @@ namespace 五子棋.AI
         }
         private XmlElement GetElement(string key)
         {
-            if(_root == null)
+            if(_root != null)
             {
                 for(int i = 0; i < _root.ChildNodes.Count; i ++)
                 {
@@ -104,9 +104,10 @@ namespace 五子棋.AI
             if(node == null)
             {
                 node = _xml.CreateElement(key);
+                _root.AppendChild(node);
             }
             node.InnerText = v.ToString();
-            _root.AppendChild(node);
+            
         }
         public void SetFloat(string key, float v)
         {
@@ -114,9 +115,10 @@ namespace 五子棋.AI
             if (node == null)
             {
                 node = _xml.CreateElement(key);
+                _root.AppendChild(node);
             }
             node.InnerText = v.ToString();
-            _root.AppendChild(node);
+            
         }
         public void SetString(string key, string v)
         {
@@ -128,9 +130,9 @@ namespace 五子棋.AI
             if (node == null)
             {
                 node = _xml.CreateElement(key);
+                _root.AppendChild(node);
             }
             node.InnerText = v.ToString();
-            _root.AppendChild(node);
         }
 
 

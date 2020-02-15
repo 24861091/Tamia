@@ -21,7 +21,7 @@ namespace 五子棋.AI
             {
                 InitDefaultValues();
             }
-            
+            Save();
         }
         private List<List<string>> GenerateKeys()
         {
@@ -157,6 +157,10 @@ namespace 五子棋.AI
             {
                 foreach (KeyValuePair<string, float> pairs in _file.GetAllDatas())
                 {
+                    if(pairs.Key == "name" || pairs.Key == "selfFactor")
+                    {
+                        continue;
+                    }
                     _DNAValues[pairs.Key] = pairs.Value;
                 }
                 _name = _file.GetString("name", _name);
