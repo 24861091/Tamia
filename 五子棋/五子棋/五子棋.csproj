@@ -45,10 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AI\Creater.cs" />
+    <Compile Include="AI\DNA.cs" />
     <Compile Include="AI\_10岁.cs" />
     <Compile Include="AI\AIPlayer.cs" />
     <Compile Include="Rule\ChessPannel.cs" />
     <Compile Include="Rule\ChessPlayer.cs" />
+    <Compile Include="AI\DNAFile.cs" />
     <Compile Include="Window\DebugForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -56,7 +59,7 @@
       <DependentUpon>DebugForm.cs</DependentUpon>
     </Compile>
     <Compile Include="AI\FuckAIPlayer.cs" />
-    <Compile Include="HumanChessPlayer.cs" />
+    <Compile Include="AI\HumanChessPlayer.cs" />
     <Compile Include="Rule\Messager.cs" />
     <Compile Include="Rule\Players.cs" />
     <Compile Include="Rule\棋子.cs" />

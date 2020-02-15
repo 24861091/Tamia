@@ -56,13 +56,24 @@ namespace 五子棋
             rule = new Rule();
             rule.Initialize(sizeX, sizeY);
             debugForm = new DebugForm();
+
+
+            
+        }
+
+        private void Register()
+        {
+            AI.Creater.Register("HumanChessPlayer", new AI.HumanChessPlayer());
+            AI.Creater.Register("程序测试用AI", new AI.程序测试用AI());
+            AI.Creater.Register("10岁AI", new AI._10岁());
         }
 
         private ChessPlayer CreateBlackPlayer()
         {
             string typeName = BlackPlayersBox.Text;
-            Type type = Type.GetType("五子棋." + typeName);
-            if(type != null)
+            //return AI.Creater.GetPlayer(typeName);
+            Type type = Type.GetType("五子棋.AI." + typeName);
+            if (type != null)
             {
                 return Activator.CreateInstance(type) as ChessPlayer;
             }
@@ -71,6 +82,7 @@ namespace 五子棋
         private ChessPlayer CreateWhitePlayer()
         {
             string typeName = WhitePlayersBox.Text;
+            //return AI.Creater.GetPlayer(typeName);
             Type type = Type.GetType("五子棋.AI." + typeName);
             if (type != null)
             {
@@ -232,22 +244,32 @@ namespace 五子棋
         }
         private void SetPlayersBox()
         {
+            //Register();
+
             BlackPlayersBox.Items.Clear();
             WhitePlayersBox.Items.Clear();
             Assembly assembly = Assembly.GetAssembly(typeof(ChessPlayer));
             Type[] types = assembly.GetTypes();
-            for(int i = 0; i < types.Length; i ++)
+            for (int i = 0; i < types.Length; i++)
             {
                 Type type = types[i];
-                if(type.IsSubclassOf(typeof(ChessPlayer)) && !type.IsAbstract)
+                if (type.IsSubclassOf(typeof(ChessPlayer)) && !type.IsAbstract)
                 {
                     BlackPlayersBox.Items.Add(type.Name);
                     WhitePlayersBox.Items.Add(type.Name);
                 }
             }
-            if(BlackPlayersBox.Items.Count > 0)
+
+            //Dictionary<string, ChessPlayer> dics = AI.Creater.Dics;
+            //foreach(KeyValuePair<string, ChessPlayer> pair in dics)
+            //{
+            //    BlackPlayersBox.Items.Add(pair.Key);
+            //    WhitePlayersBox.Items.Add(pair.Key);
+            //}
+
+            if (BlackPlayersBox.Items.Count > 0)
             {
-                BlackPlayersBox.Text = typeof(HumanChessPlayer).Name;/*BlackPlayersBox.Items[0].ToString();*/
+                BlackPlayersBox.Text = typeof(AI.HumanChessPlayer).Name;/*BlackPlayersBox.Items[0].ToString();*/
             }
             if (WhitePlayersBox.Items.Count > 0)
             {

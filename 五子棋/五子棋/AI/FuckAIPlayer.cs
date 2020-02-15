@@ -185,6 +185,8 @@ namespace 五子棋.AI
                         leftNum++;
                     else if (s != 棋子.无)
                         left = false;
+                    else if (IsBeyondBorder(x - deltaX * i, positions.Length) || IsBeyondBorder(y - deltaY * i, positions.Length))
+                        left = false;
                 }
                 if (right)
                 {
@@ -192,6 +194,8 @@ namespace 五子棋.AI
                     if (s == side)
                         rightNum++;
                     else if (s != 棋子.无)
+                        right = false;
+                    else if (IsBeyondBorder(x - deltaX * i, positions.Length) || IsBeyondBorder(y - deltaY * i, positions.Length))
                         right = false;
                 }
                 if (!left && !right)
@@ -222,6 +226,10 @@ namespace 五子棋.AI
             v += 5 - delta;
 
             return v;
+        }
+        private bool IsBeyondBorder(int x, int num)
+        {
+            return x < 0 || x >= num;
         }
 
     }
