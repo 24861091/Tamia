@@ -205,6 +205,7 @@ namespace 五子棋.AI
                         FindCode(num, space, -1, startX, startY, xLength, yLength, deltaX, deltaY, side, positions, builder, list);
                         builder.Append(num.ToString());
                         FindCode(num, space, 1, endX, endY, xLength, yLength, deltaX, deltaY, side, positions, builder, list);
+                        Fix(ref builder);
                         string code = builder.ToString();
                         int length = CalculateLength(code, num);
                         if (length >= 5)
@@ -229,6 +230,30 @@ namespace 五子棋.AI
             }
             return val;
         }
+        private void Fix(ref StringBuilder builder)
+        {
+            bool isBlock = false;
+            for(int i = builder.Length / 2 - 1; i >= 0; i --)
+            {
+                if(isBlock)
+                {
+                    builder[i] = 'b';
+                    continue;
+                }
+                isBlock = builder[i] == 'b';
+            }
+            isBlock = false;
+            for (int i = builder.Length / 2 + 1; i < builder.Length; i++)
+            {
+                if (isBlock)
+                {
+                    builder[i] = 'b';
+                    continue;
+                }
+                isBlock = builder[i] == 'b';
+            }
+
+        }
         private int CalculateLength(string code, int num)
         {
             return Utility.CalculateLength(code, num);
@@ -244,20 +269,13 @@ namespace 五子棋.AI
                 start = 1;
                 end = space;
             }
-            bool isbreak = false;
             for (int m = start; m >= 1 && m <= space; m += sign)
             {
                 tempX = startX + sign * m * deltaX;
                 tempY = startY + sign * m * deltaY;
-                if(isbreak)
-                {
-                    builder.Append("b");
-                    continue;
-                }
                 if (!IsInChess(tempX, tempY, xLength, yLength))
                 {
                     builder.Append("b");
-                    isbreak = true;
                 }
                 else
                 {
@@ -280,8 +298,7 @@ namespace 五子棋.AI
                             }
                             else
                             {
-                                builder.Append("b");
-                                isbreak = true;
+                                builder.Append("b");                                
                             }
                             break;
                     }
