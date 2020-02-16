@@ -41,11 +41,11 @@ namespace 五子棋
             this.black = black;
             this.black.SetSide(棋子.黑子);
             this.black.GameStart(panel.Positions);
-            this.black.Name = this.black.GetType().ToString();
+            //this.black.Name = this.black.GetType().ToString();
             this.white = white;
             this.white.SetSide(棋子.白子);
             this.white.GameStart(panel.Positions);
-            this.white.Name = this.white.GetType().ToString();
+            //this.white.Name = this.white.GetType().ToString();
         }
         public void SetBlack(ChessPlayer player)
         {

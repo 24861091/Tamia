@@ -46,7 +46,6 @@
   <beee1essb>1</beee1essb>
   <beee1esbb>1</beee1esbb>
   <beee1ebbb>1</beee1ebbb>
-  <beee1bbbb>1</beee1bbbb>
   <esee1eeee>1</esee1eeee>
   <esee1eees>1</esee1eees>
   <esee1eeeb>1</esee1eeeb>
@@ -94,7 +93,6 @@
   <bsee1essb>1</bsee1essb>
   <bsee1esbb>1</bsee1esbb>
   <bsee1ebbb>1</bsee1ebbb>
-  <bsee1bbbb>1</bsee1bbbb>
   <bbee1eeee>1</bbee1eeee>
   <bbee1eees>1</bbee1eees>
   <bbee1eeeb>1</bbee1eeeb>
@@ -109,8 +107,6 @@
   <bbee1esss>1</bbee1esss>
   <bbee1essb>1</bbee1essb>
   <bbee1esbb>1</bbee1esbb>
-  <bbee1ebbb>1</bbee1ebbb>
-  <bbee1bbbb>1</bbee1bbbb>
   <eese1eeee>1</eese1eeee>
   <eese1eees>1</eese1eees>
   <eese1eeeb>1</eese1eeeb>
@@ -158,7 +154,6 @@
   <bese1essb>1</bese1essb>
   <bese1esbb>1</bese1esbb>
   <bese1ebbb>1</bese1ebbb>
-  <bese1bbbb>1</bese1bbbb>
   <esse1eeee>1</esse1eeee>
   <esse1eees>1</esse1eees>
   <esse1eeeb>1</esse1eeeb>
@@ -206,7 +201,6 @@
   <bsse1essb>1</bsse1essb>
   <bsse1esbb>1</bsse1esbb>
   <bsse1ebbb>1</bsse1ebbb>
-  <bsse1bbbb>1</bsse1bbbb>
   <bbse1eeee>1</bbse1eeee>
   <bbse1eees>1</bbse1eees>
   <bbse1eeeb>1</bbse1eeeb>
@@ -221,40 +215,26 @@
   <bbse1esss>1</bbse1esss>
   <bbse1essb>1</bbse1essb>
   <bbse1esbb>1</bbse1esbb>
-  <bbse1ebbb>1</bbse1ebbb>
-  <bbse1bbbb>1</bbse1bbbb>
   <bbbe1eeee>1</bbbe1eeee>
   <bbbe1eees>1</bbbe1eees>
   <bbbe1eeeb>1</bbbe1eeeb>
   <bbbe1eese>1</bbbe1eese>
   <bbbe1eess>1</bbbe1eess>
   <bbbe1eesb>1</bbbe1eesb>
-  <bbbe1eebb>1</bbbe1eebb>
   <bbbe1esee>1</bbbe1esee>
   <bbbe1eses>1</bbbe1eses>
   <bbbe1eseb>1</bbbe1eseb>
   <bbbe1esse>1</bbbe1esse>
   <bbbe1esss>1</bbbe1esss>
   <bbbe1essb>1</bbbe1essb>
-  <bbbe1esbb>1</bbbe1esbb>
-  <bbbe1ebbb>1</bbbe1ebbb>
-  <bbbe1bbbb>1</bbbe1bbbb>
   <bbbb1eeee>1</bbbb1eeee>
   <bbbb1eees>1</bbbb1eees>
-  <bbbb1eeeb>1</bbbb1eeeb>
   <bbbb1eese>1</bbbb1eese>
   <bbbb1eess>1</bbbb1eess>
-  <bbbb1eesb>1</bbbb1eesb>
-  <bbbb1eebb>1</bbbb1eebb>
   <bbbb1esee>1</bbbb1esee>
   <bbbb1eses>1</bbbb1eses>
-  <bbbb1eseb>1</bbbb1eseb>
   <bbbb1esse>1</bbbb1esse>
   <bbbb1esss>1</bbbb1esss>
-  <bbbb1essb>1</bbbb1essb>
-  <bbbb1esbb>1</bbbb1esbb>
-  <bbbb1ebbb>1</bbbb1ebbb>
-  <bbbb1bbbb>1</bbbb1bbbb>
   <eee2eee>2</eee2eee>
   <eee2ees>2</eee2ees>
   <eee2eeb>2</eee2eeb>
@@ -278,7 +258,6 @@
   <bee2ess>2</bee2ess>
   <bee2esb>2</bee2esb>
   <bee2ebb>2</bee2ebb>
-  <bee2bbb>2</bee2bbb>
   <ese2eee>2</ese2eee>
   <ese2ees>2</ese2ees>
   <ese2eeb>2</ese2eeb>
@@ -302,23 +281,16 @@
   <bse2ess>2</bse2ess>
   <bse2esb>2</bse2esb>
   <bse2ebb>2</bse2ebb>
-  <bse2bbb>2</bse2bbb>
   <bbe2eee>2</bbe2eee>
   <bbe2ees>2</bbe2ees>
   <bbe2eeb>2</bbe2eeb>
   <bbe2ese>2</bbe2ese>
   <bbe2ess>2</bbe2ess>
   <bbe2esb>2</bbe2esb>
-  <bbe2ebb>2</bbe2ebb>
-  <bbe2bbb>2</bbe2bbb>
   <bbb2eee>2</bbb2eee>
   <bbb2ees>2</bbb2ees>
-  <bbb2eeb>2</bbb2eeb>
   <bbb2ese>2</bbb2ese>
   <bbb2ess>2</bbb2ess>
-  <bbb2esb>2</bbb2esb>
-  <bbb2ebb>2</bbb2ebb>
-  <bbb2bbb>2</bbb2bbb>
   <ee3ee>3</ee3ee>
   <ee3es>3</ee3es>
   <ee3eb>3</ee3eb>
@@ -330,16 +302,12 @@
   <be3ee>3</be3ee>
   <be3es>3</be3es>
   <be3eb>3</be3eb>
-  <be3bb>3</be3bb>
   <bb3ee>3</bb3ee>
   <bb3es>3</bb3es>
-  <bb3eb>3</bb3eb>
-  <bb3bb>3</bb3bb>
   <e4e>4</e4e>
   <e4b>4</e4b>
   <b4e>4</b4e>
-  <b4b>4</b4b>
-  <name>Base</name>
+  <name>1</name>
   <selfFactor>1</selfFactor>
   <generation>1</generation>
 </root>
