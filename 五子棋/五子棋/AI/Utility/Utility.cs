@@ -30,6 +30,18 @@ namespace 五子棋
             }
             return num + right - left - 2;
         }
+        public static 棋子 GetOppside(棋子 side)
+        {
+            switch(side)
+            {
+                case 棋子.白子:
+                    return 棋子.黑子;
+                case 棋子.黑子:
+                    return 棋子.白子;
+
+            }
+            return 棋子.无;
+        }
 
     }
 }

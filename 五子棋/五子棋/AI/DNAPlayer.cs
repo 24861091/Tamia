@@ -8,33 +8,78 @@ namespace 五子棋.AI
 {
     public class DNAPlayer : AIPlayer
     {
-        private 棋子[][] _positions = null;
         private DNA _dna = null;
 
         public override void GameStart(棋子[][] positions)
         {
-            _positions = positions;
             _dna = new DNA("DNAPlayer/" + Name, Name);
         }
 
         public override AIResult MakeTurn(棋子[][] positions, List<Position> blacks, List<Position> whites)
         {
             AIResult result = new AIResult();
-            float val = CalculateValue(positions, 棋子.黑子);
-            val = CalculateValue(positions, 棋子.白子);
-            for (int i = 0; i < positions.Length; i ++)
+            List<KeyValuePair<int, int>> list = new List<KeyValuePair<int, int>>();
+            float selfVal = 0f;
+            float oppVal = 0f;
+            selfVal = CalculateValue(positions, selfSide, list);
+            oppVal = CalculateValue(positions, Utility.GetOppside(selfSide), list);
+
+            KeyValuePair<int, int> best = new KeyValuePair<int, int>();
+            float bestVal = 0f;
+            if(list.Count <= 0)
             {
-                if(positions[i][i] == 棋子.无)
+                for (int i = 0; i < positions.Length; i++)
                 {
-                    result.X = i;
-                    result.Y = i;
-                    break;
+                    for (int j = 0; j < positions.Length; j++)
+                    {
+                        if (positions[i][j] == 棋子.无)
+                        {
+                            result.X = i;
+                            result.Y = j;
+                            break;
+                        }
+                    }
                 }
             }
+            else
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    KeyValuePair<int, int> pair = list[i];
+                    if (IsInChess(pair.Key, pair.Value, positions.Length, positions.Length) && positions[pair.Key][pair.Value] == 棋子.无)
+                    {
+                        positions[pair.Key][pair.Value] = selfSide;
+                        selfVal = CalculateValue(positions, selfSide, list);
+                        oppVal = CalculateValue(positions, Utility.GetOppside(selfSide), list);
+                        if (i == 0)
+                        {
+                            bestVal = selfVal - oppVal;
+                            best = pair;
+                        }
+                        else
+                        {
+                            if (selfVal - oppVal > bestVal)
+                            {
+                                bestVal = selfVal - oppVal;
+                                best = pair;
+                            }
+                        }
+
+                        positions[pair.Key][pair.Value] = 棋子.无;
+                    }
+                }
+                result.X = best.Key;
+                result.Y = best.Value;
+            }
+
+
+
+
+
             return result;
         }
 
-        private float CalculateValue(棋子[][] positions, 棋子 side)
+        private float CalculateValue(棋子[][] positions, 棋子 side, List<KeyValuePair<int,int>> list)
         {
             float val = 0f;
             if(positions == null || positions[0] == null)
@@ -44,35 +89,35 @@ namespace 五子棋.AI
             //纵向扫描
             for (int i = 0; i < positions.Length; i ++)
             {
-                val += ScanLine(i, 0, side, positions, 0, 1);
+                val += ScanLine(i, 0, side, positions, 0, 1, list);
             }
             //横向扫描
             for (int i = 0; i < positions.Length; i++)
             {
-                val += ScanLine(0, i, side, positions, 1, 0);
+                val += ScanLine(0, i, side, positions, 1, 0, list);
             }
             //左上右下扫描
             for (int i = 0; i < positions.Length; i++)
             {
-                val += ScanLine(i, 0, side, positions, 1, 1);
+                val += ScanLine(i, 0, side, positions, 1, 1, list);
             }
             for (int i = 1; i < positions.Length; i++)
             {
-                val += ScanLine(0, i, side, positions, 1, 1);
+                val += ScanLine(0, i, side, positions, 1, 1, list);
             }
             //右上左下扫描
             for (int i = 0; i < positions.Length; i++)
             {
-                val += ScanLine(0, i, side, positions, 1, -1);
+                val += ScanLine(0, i, side, positions, 1, -1, list);
             }
             for (int i = 1; i < positions.Length; i++)
             {
-                val += ScanLine(i, positions.Length - 1, side, positions, 1, -1);
+                val += ScanLine(i, positions.Length - 1, side, positions, 1, -1, list);
             }
 
             return val;
         }
-        private float ScanLine(int x, int y, 棋子 side, 棋子[][] positions, int deltaX, int deltaY)
+        private float ScanLine(int x, int y, 棋子 side, 棋子[][] positions, int deltaX, int deltaY, List<KeyValuePair<int, int>> list)
         {
             float val = 0f;
             int xLength = positions[0].Length;
@@ -85,10 +130,6 @@ namespace 五子棋.AI
             StringBuilder builder = new StringBuilder();
             while (true)
             {
-                //if(!IsInChess(x,y, xLength,yLength))
-                //{
-                //    break;
-                //}
                 bool isIn = IsInChess(x, y, xLength, yLength);
                 if (isIn && side == positions[x][y])
                 {
@@ -107,9 +148,9 @@ namespace 五子棋.AI
                         int num = Math.Max(Math.Abs(endX - startX + 1), Math.Abs(endY - startY + 1));
                         int space = 5 - num;
                         builder.Clear();
-                        FindCode(num, space, -1, startX, startY, xLength, yLength, deltaX, deltaY, side, positions, builder);
+                        FindCode(num, space, -1, startX, startY, xLength, yLength, deltaX, deltaY, side, positions, builder, list);
                         builder.Append(num.ToString());
-                        FindCode(num, space, 1, endX, endY, xLength, yLength, deltaX, deltaY, side, positions, builder);
+                        FindCode(num, space, 1, endX, endY, xLength, yLength, deltaX, deltaY, side, positions, builder, list);
                         string code = builder.ToString();
                         int length = CalculateLength(code, num);
                         if (length >= 5)
@@ -138,7 +179,7 @@ namespace 五子棋.AI
         {
             return Utility.CalculateLength(code, num);
         }
-        private void FindCode(int num,int space, int sign, int startX, int startY, int xLength, int yLength, int deltaX, int deltaY, 棋子 side, 棋子[][]positions, StringBuilder builder)
+        private void FindCode(int num,int space, int sign, int startX, int startY, int xLength, int yLength, int deltaX, int deltaY, 棋子 side, 棋子[][]positions, StringBuilder builder, List<KeyValuePair<int, int>> list)
         {
             int tempX = -1;
             int tempY = -1;
@@ -164,6 +205,12 @@ namespace 五子棋.AI
                     {
                         case 棋子.无:
                             builder.Append("e");
+                            KeyValuePair<int, int> pair = new KeyValuePair<int, int>(tempX, tempY);
+                            if (list != null && !list.Contains(pair))
+                            {
+                                list.Add(pair);
+                            }
+                            
                             break;
                         case 棋子.白子:
                         case 棋子.黑子:
