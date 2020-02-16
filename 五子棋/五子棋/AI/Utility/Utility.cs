@@ -8,6 +8,7 @@ namespace 五子棋
 {
     public static class Utility
     {
+        public static bool IsDebugOpen = true;
         public static int CalculateLength(string code, int num)
         {
             int left = -1;

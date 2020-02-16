@@ -205,7 +205,7 @@ namespace 五子棋
                 case MessageKey.Finish:
                     棋子 side = (棋子)(param);
                     Finish(side);
-                    TestButton.Visible = false;
+                    
                     break;
                 case MessageKey.MakeStep:
                     this.Invalidate();
@@ -239,7 +239,11 @@ namespace 五子棋
 
             Restart();
 
-            TestButton.Visible = CanShowTestButton;
+            
+            if(Utility.IsDebugOpen)
+            {
+                debugForm.Show();
+            }
         }
         public void Restart()
         {
@@ -303,15 +307,25 @@ namespace 五子棋
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(this.debugForm.IsDisposed)
-            {
+            //if(this.debugForm.IsDisposed)
+            //{
                 
-            }
-            else
-            {
-                this.debugForm.Show();
-            }
+            //} 
+            //else
+            //{
+            //    this.debugForm.Show();
+            //}
             
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            Utility.IsDebugOpen = checkBox1.Checked;
+        }
+
+        private void Main_Load(object sender, EventArgs e)
+        {
+            Utility.IsDebugOpen = checkBox1.Checked;
         }
     }
 }

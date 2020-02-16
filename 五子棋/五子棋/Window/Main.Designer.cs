@@ -34,7 +34,7 @@ namespace 五子棋
             this.WhitePlayersBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.TestButton = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // StartButton
@@ -100,16 +100,16 @@ namespace 五子棋
             this.label2.TabIndex = 5;
             this.label2.Text = "白棋";
             // 
-            // TestButton
+            // checkBox1
             // 
-            this.TestButton.Location = new System.Drawing.Point(47, 294);
-            this.TestButton.Name = "TestButton";
-            this.TestButton.Size = new System.Drawing.Size(75, 23);
-            this.TestButton.TabIndex = 6;
-            this.TestButton.Text = "测试";
-            this.TestButton.UseVisualStyleBackColor = true;
-            this.TestButton.Visible = false;
-            this.TestButton.Click += new System.EventHandler(this.button1_Click);
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(143, 294);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(60, 16);
+            this.checkBox1.TabIndex = 7;
+            this.checkBox1.Text = "调试板";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // Main
             // 
@@ -117,7 +117,7 @@ namespace 五子棋
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(907, 715);
-            this.Controls.Add(this.TestButton);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.WhitePlayersBox);
@@ -126,6 +126,7 @@ namespace 五子棋
             this.Controls.Add(this.StartButton);
             this.Name = "Main";
             this.Text = "Main";
+            this.Load += new System.EventHandler(this.Main_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.OnPaint);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OnMouseDown);
             this.ResumeLayout(false);
@@ -141,7 +142,7 @@ namespace 五子棋
         private System.Windows.Forms.ComboBox WhitePlayersBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button TestButton;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
 

@@ -8,17 +8,21 @@ namespace 五子棋.AI
 {
     class 程序测试用AI : AIPlayer
     {
-        public static int[][] sTest = null;
+        public static float[][] sTest = null;
         private int[][] datas = null;
 
         public override void GameStart(棋子[][] positions)
         {
             datas = new int[positions.Length][];
+            sTest = new float[positions.Length][];
+
             for (int i = 0; i < positions.Length; i++)
             {
                 datas[i] = new int[positions[i].Length];
+                sTest[i] = new float[positions[i].Length];
             }
-            sTest = datas;
+
+            
         }
 
         public override AIResult MakeTurn(棋子[][] positions, List<Position> blacks, List<Position> whites)

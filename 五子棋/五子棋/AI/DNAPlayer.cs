@@ -9,10 +9,49 @@ namespace 五子棋.AI
     public class DNAPlayer : AIPlayer
     {
         private DNA _dna = null;
+        public float[][] selfTest = null;
+        public float[][] oppTest = null;
 
         public override void GameStart(棋子[][] positions)
         {
             _dna = new DNA("DNAPlayer/" + Name, Name);
+            if(Utility.IsDebugOpen)
+            {
+                initTest(ref selfTest, positions);
+                initTest(ref oppTest, positions);
+
+            }
+        }
+
+        private void initTest(ref float[][] test, 棋子[][] positions)
+        {
+            if (test == null)
+            {
+                test = new float[positions.Length][];
+                for (int i = 0; i < positions.Length; i++)
+                {
+                    test[i] = new float[positions[i].Length];
+                    for (int j = 0; j < positions.Length; j++)
+                    {
+                        test[i][j] = 0;
+                    }
+                }
+            }
+
+        }
+        private void ClearTest(ref float[][] test)
+        {
+            if (test != null)
+            {
+                for (int i = 0; i < test.Length; i++)
+                {
+                    for (int j = 0; j < test[0].Length; j++)
+                    {
+                        test[i][j] = 0;
+                    }
+                }
+            }
+
         }
 
         public override AIResult MakeTurn(棋子[][] positions, List<Position> blacks, List<Position> whites)
@@ -43,14 +82,27 @@ namespace 五子棋.AI
             }
             else
             {
+                if(Utility.IsDebugOpen)
+                {
+                    ClearTest(ref selfTest);
+                    ClearTest(ref oppTest);
+                }
                 for (int i = 0; i < list.Count; i++)
                 {
                     KeyValuePair<int, int> pair = list[i];
                     if (IsInChess(pair.Key, pair.Value, positions.Length, positions.Length) && positions[pair.Key][pair.Value] == 棋子.无)
                     {
                         positions[pair.Key][pair.Value] = selfSide;
-                        selfVal = CalculateValue(positions, selfSide, list);
-                        oppVal = CalculateValue(positions, Utility.GetOppside(selfSide), list);
+                        selfVal = CalculateValue(positions, selfSide, null);
+                        oppVal = CalculateValue(positions, Utility.GetOppside(selfSide), null);
+
+                        if(Utility.IsDebugOpen)
+                        {
+                              selfTest[pair.Key][pair.Value] = selfVal;
+                              oppTest[pair.Key][pair.Value] = oppVal;
+                        }
+
+
                         if (i == 0)
                         {
                             bestVal = selfVal - oppVal;
@@ -74,8 +126,10 @@ namespace 五子棋.AI
 
 
 
-
-
+            if(Utility.IsDebugOpen)
+            {
+                Messager.Instance.SendMessage(MessageKey.RefreshDebug, new object[] { selfTest, oppTest });
+            }
             return result;
         }
 
@@ -190,14 +244,20 @@ namespace 五子棋.AI
                 start = 1;
                 end = space;
             }
+            bool isbreak = false;
             for (int m = start; m >= 1 && m <= space; m += sign)
             {
                 tempX = startX + sign * m * deltaX;
                 tempY = startY + sign * m * deltaY;
-
+                if(isbreak)
+                {
+                    builder.Append("b");
+                    continue;
+                }
                 if (!IsInChess(tempX, tempY, xLength, yLength))
                 {
                     builder.Append("b");
+                    isbreak = true;
                 }
                 else
                 {
@@ -221,6 +281,7 @@ namespace 五子棋.AI
                             else
                             {
                                 builder.Append("b");
+                                isbreak = true;
                             }
                             break;
                     }

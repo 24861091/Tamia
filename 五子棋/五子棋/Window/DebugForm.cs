@@ -56,8 +56,8 @@ namespace 五子棋
             {
                 case MessageKey.RefreshDebug:
                     object[] test = param as object[];
-                    int[][] black = test[0] as int[][];
-                    int[][] white = test[1] as int[][];
+                    float[][] black = test[0] as float[][];
+                    float[][] white = test[1] as float[][];
                     Refresh(black, white);
                     
                     break;
@@ -68,7 +68,7 @@ namespace 五子棋
         }
         public void Refresh<T>(T[][] black, T[][] white)
         {
-            int top = black.Length * blackInterval + blackTop + blackInterval * 3 + whiteTop;
+            int top = black.Length * blackInterval + blackTop + blackInterval * 1 + whiteTop;
             Refresh(black, blackLeft, blackTop, blackInterval,ref blackLabels);
             Refresh(white, whiteLeft, top, whiteInterval,ref whiteLabels);
 
