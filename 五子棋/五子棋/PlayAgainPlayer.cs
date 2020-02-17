@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace 五子棋
+namespace 五子棋.AI
 {
     public class PlayAgainPlayer : ChessPlayer
     {
@@ -15,7 +15,7 @@ namespace 五子棋
 
         public override void OnYourTurn(棋子[][] positions, List<Position> blacks, List<Position> whites)
         {
-            
+            //FinishTurn(1, 1);
         }
     }
 }
