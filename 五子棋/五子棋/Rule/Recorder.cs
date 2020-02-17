@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace 五子棋.Rule
+namespace 五子棋
 {
     public class Recorder
     {

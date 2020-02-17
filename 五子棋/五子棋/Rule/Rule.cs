@@ -142,27 +142,38 @@ namespace 五子棋
             if (side == 棋子.无) return false;
 
             int num = 1;
-            bool left = true;
-            bool right = true;
-            for(int i = 1; i <= 4; i ++)
+            int x1 = x;
+            int x2 = x;
+            int y1 = y;
+            int y2 = y;
+
+            while(true)
             {
-                if (left)
+                x1 -= deltaX;
+                y1 -= deltaY;
+                if(!Utility.IsInChess(x1, y1))
                 {
-                    if (panel.GetSide(x - deltaX * i, y - deltaY * i) == side)
-                        num++;
+                    break;
                 }
-                if(right)
-                {
-                    if (panel.GetSide(x + deltaX * i, y + deltaY * i) == side)
-                        num++;
-                }
-                if (!left && !right)
+                if(panel.Positions[x1][y1] != side)
                 {
                     break;
                 }
             }
-            if (num >= 5) return true;
-            return false;
+            while (true)
+            {
+                x2 += deltaX;
+                y2 += deltaY;
+                if (!Utility.IsInChess(x2, y2))
+                {
+                    break;
+                }
+                if (panel.Positions[x2][y2] != side)
+                {
+                    break;
+                }
+            }
+            return Math.Max(Math.Abs(x1 - x2), Math.Abs(y1 - y2)) >= 6;
         }
 
         public void OnMessage(MessageKey name, object param)

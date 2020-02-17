@@ -9,6 +9,13 @@ namespace 五子棋
     public static class Utility
     {
         public static bool IsDebugOpen = true;
+        public static int sizeX = 15;
+        public static int sizeY = 15;
+        public static int left = 550;
+        public static int top = 50;
+
+        public static int interval = 50;
+
         public static int CalculateLength(string code, int num)
         {
             int left = -1;
@@ -43,6 +50,12 @@ namespace 五子棋
             }
             return 棋子.无;
         }
+        public static bool IsInChess(int x, int y)
+        {
+            return x >= 0 && y >= 0 && x < sizeX && y < sizeY;
+        }
+
+         
 
     }
 }

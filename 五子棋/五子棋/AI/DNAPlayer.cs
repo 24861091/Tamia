@@ -125,7 +125,7 @@ namespace 五子棋.AI
                 for (int i = 0; i < list.Count; i++)
                 {
                     KeyValuePair<int, int> pair = list[i];
-                    if (IsInChess(pair.Key, pair.Value, positions.Length, positions.Length) && positions[pair.Key][pair.Value] == 棋子.无)
+                    if (IsInChess(pair.Key, pair.Value) && positions[pair.Key][pair.Value] == 棋子.无)
                     {
                         positions[pair.Key][pair.Value] = selfSide;
                         selfVal = CalculateValue(positions, selfSide, null);
@@ -221,7 +221,7 @@ namespace 五子棋.AI
             StringBuilder builder = new StringBuilder();
             while (true)
             {
-                bool isIn = IsInChess(x, y, xLength, yLength);
+                bool isIn = IsInChess(x, y);
                 if (isIn && side == positions[x][y])
                 {
                     if(startX < 0)
@@ -314,7 +314,7 @@ namespace 五子棋.AI
             {
                 tempX = startX + sign * m * deltaX;
                 tempY = startY + sign * m * deltaY;
-                if (!IsInChess(tempX, tempY, xLength, yLength))
+                if (!IsInChess(tempX, tempY))
                 {
                     builder.Append("b");
                 }
@@ -346,9 +346,9 @@ namespace 五子棋.AI
                 }
             }
         }
-        private bool IsInChess(int x , int y, int xLength, int yLength)
+        private bool IsInChess(int x , int y)
         {
-            return x >= 0 && y >= 0 && x < xLength && y < yLength;
+            return Utility.IsInChess(x, y);
         }
     }
 }
