@@ -14,15 +14,20 @@ namespace 五子棋
 {
     public partial class Main : Form , IListener
     {
-        private int sizeX = 15;
-        private int sizeY = 15;
-        private int left = 550;
-        private int top = 50;
+        public static int sizeX = 15;
+        public static int sizeY = 15;
+        public static int left = 550;
+        public static int top = 50;
 
-        private int interval = 50;
+        public static int interval = 50;
 
         private Rule rule = null;
         private DebugForm debugForm = null;
+
+        private Label[] leftLabels = new Label[sizeY];
+        private Label[] topLabels = new Label[sizeX];
+        private Label[] rightLabels = new Label[sizeY];
+        private Label[] bottomLabels = new Label[sizeX];
 
         private 棋子[][] Chess
         {
@@ -44,6 +49,8 @@ namespace 五子棋
         {
             
             InitializeComponent();
+            InitLabels();
+
             SetPlayersBox();
 
             this.Width = left + sizeX * interval + interval * 2;
@@ -58,7 +65,16 @@ namespace 五子棋
             rule.Initialize(sizeX, sizeY);
             debugForm = new DebugForm();
         }
-
+        private void InitLabels()
+        {
+            for(int i = 0; i < leftLabels.Length; i ++)
+            {
+                leftLabels[i] = new Label();
+                rightLabels[i] = new Label();
+                topLabels[i] = new Label();
+                bottomLabels[i] = new Label();
+            }
+        }
         private void Register()
         {
             AI.Creater.Register("HumanChessPlayer", new AI.HumanChessPlayer());
@@ -118,8 +134,44 @@ namespace 五子棋
                 return;
             Point start;
             Point end;
+
             for (int i = 0; i < sizeX; i++)
             {
+                topLabels[i].Text = i.ToString();
+                topLabels[i].Top = top - interval/2;
+                topLabels[i].Left = left + i * interval- 8;
+                topLabels[i].Width = interval;
+                topLabels[i].Height = interval/3;
+                topLabels[i].Font = new Font(topLabels[i].Font.FontFamily, interval / 4);
+
+                this.Controls.Add(topLabels[i]);
+
+                //bottomLabels[i].Text = i.ToString();
+                //bottomLabels[i].Top = top + sizeY * interval - interval + 8;
+                //bottomLabels[i].Left = left + i * interval-8;
+                //bottomLabels[i].Width = interval;
+                //bottomLabels[i].Height = interval / 3;
+                //bottomLabels[i].Font = new Font(bottomLabels[i].Font.FontFamily, interval / 4);
+
+                //this.Controls.Add(bottomLabels[i]);
+
+                leftLabels[i].Text = i.ToString();
+                leftLabels[i].Top = top + i * interval - 8;
+                leftLabels[i].Left = left - interval / 2;
+                leftLabels[i].Width = interval / 2;
+                leftLabels[i].Height = interval / 3;
+                leftLabels[i].Font = new Font(leftLabels[i].Font.FontFamily, interval / 4);
+                this.Controls.Add(leftLabels[i]);
+
+                //rightLabels[i].Text = i.ToString();
+                //rightLabels[i].Top = top + i * interval - 8;
+                //rightLabels[i].Left = left + sizeX * interval - interval + 8;
+                //rightLabels[i].Width = interval / 2;
+                //rightLabels[i].Height = interval / 3;
+                //rightLabels[i].Font = new Font(rightLabels[i].Font.FontFamily, interval / 4);
+                //this.Controls.Add(rightLabels[i]);
+
+
                 start = new Point(left, top + i * interval);
                 end = new Point(left + sizeX * interval - interval, top + i * interval);
                 graphics.DrawLine(Pens.Black, start, end);

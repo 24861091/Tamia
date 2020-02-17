@@ -26,10 +26,32 @@ namespace 五子棋.AI
             }
             Save();
         }
+        public float Factor
+        {
+            get
+            {
+                return _selfFactor;
+            }
+            set
+            {
+                _selfFactor = value;
+            }
+        }
+        public int Generation
+        {
+            get
+            {
+                return _generation;
+            }
+            set
+            {
+                _generation = value;
+            }
+        }
 
         public float GetValue(string key)
         {
-            if(_DNAValues.ContainsKey(key))
+            if (_DNAValues.ContainsKey(key))
             {
                 return _DNAValues[key];
             }
@@ -114,11 +136,10 @@ namespace 五子棋.AI
                         {
                             _DNAValues[key] = 5 - r.Length;
                         }
-                        
                     }
                 }
             }
-            
+            _DNAValues["f5"] = 9999999999f;
         }
         private string Reverse(string source)
         {

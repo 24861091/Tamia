@@ -58,6 +58,31 @@ namespace 五子棋.AI
         {
             AIResult result = new AIResult();
             List<KeyValuePair<int, int>> list = new List<KeyValuePair<int, int>>();
+
+
+            ///test
+            //positions[0][2] = 棋子.黑子;
+            //float val = ScanLine(0, 0,  棋子.黑子, positions, 0, 1, list);
+            //for(int i= 0; i < positions.Length; i ++)
+            //{
+            //    if(positions[1][i] == 棋子.无)
+            //    {
+            //        result.X = 1;
+            //        result.Y = i;
+            //        break;
+            //    }
+            //}
+            //positions[0][2] = 棋子.无;
+            //return result;
+            ///test
+
+
+
+
+
+
+
+
             float selfVal = 0f;
             float oppVal = 0f;
             selfVal = CalculateValue(positions, selfSide, list);
@@ -94,6 +119,7 @@ namespace 五子棋.AI
                     {
                         positions[pair.Key][pair.Value] = selfSide;
                         selfVal = CalculateValue(positions, selfSide, null);
+                        positions[pair.Key][pair.Value] = Utility.GetOppside(selfSide);
                         oppVal = CalculateValue(positions, Utility.GetOppside(selfSide), null);
 
                         if(Utility.IsDebugOpen)
@@ -102,17 +128,18 @@ namespace 五子棋.AI
                               oppTest[pair.Key][pair.Value] = oppVal;
                         }
 
+                        float factor = _dna.Factor;
 
                         if (i == 0)
                         {
-                            bestVal = selfVal - oppVal;
+                            bestVal = selfVal * factor + oppVal;
                             best = pair;
                         }
                         else
                         {
-                            if (selfVal - oppVal > bestVal)
+                            if (selfVal * factor + oppVal > bestVal)
                             {
-                                bestVal = selfVal - oppVal;
+                                bestVal = selfVal * factor + oppVal;
                                 best = pair;
                             }
                         }
@@ -171,7 +198,7 @@ namespace 五子棋.AI
 
             return val;
         }
-        private float ScanLine(int x, int y, 棋子 side, 棋子[][] positions, int deltaX, int deltaY, List<KeyValuePair<int, int>> list)
+        public float ScanLine(int x, int y, 棋子 side, 棋子[][] positions, int deltaX, int deltaY, List<KeyValuePair<int, int>> list)
         {
             float val = 0f;
             int xLength = positions[0].Length;
@@ -210,6 +237,10 @@ namespace 五子棋.AI
                         int length = CalculateLength(code, num);
                         if (length >= 5)
                         {
+                            if (code == "5")
+                            {
+                                code = "f5";
+                            }
                             val += _dna.GetValue(code);
                         }
                         
