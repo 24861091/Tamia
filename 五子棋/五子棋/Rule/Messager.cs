@@ -49,6 +49,17 @@ namespace 五子棋
             }
             ls.Add(listener);
         }
+
+        public void UnRegister(MessageKey name, IListener listener)
+        {
+            if (listeners.ContainsKey(name))
+            {
+                List<IListener> ls = null;
+                ls = listeners[name];
+                ls.Remove(listener);
+            }
+        }
+
     }
 
     public interface IListener

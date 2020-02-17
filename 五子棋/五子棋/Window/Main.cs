@@ -242,24 +242,20 @@ namespace 五子棋
 
         private void OnClickStartButton(object sender, EventArgs e)
         {
-
-            Restart();
-
+            _main.Restart(BlackPlayersBox.Text, WhitePlayersBox.Text);
         }
         public void Restart()
         {
-            
             BlackPlayersBox.Enabled = false;
             WhitePlayersBox.Enabled = false;
 
             this.DisplayLabel.Text = "开始！";
-            _main.Restart(BlackPlayersBox.Text, WhitePlayersBox.Text);
+            
             this.Invalidate();
             if (Utility.IsDebugOpen && !debugForm.Visible)
             {
                 debugForm.Show();
             }
-
         }
         private void SetPlayersBox()
         {
