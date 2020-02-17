@@ -92,15 +92,25 @@ namespace 五子棋.AI
             float bestVal = 0f;
             if(list.Count <= 0)
             {
-                for (int i = 0; i < positions.Length; i++)
+                for(int c = 1; c <= positions.Length / 2; c ++)
                 {
-                    for (int j = 0; j < positions.Length; j++)
+                    for (int i = 0; i < c * 2 + 1; i++)
                     {
-                        if (positions[i][j] == 棋子.无)
+                        for(int j = 0; j < c * 2 + 1; j ++)
                         {
-                            result.X = i;
-                            result.Y = j;
-                            break;
+                            int coordX = positions.Length / 2 - c + i;
+                            int coordY = positions.Length / 2 - c + j;
+                            if (positions[i][j] == 棋子.无)
+                            {
+                                result.X = coordX;
+                                result.Y = coordY;
+                                if (Utility.IsDebugOpen)
+                                {
+                                    Messager.Instance.SendMessage(MessageKey.RefreshDebug, new object[] { selfTest, oppTest });
+                                }
+                                return result;
+
+                            }
                         }
                     }
                 }
