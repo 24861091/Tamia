@@ -19,8 +19,8 @@ namespace 五子棋
             path = Path.GetDirectoryName(path);
             _path = path;
             DateTime now = DateTime.Now;
-            _name = now.Ticks.ToString();
-            if(!Directory.Exists(_path))
+            _name = now.ToString();
+            if (!Directory.Exists(_path))
             {
                 Directory.CreateDirectory(_path);
             }

@@ -21,7 +21,7 @@ namespace 五子棋
 
         public int interval = 50;
 
-        private Rule rule = null;
+        //private Rule rule = null;
         private DebugForm debugForm = null;
 
         private Label[] leftLabels = new Label[Utility.sizeY];
@@ -29,11 +29,13 @@ namespace 五子棋
         private Label[] rightLabels = new Label[Utility.sizeY];
         private Label[] bottomLabels = new Label[Utility.sizeX];
 
+        private MainFrame _main = new MainFrame();
+
         private 棋子[][] Chess
         {
             get
             {
-                return rule.GetPanel().positions;
+                return _main.Chess;
             }
         }
         
@@ -41,7 +43,7 @@ namespace 五子棋
         {
             get
             {
-                return rule.GetPanel().Mark;
+                return _main.Mark;
             }
         }
         public bool CanShowTestButton = true;
@@ -61,8 +63,7 @@ namespace 五子棋
             Messager.Instance.Register(MessageKey.MakeStep, this);
             Messager.Instance.Register(MessageKey.Restart, this);
 
-            rule = new Rule();
-            rule.Initialize(sizeX, sizeY);
+            //_main.Initialize();
             debugForm = new DebugForm();
         }
         private void InitLabels()
@@ -80,41 +81,6 @@ namespace 五子棋
             AI.Creater.Register("HumanChessPlayer", new AI.HumanChessPlayer());
             AI.Creater.Register("程序测试用AI", new AI.程序测试用AI());
             AI.Creater.Register("10岁AI", new AI.DNAPlayer());
-        }
-        private ChessPlayer CreatePlayer(string typeName)
-        {
-            string[] s = typeName.Split('_');
-            if (s != null)
-            {
-                Type type = Type.GetType("五子棋.AI." + s[0]);
-                if (type != null)
-                {
-                    ChessPlayer player = Activator.CreateInstance(type) as ChessPlayer;
-                    if (s.Length == 2)
-                    {
-                        player.Name = s[1];
-                    }
-                    else
-                    {
-                        player.Name = s[0];
-                    }
-
-                    return player;
-                }
-
-            }
-            return null;
-
-        }
-        private ChessPlayer CreateBlackPlayer()
-        {
-            string typeName = BlackPlayersBox.Text;
-            return CreatePlayer(typeName);
-        }
-        private ChessPlayer CreateWhitePlayer()
-        {
-            string typeName = WhitePlayersBox.Text;
-            return CreatePlayer(typeName);
         }
 
         public void TakeTurn(棋子 side)
@@ -165,9 +131,12 @@ namespace 五子棋
 
         private void DrawChess(Graphics graphics)
         {
-            if (rule == null) return;
             棋子[][] chess = Chess;
-            for(int i = 0; i < chess.Length; i ++)
+            if (chess == null)
+            {
+                return;
+            }
+            for (int i = 0; i < chess.Length; i ++)
             {
                 for(int j = 0; j < chess[i].Length; j ++)
                 {
@@ -180,6 +149,10 @@ namespace 五子棋
         private void DrawLast(Graphics graphics)
         {
             棋子[][] chess = Chess;
+            if(chess == null)
+            {
+                return;
+            }
             for (int i = 0; i < Mark.Count; i ++)
             {
                 Position p = Mark[i];
@@ -229,23 +202,25 @@ namespace 五子棋
 
         public void OnMessage(MessageKey name, object param)
         {
-            switch(name)
+            if(this.Enabled && this.Visible)
             {
-                case MessageKey.ChangeTurn:
-                    棋子 turn = (棋子)(param);
-                    TakeTurn(turn);
-                    break;
-                case MessageKey.Finish:
-                    棋子 side = (棋子)(param);
-                    Finish(side);
-                    
-                    break;
-                case MessageKey.MakeStep:
-                    this.Invalidate();
-                    break;
-                case MessageKey.Restart:
-                    this.Restart();
-                    break;
+                switch (name)
+                {
+                    case MessageKey.ChangeTurn:
+                        棋子 turn = (棋子)(param);
+                        TakeTurn(turn);
+                        break;
+                    case MessageKey.Finish:
+                        棋子 side = (棋子)(param);
+                        Finish(side);
+                        break;
+                    case MessageKey.MakeStep:
+                        this.Invalidate();
+                        break;
+                    case MessageKey.Restart:
+                        this.Restart();
+                        break;
+                }
             }
         }
 
@@ -267,26 +242,23 @@ namespace 五子棋
 
         private void OnClickStartButton(object sender, EventArgs e)
         {
-            BlackPlayersBox.Enabled = false;
-            WhitePlayersBox.Enabled = false;
 
             Restart();
 
-            
-            if(Utility.IsDebugOpen)
-            {
-                debugForm.Show();
-            }
         }
         public void Restart()
         {
-            this.DisplayLabel.Text = "开始！";
-            rule.Clear();
-            rule.SetChessPlayers(CreateBlackPlayer(), CreateWhitePlayer());
-            rule.ChangeTurn();
-            rule.OnYourTurn();
             
+            BlackPlayersBox.Enabled = false;
+            WhitePlayersBox.Enabled = false;
+
+            this.DisplayLabel.Text = "开始！";
+            _main.Restart(BlackPlayersBox.Text, WhitePlayersBox.Text);
             this.Invalidate();
+            if (Utility.IsDebugOpen && !debugForm.Visible)
+            {
+                debugForm.Show();
+            }
 
         }
         private void SetPlayersBox()

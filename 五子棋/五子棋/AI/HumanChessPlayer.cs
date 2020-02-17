@@ -20,9 +20,13 @@ namespace 五子棋.AI
 
         public override void OnMouseClick(int x, int y)
         {
+            if(x < 0 || x >= Utility.sizeX || y < 0 || y >= Utility.sizeY)
+            {
+                return;
+            }
             if(positions[x][y] == 棋子.无)
             {
-                Messager.Instance.SendMessage(MessageKey.MakeStep, new object[] { selfSide, x, y });
+                MakeStep(x, y);
                 FinishTurn(x, y);
             }
         }
