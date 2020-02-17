@@ -9,6 +9,7 @@ namespace 五子棋
     public class MainFrame
     {
         private Rule _rule = null;
+        private Recorder _recorder = null;
 
         public MainFrame()
         {
@@ -18,6 +19,7 @@ namespace 五子棋
         {
             _rule = new Rule();
             _rule.Initialize(Utility.sizeX, Utility.sizeY);
+            _recorder = new Recorder();
         }
         public 棋子[][] Chess
         {

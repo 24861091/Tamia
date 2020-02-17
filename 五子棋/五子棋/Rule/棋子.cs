@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,8 +10,8 @@ namespace 五子棋
     public enum 棋子
     {
         无 = 0,
-        白子 = 1,
-        黑子 = 2,
+        黑子 = 1,
+        白子 = 2,
     }
 
 }

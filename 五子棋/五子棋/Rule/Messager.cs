@@ -6,9 +6,17 @@ using System.Threading.Tasks;
 
 namespace 五子棋
 {
-    class Messager : IListened
+    public class Messager : IListened
     {
         private static Messager instance = new Messager();
+        private bool isBreak = false;
+        public bool IsBreak
+        {
+            set
+            {
+                isBreak = value;
+            }
+        }
         public static Messager Instance
         {
             get
@@ -30,6 +38,11 @@ namespace 五子棋
                 {
                     foreach(IListener listener in ls)
                     {
+                        if(isBreak)
+                        {
+                            isBreak = false;
+                            break;
+                        }
                         listener.OnMessage(name, param);
                     }
                 }

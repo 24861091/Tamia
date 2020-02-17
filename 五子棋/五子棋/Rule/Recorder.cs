@@ -14,48 +14,47 @@ namespace 五子棋
         private StreamWriter _writer = null;
         private Stream _stream = null;
 
-        public void Register()
+        private void Register()
         {
-            Messager.Instance.Register(MessageKey.ChangeTurn, this);
             Messager.Instance.Register(MessageKey.Finish, this);
-            Messager.Instance.Register(MessageKey.MakeStep, this);
+            Messager.Instance.Register(MessageKey.FinishTurn, this);
             Messager.Instance.Register(MessageKey.Restart, this);
         }
 
-        public void UnRegister()
+        private void UnRegister()
         {
-            Messager.Instance.UnRegister(MessageKey.ChangeTurn, this);
             Messager.Instance.UnRegister(MessageKey.Finish, this);
-            Messager.Instance.UnRegister(MessageKey.MakeStep, this);
+            Messager.Instance.UnRegister(MessageKey.FinishTurn, this);
             Messager.Instance.UnRegister(MessageKey.Restart, this);
         }
 
-        public Recorder(string path, string blackName, string whiteName)
+        public Recorder()
         {
-            path = Path.GetDirectoryName(path);
-            _path = path;
+            Register();
+        }
+        private void Initialize(string blackName, string whiteName)
+        {
+            string path = "";
+            _path = "record";
             DateTime now = DateTime.Now;
-            _name = now.ToString();
+            _name = now.Ticks.ToString();
             if (!Directory.Exists(_path))
             {
                 Directory.CreateDirectory(_path);
             }
             path = Path.Combine(_path, _name);
-            if(File.Exists(path))
+            if (File.Exists(path))
             {
                 File.Delete(path);
             }
 
-            FileStream stream = File.Create(path);
-            _writer = new StreamWriter(stream);
+            _stream = File.Create(path);
+            _writer = new StreamWriter(_stream);
             _writer.WriteLine(now.ToString());
             _writer.WriteLine(blackName);
             _writer.WriteLine(whiteName);
-
-            Register();
         }
-
-        public void Record(棋子 side, int x, int y)
+        private void Record(棋子 side, int x, int y)
         {
             if(_writer != null)
             {
@@ -63,11 +62,12 @@ namespace 五子棋
             }
         }
 
-        public void Finish()
+        private void Finish(棋子 side)
         {
+            _writer.Write((int)side);
             _writer.Close();
             _stream.Close();
-            UnRegister();
+            
         }
 
         public void OnMessage(MessageKey name, object param)
@@ -75,7 +75,8 @@ namespace 五子棋
             switch(name)
             {
                 case MessageKey.Restart:
-
+                    string[] players = param as string[];
+                    Initialize(players[0], players[1]);
                     break;
                 case MessageKey.ChangeTurn:
                     break;
@@ -84,9 +85,15 @@ namespace 五子棋
                 case MessageKey.MakeStep:
                     break;
                 case MessageKey.FinishTurn:
-                    棋子 side = (棋子)(param);
+                    object[] os = param as object[];
+                    int x = (int)os[1];
+                    int y = (int)os[2];
+                    棋子 side = (棋子)os[0];
+                    Record(side, x, y);
                     break;
                 case MessageKey.Finish:
+                    棋子 s = (棋子)param;
+                    Finish(s);
                     break;
             }
         }
