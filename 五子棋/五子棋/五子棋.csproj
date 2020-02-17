@@ -53,6 +53,7 @@
     <Compile Include="Rule\ChessPannel.cs" />
     <Compile Include="Rule\ChessPlayer.cs" />
     <Compile Include="AI\Utility\DNAFile.cs" />
+    <Compile Include="Rule\Recorder.cs" />
     <Compile Include="Window\DebugForm.cs">
       <SubType>Form</SubType>
     </Compile>
