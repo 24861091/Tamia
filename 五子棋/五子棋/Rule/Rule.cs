@@ -124,8 +124,7 @@ namespace 五子棋
         public void Finish(棋子 side)
         {
             turn = 棋子.无;
-            Messager.Instance.SendMessage(MessageKey.Finish, side);
-            Messager.Instance.IsBreak = true;
+            Messager.Instance.SendMessageLater(MessageKey.Finish, side);
         }
 
         public bool Judge(int x, int y, 棋子 side)

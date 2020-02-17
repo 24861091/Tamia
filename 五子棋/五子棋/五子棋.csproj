@@ -50,6 +50,7 @@
     <Compile Include="AI\DNAPlayer.cs" />
     <Compile Include="AI\Utility\AIPlayer.cs" />
     <Compile Include="AI\Utility\Utility.cs" />
+    <Compile Include="PlayAgainPlayer.cs" />
     <Compile Include="Rule\ChessPannel.cs" />
     <Compile Include="Rule\ChessPlayer.cs" />
     <Compile Include="AI\Utility\DNAFile.cs" />

@@ -30,7 +30,10 @@ namespace 五子棋
         private Label[] bottomLabels = new Label[Utility.sizeX];
 
         private MainFrame _main = new MainFrame();
+        private bool isFinished = false;
+        private 棋子 winSide = 棋子.无;
 
+        private Timer timer = new Timer();
         private 棋子[][] Chess
         {
             get
@@ -65,7 +68,22 @@ namespace 五子棋
 
             //_main.Initialize();
             debugForm = new DebugForm();
+            timer.Tick += new EventHandler(Tick);
+            timer.Interval = 100;
+            timer.Start();
         }
+
+        private void Tick(object sender, EventArgs e)
+        {
+            if(isFinished)
+            {
+                DisplayLabel.Text = winSide.ToString() + " Win!";
+                BlackPlayersBox.Enabled = true;
+                WhitePlayersBox.Enabled = true;
+                isFinished = false;
+            }
+        }
+
         private void InitLabels()
         {
             for(int i = 0; i < leftLabels.Length; i ++)
@@ -89,9 +107,8 @@ namespace 五子棋
         }
         public void Finish(棋子 side)
         {
-            DisplayLabel.Text = side.ToString() + " Win!";
-            BlackPlayersBox.Enabled = true;
-            WhitePlayersBox.Enabled = true;
+            isFinished = true;
+            winSide = side;
         }
 
         private void DrawPanel(Graphics graphics)
@@ -248,9 +265,7 @@ namespace 五子棋
         {
             BlackPlayersBox.Enabled = false;
             WhitePlayersBox.Enabled = false;
-
             this.DisplayLabel.Text = "开始！";
-            
             this.Invalidate();
             if (Utility.IsDebugOpen && !debugForm.Visible)
             {

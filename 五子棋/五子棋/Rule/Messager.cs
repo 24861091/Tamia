@@ -3,20 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace 五子棋
 {
     public class Messager : IListened
     {
         private static Messager instance = new Messager();
-        private bool isBreak = false;
-        public bool IsBreak
-        {
-            set
-            {
-                isBreak = value;
-            }
-        }
+        private Timer timer = new Timer();
         public static Messager Instance
         {
             get
@@ -26,23 +20,52 @@ namespace 五子棋
         }
         private Messager()
         {
-
+            timer.Elapsed += new ElapsedEventHandler(OnTimer);
+            timer.Interval = 1000;
+            timer.Start();
         }
+
+        private void OnTimer(object sender, ElapsedEventArgs e)
+        {
+            if(list.Count <= 0 )
+            {
+                return;
+            }
+            for (int i = 0; i < list.Count; i++)
+            {
+                MessageKey name = list[i].Key;
+                object param = list[i].Value;
+
+                if (listeners.ContainsKey(name))
+                {
+                    List<IListener> ls = listeners[name];
+                    if (ls != null)
+                    {
+                        foreach (IListener listener in ls)
+                        {
+                            listener.OnMessage(name, param);
+                        }
+                    }
+                }
+            }
+            list.Clear();
+        }
+
         private Dictionary<MessageKey, List<IListener>> listeners = new Dictionary<MessageKey, List<IListener>>();
+        private List<KeyValuePair<MessageKey, object>> list = new List<KeyValuePair<MessageKey, object>>();
+        public void SendMessageLater(MessageKey name, object param)
+        {
+            list.Add(new KeyValuePair<MessageKey, object>(name, param));
+        }
         public void SendMessage(MessageKey name, object param)
         {
-            if(listeners.ContainsKey(name))
+            if (listeners.ContainsKey(name))
             {
                 List<IListener> ls = listeners[name];
-                if(ls != null)
+                if (ls != null)
                 {
-                    foreach(IListener listener in ls)
+                    foreach (IListener listener in ls)
                     {
-                        if(isBreak)
-                        {
-                            isBreak = false;
-                            break;
-                        }
                         listener.OnMessage(name, param);
                     }
                 }

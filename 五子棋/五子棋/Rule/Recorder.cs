@@ -35,7 +35,7 @@ namespace 五子棋
         private void Initialize(string blackName, string whiteName)
         {
             string path = "";
-            _path = "record";
+            _path = "record/" + blackName + "_" + whiteName;
             DateTime now = DateTime.Now;
             _name = now.Ticks.ToString();
             if (!Directory.Exists(_path))
