@@ -54,6 +54,7 @@
     <Compile Include="Rule\ChessPannel.cs" />
     <Compile Include="Rule\ChessPlayer.cs" />
     <Compile Include="AI\Utility\DNAFile.cs" />
+    <Compile Include="Rule\EvolvManager.cs" />
     <Compile Include="Rule\MainFrame.cs" />
     <Compile Include="Rule\Recorder.cs" />
     <Compile Include="Window\DebugForm.cs">
@@ -68,6 +69,12 @@
     <Compile Include="Rule\Players.cs" />
     <Compile Include="Rule\棋子.cs" />
     <Compile Include="Rule\Rule.cs" />
+    <Compile Include="Window\EvolvForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Window\EvolvForm.Designer.cs">
+      <DependentUpon>EvolvForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Window\Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,6 +85,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Window\DebugForm.resx">
       <DependentUpon>DebugForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Window\EvolvForm.resx">
+      <DependentUpon>EvolvForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Window\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>

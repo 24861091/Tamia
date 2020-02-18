@@ -31,26 +31,30 @@ namespace 五子棋
             {
                 return;
             }
-            for (int i = 0; i < list.Count; i++)
+            if(!lk)
             {
-                MessageKey name = list[i].Key;
-                object param = list[i].Value;
-
-                if (listeners.ContainsKey(name))
+                lk = true;
+                for (int i = 0; i < list.Count; i++)
                 {
-                    List<IListener> ls = listeners[name];
-                    if (ls != null)
+                    MessageKey name = list[i].Key;
+                    object param = list[i].Value;
+
+                    if (listeners.ContainsKey(name))
                     {
-                        foreach (IListener listener in ls)
+                        List<IListener> ls = listeners[name];
+                        if (ls != null)
                         {
-                            listener.OnMessage(name, param);
+                            foreach (IListener listener in ls)
+                            {
+                                listener.OnMessage(name, param);
+                            }
                         }
                     }
                 }
+                list.Clear();
             }
-            list.Clear();
         }
-
+        private bool lk = false;
         private Dictionary<MessageKey, List<IListener>> listeners = new Dictionary<MessageKey, List<IListener>>();
         private List<KeyValuePair<MessageKey, object>> list = new List<KeyValuePair<MessageKey, object>>();
         public void SendMessageLater(MessageKey name, object param)
