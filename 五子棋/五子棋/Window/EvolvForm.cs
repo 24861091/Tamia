@@ -30,6 +30,10 @@ namespace 五子棋
                     MessageBox.Show(side.ToString() + " Win!");
                     StartButton.Enabled = true;
                     break;
+                case MessageKey.Equal:
+                    MessageBox.Show(" Equal!");
+                    StartButton.Enabled = true;
+                    break;
             }
         }
 

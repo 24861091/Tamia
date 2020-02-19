@@ -64,9 +64,12 @@ namespace 五子棋
 
         private void Finish(棋子 side)
         {
-            _writer.Write((int)side);
-            _writer.Close();
-            _stream.Close();
+            if(_writer != null)
+            {
+                _writer.Write((int)side);
+                _writer.Close();
+                _stream.Close();
+            }
         }
 
         public void OnMessage(MessageKey name, object param)
@@ -93,6 +96,9 @@ namespace 五子棋
                 case MessageKey.Finish:
                     棋子 s = (棋子)param;
                     Finish(s);
+                    break;
+                case MessageKey.Equal:
+                    Finish(棋子.无);
                     break;
             }
         }

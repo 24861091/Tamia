@@ -30,10 +30,10 @@ namespace 五子棋
         private Label[] bottomLabels = new Label[Utility.sizeX];
 
         private MainFrame _main = new MainFrame();
-        private bool isFinished = false;
-        private 棋子 winSide = 棋子.无;
+        //private bool isFinished = false;
+        //private 棋子 winSide = 棋子.无;
 
-        private Timer timer = new Timer();
+        //private Timer timer = new Timer();
         private 棋子[][] Chess
         {
             get
@@ -68,21 +68,21 @@ namespace 五子棋
 
             //_main.Initialize();
             debugForm = new DebugForm();
-            timer.Tick += new EventHandler(Tick);
-            timer.Interval = 100;
-            timer.Start();
+            //timer.Tick += new EventHandler(Tick);
+            //timer.Interval = 100;
+            //timer.Start();
         }
 
-        private void Tick(object sender, EventArgs e)
-        {
-            if(isFinished)
-            {
-                DisplayLabel.Text = winSide.ToString() + " Win!";
-                BlackPlayersBox.Enabled = true;
-                WhitePlayersBox.Enabled = true;
-                isFinished = false;
-            }
-        }
+        //private void Tick(object sender, EventArgs e)
+        //{
+        //    if(isFinished)
+        //    {
+        //        DisplayLabel.Text = winSide.ToString() + " Win!";
+        //        BlackPlayersBox.Enabled = true;
+        //        WhitePlayersBox.Enabled = true;
+        //        isFinished = false;
+        //    }
+        //}
 
         private void InitLabels()
         {
@@ -107,8 +107,12 @@ namespace 五子棋
         }
         public void Finish(棋子 side)
         {
-            isFinished = true;
-            winSide = side;
+            DisplayLabel.Text = side.ToString() + " Win!";
+            BlackPlayersBox.Enabled = true;
+            WhitePlayersBox.Enabled = true;
+
+            //isFinished = true;
+            //winSide = side;
         }
 
         private void DrawPanel(Graphics graphics)
@@ -233,6 +237,9 @@ namespace 五子棋
                         break;
                     case MessageKey.MakeStep:
                         this.Invalidate();
+                        break;
+                    case MessageKey.Equal:
+                        Finish(棋子.无);
                         break;
                     case MessageKey.Restart:
                         this.Restart();

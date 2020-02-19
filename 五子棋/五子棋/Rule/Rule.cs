@@ -79,6 +79,10 @@ namespace 五子棋
             {
                 Finish(side);
             }
+            else if(JudgeEqual())
+            {
+                Messager.Instance.SendMessageLater(MessageKey.Equal, null);
+            }
             else
             {
                 if (turn != 棋子.无)
@@ -86,6 +90,21 @@ namespace 五子棋
                     Messager.Instance.SendMessageLater(MessageKey.NextTurn, null);
                 }
             }
+        }
+        private bool JudgeEqual()
+        {
+            ChessPannel panel = this.GetPanel();
+            for(int i = 0; i < panel.Positions.Length; i ++)
+            {
+                for (int j = 0; j < panel.Positions.Length; j++)
+                {
+                    if(panel.Positions[i][j] == 棋子.无)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
         public void ChangeTurn()
         {

@@ -139,5 +139,6 @@ namespace 五子棋
         Restart,
         FinishTurn,
         RefreshDebug,
+        Equal,
     }
 }
