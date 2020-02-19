@@ -67,7 +67,6 @@ namespace 五子棋
             _writer.Write((int)side);
             _writer.Close();
             _stream.Close();
-            
         }
 
         public void OnMessage(MessageKey name, object param)

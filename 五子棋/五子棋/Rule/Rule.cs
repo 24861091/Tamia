@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace 五子棋
 {
-    class Rule : IListener
+    public class Rule : IListener
     {
         private ChessPannel panel = new ChessPannel();
         private ChessPlayer black = null;
@@ -83,7 +83,7 @@ namespace 五子棋
             {
                 if (turn != 棋子.无)
                 {
-                    Messager.Instance.SendMessage(MessageKey.NextTurn, null);
+                    Messager.Instance.SendMessageLater(MessageKey.NextTurn, null);
                 }
             }
         }
@@ -102,18 +102,18 @@ namespace 五子棋
                 turn = 棋子.黑子;
             }
 
-            Messager.Instance.SendMessage(MessageKey.ChangeTurn, turn);
+            Messager.Instance.SendMessageLater(MessageKey.ChangeTurn, turn);
         }
         public void MakeStep(棋子 side, int x, int y)
         {
-            Messager.Instance.SendMessage(MessageKey.MakeStep, new object[] { side, x, y });
+            Messager.Instance.SendMessageLater(MessageKey.MakeStep, new object[] { side, x, y });
         }
         private void _MakeStep(棋子 side, int x, int y)
         {
             if (panel.Has(x, y))
             {
                 //MessageBox.Show(string.Format("{2} 方输 ，({0},{1})处已经有子,或者出界了，将重新开始", x, y, turn));
-                //Messager.Instance.SendMessage(MessageKey.Restart, null);
+                //Messager.Instance.SendMessageLater(MessageKey.Restart, null);
                 return;
             }
 
@@ -141,7 +141,6 @@ namespace 五子棋
         {
             if (side == 棋子.无) return false;
 
-            int num = 1;
             int x1 = x;
             int x2 = x;
             int y1 = y;

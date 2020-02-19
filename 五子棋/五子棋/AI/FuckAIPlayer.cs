@@ -91,7 +91,7 @@ namespace 五子棋.AI
             }
 
             CalculateAroudPosition(new Position(x, y), GetOpposite(selfSide), positions);
-            Messager.Instance.SendMessage(MessageKey.RefreshDebug, new object[] { sTest, null });
+            Messager.Instance.SendMessageLater(MessageKey.RefreshDebug, new object[] { sTest, null });
             return new AIResult(selfSide, x, y);
         }
 

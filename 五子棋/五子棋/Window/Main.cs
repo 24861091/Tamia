@@ -254,7 +254,7 @@ namespace 五子棋
             if (deltaY < 0) return;
             indexY = deltaY / interval;
 
-            Messager.Instance.SendMessage(MessageKey.MouseDown, new int[] { indexX, indexY });
+            Messager.Instance.SendMessageLater(MessageKey.MouseDown, new int[] { indexX, indexY });
         }
 
         private void OnClickStartButton(object sender, EventArgs e)

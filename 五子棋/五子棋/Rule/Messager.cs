@@ -10,7 +10,8 @@ namespace 五子棋
     public class Messager : IListened
     {
         private static Messager instance = new Messager();
-        private Timer timer = new Timer();
+        private bool _isDealingMessage = false;
+        //private Timer timer = new Timer();
         public static Messager Instance
         {
             get
@@ -20,49 +21,60 @@ namespace 五子棋
         }
         private Messager()
         {
-            timer.Elapsed += new ElapsedEventHandler(OnTimer);
-            timer.Interval = 1000;
-            timer.Start();
+            //timer.Elapsed += new ElapsedEventHandler(OnTimer);
+            //timer.Interval = 1000;
+            //timer.Start();
         }
 
-        private void OnTimer(object sender, ElapsedEventArgs e)
-        {
-            if(list.Count <= 0 )
-            {
-                return;
-            }
-            if(!lk)
-            {
-                lk = true;
-                for (int i = 0; i < list.Count; i++)
-                {
-                    MessageKey name = list[i].Key;
-                    object param = list[i].Value;
+        //private void OnTimer(object sender, ElapsedEventArgs e)
+        //{
+        //    if(list.Count <= 0 )
+        //    {
+        //        return;
+        //    }
+        //    if(!lk)
+        //    {
+        //        lk = true;
+        //        for (int i = 0; i < list.Count; i++)
+        //        {
+        //            MessageKey name = list[i].Key;
+        //            object param = list[i].Value;
 
-                    if (listeners.ContainsKey(name))
-                    {
-                        List<IListener> ls = listeners[name];
-                        if (ls != null)
-                        {
-                            foreach (IListener listener in ls)
-                            {
-                                listener.OnMessage(name, param);
-                            }
-                        }
-                    }
-                }
-                list.Clear();
-            }
-        }
-        private bool lk = false;
+        //            if (listeners.ContainsKey(name))
+        //            {
+        //                List<IListener> ls = listeners[name];
+        //                if (ls != null)
+        //                {
+        //                    foreach (IListener listener in ls)
+        //                    {
+        //                        listener.OnMessage(name, param);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        list.Clear();
+        //    }
+        //}
+        //private bool lk = false;
         private Dictionary<MessageKey, List<IListener>> listeners = new Dictionary<MessageKey, List<IListener>>();
-        private List<KeyValuePair<MessageKey, object>> list = new List<KeyValuePair<MessageKey, object>>();
+        //private List<KeyValuePair<MessageKey, object>> list = new List<KeyValuePair<MessageKey, object>>();
+        private Queue<KeyValuePair<MessageKey, object>> stack = new Queue<KeyValuePair<MessageKey, object>>();
         public void SendMessageLater(MessageKey name, object param)
         {
-            list.Add(new KeyValuePair<MessageKey, object>(name, param));
+            if(!_isDealingMessage)
+            {
+                SendMessage(name, param);
+            }
+            else
+            {
+                //list.Add(new KeyValuePair<MessageKey, object>(name, param));
+                stack.Enqueue(new KeyValuePair<MessageKey, object>(name, param));
+            }
+            
         }
         public void SendMessage(MessageKey name, object param)
         {
+            _isDealingMessage = true;
             if (listeners.ContainsKey(name))
             {
                 List<IListener> ls = listeners[name];
@@ -74,6 +86,12 @@ namespace 五子棋
                     }
                 }
             }
+            while(stack.Count > 0)
+            {
+                KeyValuePair<MessageKey, object> pair = stack.Dequeue();
+                SendMessage(pair.Key, pair.Value);
+            }
+            _isDealingMessage = false;
         }
         public void Register(MessageKey name, IListener listener)
         {

@@ -42,7 +42,7 @@ namespace 五子棋
             _rule.SetChessPlayers(CreatePlayer(black), CreatePlayer(white));
             _rule.ChangeTurn();
             _rule.OnYourTurn();
-            Messager.Instance.SendMessage(MessageKey.Restart, new string[] { black, white });
+            Messager.Instance.SendMessageLater(MessageKey.Restart, new string[] { black, white });
         }
         public void Restart(ChessPlayer black, ChessPlayer white)
         {
@@ -50,7 +50,7 @@ namespace 五子棋
             _rule.SetChessPlayers(black, white);
             _rule.ChangeTurn();
             _rule.OnYourTurn();
-            Messager.Instance.SendMessage(MessageKey.Restart, new string[] { black.GetType().Name, white.GetType().Name });
+            Messager.Instance.SendMessageLater(MessageKey.Restart, new string[] { black.GetType().Name, white.GetType().Name });
         }
 
         private ChessPlayer CreatePlayer(string typeName)

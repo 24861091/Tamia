@@ -13,16 +13,15 @@ namespace 五子棋
         {
             this.selfSide = side;
         }
-        
         public abstract void GameStart(棋子[][] positions);
         protected void MakeStep(int x, int y)
         {
-            Messager.Instance.SendMessage(MessageKey.MakeStep, new object[] { selfSide, x, y });
+            Messager.Instance.SendMessageLater(MessageKey.MakeStep, new object[] { selfSide, x, y });
         }
         public abstract void OnYourTurn(棋子[][] positions, List<Position> blacks, List<Position> whites);
         protected void FinishTurn(int x, int y)
         {
-            Messager.Instance.SendMessage(MessageKey.FinishTurn, new object[] { this.selfSide, x, y });
+            Messager.Instance.SendMessageLater(MessageKey.FinishTurn, new object[] { this.selfSide, x, y });
         }
         public string Name { get; set; }
         public virtual void OnMouseClick(int x, int y)

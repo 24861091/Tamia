@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace 五子棋
 {
-    class ChessPannel
+    public class ChessPannel
     {
         public 棋子 [][] positions;
         private int sizeX;

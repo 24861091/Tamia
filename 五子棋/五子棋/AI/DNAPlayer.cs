@@ -109,7 +109,7 @@ namespace 五子棋.AI
                                 result.Y = coordY;
                                 if (Utility.IsDebugOpen)
                                 {
-                                    Messager.Instance.SendMessage(MessageKey.RefreshDebug, new object[] { selfTest, oppTest });
+                                    Messager.Instance.SendMessageLater(MessageKey.RefreshDebug, new object[] { selfTest, oppTest });
                                 }
                                 return result;
 
@@ -168,7 +168,7 @@ namespace 五子棋.AI
 
             if(Utility.IsDebugOpen)
             {
-                Messager.Instance.SendMessage(MessageKey.RefreshDebug, new object[] { selfTest, oppTest });
+                Messager.Instance.SendMessageLater(MessageKey.RefreshDebug, new object[] { selfTest, oppTest });
             }
             return result;
         }
