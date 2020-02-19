@@ -26,10 +26,17 @@ namespace 五子棋
                 case MessageKey.FinishTurn:
                     break;
                 case MessageKey.Finish:
+                    棋子 side = (棋子)(param);
+                    MessageBox.Show(side.ToString() + " Win!");
+                    StartButton.Enabled = true;
                     break;
             }
         }
 
+        private void StartChess(ChessPlayer black, ChessPlayer white)
+        {
+            
+        }
 
         public EvolvForm()
         {
@@ -39,7 +46,15 @@ namespace 五子棋
 
         private void StartButton_Click(object sender, EventArgs e)
         {
+            CreatePlayer();
+            StartButton.Enabled = false;
+        }
+
+        private void CreatePlayer()
+        {
+            _main.Restart(Utility.CreateDNAPlayer("1"), Utility.CreateDNAPlayer("2"));
 
         }
+
     }
 }

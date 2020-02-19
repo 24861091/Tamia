@@ -178,6 +178,10 @@ namespace 五子棋
 
         public void OnMessage(MessageKey name, object param)
         {
+            if(black == null || white == null || panel == null)
+            {
+                return;
+            }
             switch (name)
             {
                 case MessageKey.MouseDown:

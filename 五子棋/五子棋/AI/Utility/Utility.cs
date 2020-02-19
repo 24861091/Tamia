@@ -55,7 +55,41 @@ namespace 五子棋
             return x >= 0 && y >= 0 && x < sizeX && y < sizeY;
         }
 
-         
+        public static ChessPlayer CreatePlayer(string typeName)
+        {
+            string[] s = typeName.Split('_');
+            if (s != null)
+            {
+                Type type = Type.GetType("五子棋.AI." + s[0]);
+                if (type != null)
+                {
+                    ChessPlayer player = Activator.CreateInstance(type) as ChessPlayer;
+                    if (s.Length == 2)
+                    {
+                        player.Name = s[1];
+                    }
+                    else
+                    {
+                        player.Name = s[0];
+                    }
+
+                    return player;
+                }
+
+            }
+            return null;
+
+        }
+
+        public static AI.DNAPlayer CreateDNAPlayer(string name)
+        {
+            AI.DNAPlayer player = new AI.DNAPlayer();
+            player.SetPath(@"league\children");
+            player.Name = name;
+            return player;
+        }
+
+
 
     }
 }

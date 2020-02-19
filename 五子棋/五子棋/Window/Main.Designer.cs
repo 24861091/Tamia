@@ -35,6 +35,7 @@ namespace 五子棋
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.EvovlButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // StartButton
@@ -111,12 +112,23 @@ namespace 五子棋
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
+            // EvovlButton
+            // 
+            this.EvovlButton.Location = new System.Drawing.Point(197, 68);
+            this.EvovlButton.Name = "EvovlButton";
+            this.EvovlButton.Size = new System.Drawing.Size(75, 23);
+            this.EvovlButton.TabIndex = 8;
+            this.EvovlButton.Text = "演化界面";
+            this.EvovlButton.UseVisualStyleBackColor = true;
+            this.EvovlButton.Click += new System.EventHandler(this.EvolvButton_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(907, 715);
+            this.Controls.Add(this.EvovlButton);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -143,6 +155,7 @@ namespace 五子棋
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Button EvovlButton;
     }
 }
 

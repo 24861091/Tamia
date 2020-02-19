@@ -343,5 +343,11 @@ namespace 五子棋
         {
             Utility.IsDebugOpen = checkBox1.Checked;
         }
+
+        private void EvolvButton_Click(object sender, EventArgs e)
+        {
+            EvolvForm form = new EvolvForm();
+            form.Show();
+        }
     }
 }

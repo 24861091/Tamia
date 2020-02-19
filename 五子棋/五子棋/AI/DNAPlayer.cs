@@ -12,17 +12,20 @@ namespace 五子棋.AI
         public float[][] selfTest = null;
         public float[][] oppTest = null;
 
+        private string path = "DNAPlayer/";
         public override void GameStart(棋子[][] positions)
         {
-            _dna = new DNA("DNAPlayer/" + Name, Name);
+            _dna = new DNA(System.IO.Path.Combine(path, Name), Name);
             if(Utility.IsDebugOpen)
             {
                 initTest(ref selfTest, positions);
                 initTest(ref oppTest, positions);
-
             }
         }
-
+        public void SetPath(string p)
+        {
+            path = p;
+        }
         private void initTest(ref float[][] test, 棋子[][] positions)
         {
             if (test == null)
