@@ -56,9 +56,9 @@ namespace 五子棋
         {
             _rule.Clear();
             _rule.SetChessPlayers(black, white);
+            Messager.Instance.SendMessageLater(MessageKey.Restart, new string[] { black.GetType().Name, white.GetType().Name });
             _rule.ChangeTurn();
             _rule.OnYourTurn();
-            Messager.Instance.SendMessageLater(MessageKey.Restart, new string[] { black.GetType().Name, white.GetType().Name });
         }
 
         private ChessPlayer CreatePlayer(string typeName)
