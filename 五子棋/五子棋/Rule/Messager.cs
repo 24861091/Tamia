@@ -59,6 +59,7 @@ namespace 五子棋
         private Dictionary<MessageKey, List<IListener>> listeners = new Dictionary<MessageKey, List<IListener>>();
         //private List<KeyValuePair<MessageKey, object>> list = new List<KeyValuePair<MessageKey, object>>();
         private Queue<KeyValuePair<MessageKey, object>> stack = new Queue<KeyValuePair<MessageKey, object>>();
+        private Queue<KeyValuePair<MessageKey, IListener>> unregisterQueue = new Queue<KeyValuePair<MessageKey, IListener>>();
         public void SendMessageLater(MessageKey name, object param)
         {
             if(!_isDealingMessage)
@@ -91,6 +92,13 @@ namespace 五子棋
                 KeyValuePair<MessageKey, object> pair = stack.Dequeue();
                 SendMessage(pair.Key, pair.Value);
             }
+            while (unregisterQueue.Count > 0)
+            {
+                KeyValuePair<MessageKey, IListener> pair = unregisterQueue.Dequeue();
+                List<IListener> ls = listeners[pair.Key];
+                ls.Remove(pair.Value);
+            }
+
             _isDealingMessage = false;
         }
         public void Register(MessageKey name, IListener listener)
@@ -110,11 +118,18 @@ namespace 五子棋
 
         public void UnRegister(MessageKey name, IListener listener)
         {
-            if (listeners.ContainsKey(name))
+            if(!_isDealingMessage)
             {
-                List<IListener> ls = null;
-                ls = listeners[name];
-                ls.Remove(listener);
+                if (listeners.ContainsKey(name))
+                {
+                    List<IListener> ls = null;
+                    ls = listeners[name];
+                    ls.Remove(listener);
+                }
+            }
+            else
+            {
+                unregisterQueue.Enqueue(new KeyValuePair<MessageKey, IListener>(name, listener));
             }
         }
 

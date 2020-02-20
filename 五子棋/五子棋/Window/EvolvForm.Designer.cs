@@ -140,6 +140,7 @@ namespace 五子棋
             this.Controls.Add(this.GenerationText);
             this.Controls.Add(this.label1);
             this.Name = "EvolvForm";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.EvolvForm_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

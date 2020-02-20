@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -81,11 +82,11 @@ namespace 五子棋
 
         }
 
-        public static AI.DNAPlayer CreateDNAPlayer(string name)
+        public static AI.DNAPlayer CreateDNAPlayer(string fullPath)
         {
             AI.DNAPlayer player = new AI.DNAPlayer();
-            player.SetPath(@"league\children");
-            player.Name = name;
+            player.SetPath(Path.GetDirectoryName(fullPath));
+            player.Name = Path.GetFileName(fullPath);
             return player;
         }
 
