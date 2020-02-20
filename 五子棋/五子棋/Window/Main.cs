@@ -29,7 +29,7 @@ namespace 五子棋
         private Label[] rightLabels = new Label[Utility.sizeY];
         private Label[] bottomLabels = new Label[Utility.sizeX];
 
-        private MainFrame _main = new MainFrame();
+        private MainFrame _main = MainFrame.Instance;
         //private bool isFinished = false;
         //private 棋子 winSide = 棋子.无;
 

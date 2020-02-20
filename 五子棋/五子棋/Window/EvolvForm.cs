@@ -15,7 +15,7 @@ namespace 五子棋
         private float _evolvFactor = 1.0f;
         private int _amount = 100;
 
-        private MainFrame _main = new MainFrame();
+        private MainFrame _main = MainFrame.Instance;
 
         public void OnMessage(MessageKey name, object param)
         {

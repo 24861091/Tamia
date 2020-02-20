@@ -10,8 +10,15 @@ namespace 五子棋
     {
         private Rule _rule = null;
         private Recorder _recorder = null;
-
-        public MainFrame()
+        private static MainFrame sInstance = new MainFrame();
+        public static MainFrame Instance
+        {
+            get
+            {
+                return sInstance;
+            }
+        }
+        private MainFrame()
         {
             Initialize();
         }
@@ -40,9 +47,10 @@ namespace 五子棋
         {
             _rule.Clear();
             _rule.SetChessPlayers(CreatePlayer(black), CreatePlayer(white));
+            Messager.Instance.SendMessageLater(MessageKey.Restart, new string[] { black, white });
             _rule.ChangeTurn();
             _rule.OnYourTurn();
-            Messager.Instance.SendMessageLater(MessageKey.Restart, new string[] { black, white });
+            
         }
         public void Restart(ChessPlayer black, ChessPlayer white)
         {

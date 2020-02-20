@@ -69,6 +69,7 @@ namespace 五子棋
                 _writer.Write((int)side);
                 _writer.Close();
                 _stream.Close();
+                _writer = null;
             }
         }
 
