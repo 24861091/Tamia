@@ -65,6 +65,7 @@ namespace 五子棋
             Messager.Instance.Register(MessageKey.Finish, this);
             Messager.Instance.Register(MessageKey.MakeStep, this);
             Messager.Instance.Register(MessageKey.Restart, this);
+            Messager.Instance.Register(MessageKey.Equal, this);
 
             //_main.Initialize();
             debugForm = new DebugForm();
