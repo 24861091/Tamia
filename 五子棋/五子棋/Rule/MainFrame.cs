@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using 五子棋.AI;
 
 namespace 五子棋
 {
@@ -52,8 +53,9 @@ namespace 五子棋
             _rule.Restart();
         }
 
-        public void StartLeague(string path, int times)
+        public DNA[] StartLeague(int generation, int times, int topNum)
         {
+            string path = Utility.CreateTargetPath(generation);
             League.Instance.Initialize(path, times);
             League.Instance.Do();
             bool can = true;
@@ -65,12 +67,64 @@ namespace 五子棋
                 
                 _rule.Clear();
                 _rule.SetChessPlayers(black, white);
-                //Messager.Instance.SendMessageLater(MessageKey.Restart, new ChessPlayer[] { black, white });
 
                 ChessMove move = StartOneChess();
                 can = League.Instance.Finish(move.Side);
             }
             Messager.Instance.SendMessageLater(MessageKey.FinishLeague, null);
+            LeagueResult[][] result = League.Instance.Performance;
+            List<DNAPlayer> players = League.Instance.GetPlayers();
+            return Calculate(result, players, topNum);
+        }
+
+        private DNA[] Calculate(LeagueResult[][] result, List<DNAPlayer> players, int topNum)
+        {
+            if(result == null || result.Length <= 0)
+            {
+                return null;
+            }
+            LinkedList<KeyValuePair<int,int>> list = new LinkedList<KeyValuePair<int, int>>();
+            for(int i = 0;  i < result.Length; i ++)
+            {
+                KeyValuePair<int, int> pair = new KeyValuePair<int, int>();
+                for (int j = 0; j < result.Length; j ++)
+                {
+                    if(i != j)
+                    {
+                        pair = new KeyValuePair<int, int>(i, pair.Value + result[i][j].Win + result[j][i].Win);
+                    }
+                }
+                LinkedListNode<KeyValuePair<int, int>> node = list.First;
+                while (true)
+                {
+                    if (node == null)
+                    {
+                        list.AddLast(pair);
+                        break;
+                    }
+                    if (pair.Value > node.Value.Value)
+                    {
+                        list.AddBefore(node, pair);
+                        break;
+                    }
+                    node = node.Next;
+                }
+
+            }
+            int n = Math.Min(topNum, list.Count);
+            List<DNAPlayer> ps = new List<DNAPlayer>();
+            while(n > 0)
+            {
+                LinkedListNode<KeyValuePair<int, int>> node = list.First;
+                ps.Add(players[node.Value.Key]);
+                n--;
+            }
+            DNA[] dnas = new DNA[ps.Count];
+            for(int i = 0; i < ps.Count; i ++)
+            {
+                dnas[i] = ps[i].GetDNA();
+            }
+            return dnas;
         }
 
         private ChessMove StartOneChess()

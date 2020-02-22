@@ -22,6 +22,10 @@ namespace 五子棋.AI
                 initTest(ref oppTest, positions);
             }
         }
+        public DNA GetDNA()
+        {
+            return _dna;
+        }
         public void SetPath(string p)
         {
             path = p;

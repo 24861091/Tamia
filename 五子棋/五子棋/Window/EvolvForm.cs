@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using 五子棋.AI;
 
 namespace 五子棋
 {
@@ -56,7 +58,33 @@ namespace 五子棋
         {
             _mainForm.Visible = false;
             StartButton.Enabled = false;
-            _main.StartLeague("league/generation1/children", 1);
+            int from = 1;
+            int to = 3;
+            int topNum = 1;
+            Generator.Instance.Initialize(3,5,0.01f, 100f, 100000);
+            for (int j = from; j < to; j++)
+            {
+                Generator.Instance.Generate(j);
+                DNA[] dnas = _main.StartLeague(j, 1, topNum);
+                if (dnas != null)
+                {
+                    for (int i = 0; i < dnas.Length; i++)
+                    {
+                        string parent = Utility.CreateSourcePath(j + 1);
+                        Utility.MakeSure(parent);
+                        Utility.ClearDirectory(parent);
+                        DNA dna = dnas[i];
+                        string source = dna.GetPath();
+                        string target = Path.Combine(parent, Path.GetFileName(dna.GetPath()));
+                        File.Copy(source, target);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Error!没找到最优DNA");
+                }
+            }
+            MessageBox.Show("Done!");
         }
 
         private void OnFinishOne(棋子 side, int times)

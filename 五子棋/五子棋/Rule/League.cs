@@ -47,6 +47,10 @@ namespace 五子棋
                 return _performance;
             }
         }
+        public List<DNAPlayer> GetPlayers()
+        {
+            return _players;
+        }
         public void Clear()
         {
             _folder = "";
@@ -70,6 +74,7 @@ namespace 五子棋
 
         public void Initialize(string folder, int times)
         {
+            _players.Clear();
             _folder = folder;
             _times = times;
 

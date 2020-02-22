@@ -26,6 +26,10 @@ namespace 五子棋.AI
             }
             Save();
         }
+        public string GetPath()
+        {
+            return _path;
+        }
         public float Factor
         {
             get
@@ -57,7 +61,18 @@ namespace 五子棋.AI
             }
             return 1f;
         }
-        private List<List<string>> GenerateKeys()
+        public void SetValue(string key, float val)
+        {
+            if(_DNAValues != null)
+            {
+                _DNAValues[key] = val;
+            }
+        }
+        public Dictionary<string, float> GetAll()
+        {
+            return _DNAValues;
+        }
+        public List<List<string>> GenerateKeys()
         {
             List<List<string>> keys = new List<List<string>>();
             for (int i = 1; i <= 4; i++)

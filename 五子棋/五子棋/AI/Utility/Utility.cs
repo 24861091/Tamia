@@ -17,6 +17,8 @@ namespace 五子棋
 
         public static int interval = 50;
 
+        private static Random random = new Random();
+
         public static int CalculateLength(string code, int num)
         {
             int left = -1;
@@ -90,7 +92,86 @@ namespace 五子棋
             return player;
         }
 
-
+        public static T RandomInt<T>(T[] datas, int[] rates)
+        {
+            if (datas == null || rates == null || datas.Length != rates.Length)
+            {
+                return default(T);
+            }
+            int total = 0;
+            for (int i = 0; i < rates.Length; i++)
+            {
+                total += rates[i];
+            }
+            int r = random.Next(0, total);
+            for (int i = 0; i < rates.Length; i++)
+            {
+                r -= rates[i];
+                if (r < 0)
+                {
+                    return datas[i];
+                }
+            }
+            return default(T);
+        }
+        public static bool RandomRate(int rate, int total)
+        {
+            return random.Next(0, total) < rate;
+        }
+        public static double RandomValue(float source, int rate, float min, float max)
+        {
+            bool change = RandomRate(rate, 100);
+            if(min >= 1f || max <= 1f)
+            {
+                return 0f;
+            }
+            if(change)
+            {
+                bool isMin = RandomRate(50, 100);
+                double d = random.NextDouble();
+                if (isMin)
+                {
+                    return d * (source - min * source) + min * source;
+                }
+                else
+                {
+                    return d * (max * source - source) + source;
+                }
+            }
+            else
+            {
+                return source;
+            }
+        }
+        public static void ClearDirectory(string directory)
+        {
+            if (!string.IsNullOrEmpty(directory) && Directory.Exists(directory))
+            {
+                string[] files = Directory.GetFiles(directory);
+                if (files != null)
+                {
+                    for (int i = 0; i < files.Length; i++)
+                    {
+                        File.Delete(files[i]);
+                    }
+                }
+            }
+        }
+        public static string CreateSourcePath(int generation)
+        {
+            return @"league\generation" + generation.ToString() + @"\parent";
+        }
+        public static string CreateTargetPath(int generation)
+        {
+            return @"league\generation" + generation.ToString() + @"\children";
+        }
+        public static void MakeSure(string path)
+        {
+            if(!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+        }
 
     }
 }

@@ -55,6 +55,7 @@
     <Compile Include="Rule\ChessPlayer.cs" />
     <Compile Include="AI\Utility\DNAFile.cs" />
     <Compile Include="Rule\EveolProcessor.cs" />
+    <Compile Include="Rule\Generator.cs" />
     <Compile Include="Rule\League.cs" />
     <Compile Include="Rule\MainFrame.cs" />
     <Compile Include="Rule\Recorder.cs" />
