@@ -8,7 +8,7 @@ using 五子棋.AI;
 
 namespace 五子棋
 {
-    public class League : IListener
+    public class League 
     {
         private string _folder = "";
         private List<DNAPlayer> _players = new List<DNAPlayer>();
@@ -18,19 +18,56 @@ namespace 五子棋
         private MainFrame _main = MainFrame.Instance;
 
         private KeyValuePair<int, int> _pair = new KeyValuePair<int, int>();
-        public Action<LeagueResult[][]> OnFinish = null;
-        public Action<棋子, int> OnFinishOne = null;
+        //public Action<LeagueResult[][]> OnFinish = null;
+        //public Action<棋子, int> OnFinishOne = null;
 
+        private static League sInstace = new League();
+        public static League Instance
+        {
+            get
+            {
+                return sInstace;
+            }
+        }
         public League()
         {
 
+        }
+        public int Times
+        {
+            get
+            {
+                return _times;
+            }
+        }
+        public LeagueResult[][] Performance
+        {
+            get
+            {
+                return _performance;
+            }
         }
         public void Clear()
         {
             _folder = "";
             _times = 0;
-
         }
+        public KeyValuePair<int,int> CurrentPlayers
+        {
+            get
+            {
+                return _pair;
+            }
+        }
+        public ChessPlayer GetBlack()
+        {
+            return _players[_pair.Key];
+        }
+        public ChessPlayer GetWhite()
+        {
+            return _players[_pair.Value];
+        }
+
         public void Initialize(string folder, int times)
         {
             _folder = folder;
@@ -51,9 +88,30 @@ namespace 五子棋
             }
             if (_players.Count > 1)
             {
-                if(_performance != null && _performance.Length != _players.Count && _performance != null && _performance[0].Length != _players.Count)
+                if(_performance != null)
                 {
-
+                    if (_performance.Length != _players.Count && _performance[0].Length != _players.Count)
+                    {
+                        _performance = new LeagueResult[_players.Count][];
+                        for (int i = 0; i < _players.Count; i++)
+                        {
+                            _performance[i] = new LeagueResult[_players.Count];
+                            for (int j = 0; j < _players.Count; j++)
+                            {
+                                _performance[i][j] = new LeagueResult(0, 0, 0);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < _players.Count; i++)
+                        {
+                            for (int j = 0; j < _players.Count; j++)
+                            {
+                                _performance[i][j] = new LeagueResult(0, 0, 0);
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -66,16 +124,14 @@ namespace 五子棋
                             _performance[i][j] = new LeagueResult(0, 0, 0);
                         }
                     }
+
                 }
+
             }
 
         }
         public void Do()
         {
-            Messager.Instance.Register(MessageKey.Restart, this);
-            Messager.Instance.Register(MessageKey.Finish, this);
-            Messager.Instance.Register(MessageKey.Equal, this);
-
             for (int i = 0; i < _players.Count; i++)
             {
                 for (int j = 0; j < _players.Count; j++)
@@ -89,41 +145,17 @@ namespace 五子棋
             }
             if(_queue.Count > 0)
             {
-                KeyValuePair<int, int> pair = _queue.Dequeue();
-                _main.Restart(_players[pair.Key], _players[pair.Value]);
-                _pair = pair;
+                _pair = _queue.Dequeue();
             }
         }
 
-        public void OnMessage(MessageKey name, object param)
-        {
-            棋子 side = 棋子.无;
-            switch (name)
-            {
-                case MessageKey.Restart:
-                    ChessPlayer[] players = param as ChessPlayer[];
-                    Restart(players[0], players[1]);
-                    break;
-                case MessageKey.Finish:
-                    side = (棋子)(param);
-                    Finish(side);
-                    break;
-                case MessageKey.Equal:
-                    Finish(棋子.无);
-                    break;
-            }
-        }
-        private void Restart(ChessPlayer black, ChessPlayer white)
-        {
-
-        }
-        private void Finish(棋子 side)
+        private LeagueResult RecordPerformance(棋子 side)
         {
             LeagueResult result = _performance[_pair.Key][_pair.Value];
-            switch(side)
+            switch (side)
             {
                 case 棋子.无:
-                    result.Equal ++;
+                    result.Equal++;
                     break;
                 case 棋子.白子:
                     result.Lose++;
@@ -133,33 +165,24 @@ namespace 五子棋
                     break;
             }
             _performance[_pair.Key][_pair.Value] = result;
-            if(OnFinishOne != null)
+            return result;
+        }
+
+        public bool Finish(棋子 side)
+        {
+            LeagueResult result = RecordPerformance(side);
+            if (result.Win + result.Lose + result.Equal < _times)
             {
-                OnFinishOne(side, result.Win + result.Lose + result.Equal);
-            }
-            if(result.Win + result.Lose + result.Equal < _times)
-            {
-                _main.Restart(_players[_pair.Key], _players[_pair.Value]);
+                return true;
             }
             else if(_queue.Count > 0)
             {
                 _pair = _queue.Dequeue();
-                _main.Restart(_players[_pair.Key], _players[_pair.Value]);
+                return true;
             }
             else
             {
-                Finish();
-            }
-        }
-        private void Finish()
-        {
-            Messager.Instance.UnRegister(MessageKey.Restart, this);
-            Messager.Instance.UnRegister(MessageKey.Finish, this);
-            Messager.Instance.UnRegister(MessageKey.Equal, this);
-
-            if (OnFinish != null)
-            {
-                OnFinish(_performance);
+                return false;
             }
         }
     }

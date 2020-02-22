@@ -79,7 +79,7 @@ namespace 五子棋
             {
                 case MessageKey.Restart:
                     ChessPlayer[] players = param as ChessPlayer[];
-                    Initialize(players[0].GetType().Name, players[1].GetType().Name);
+                    Initialize(players[0].Name, players[1].Name);
                     break;
                 case MessageKey.FinishTurn:
                     object[] os = param as object[];

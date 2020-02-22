@@ -120,5 +120,6 @@ namespace 五子棋
         FinishTurn,
         RefreshDebug,
         Equal,
+        FinishLeague,
     }
 }

@@ -17,30 +17,24 @@ namespace 五子棋
 
         private MainFrame _main = MainFrame.Instance;
 
-        private League league = new League();
+        //private League league = League.Instance;
         private Form _mainForm = null;
 
 
         public void OnMessage(MessageKey name, object param)
         {
+            if(!this.Visible || !this.Enabled)
+            {
+                return;
+            }
             switch (name)
             {
-                case MessageKey.Restart:
-                    break;
-                case MessageKey.FinishTurn:
-                    break;
-                case MessageKey.Finish:
-                    棋子 side = (棋子)(param);
-                    Finish(side);
-                    break;
-                case MessageKey.Equal:
-                    
-                    Finish(棋子.无);
-                    
+                case MessageKey.FinishLeague:
+                    Finish();
                     break;
             }
         }
-        private void Finish(棋子 side)
+        private void Finish()
         {
             StartButton.Enabled = true;
         }
@@ -53,10 +47,7 @@ namespace 五子棋
         {
             _mainForm = mainForm;
 
-            Messager.Instance.Register(MessageKey.Restart, this);
-            Messager.Instance.Register(MessageKey.FinishTurn, this);
-            Messager.Instance.Register(MessageKey.Finish, this);
-            Messager.Instance.Register(MessageKey.Equal, this);
+            Messager.Instance.Register(MessageKey.FinishLeague, this);
 
             InitializeComponent();
         }
@@ -64,11 +55,8 @@ namespace 五子棋
         private void StartButton_Click(object sender, EventArgs e)
         {
             _mainForm.Visible = false;
-            league.Initialize("league/generation1/children", 100);
             StartButton.Enabled = false;
-            league.OnFinish = OnFinish;
-            league.OnFinishOne = OnFinishOne;
-            league.Do();
+            _main.StartLeague("league/generation1/children", 1);
         }
 
         private void OnFinishOne(棋子 side, int times)

@@ -42,9 +42,21 @@ namespace 五子棋
             this.white = white;
             this.white.SetSide(棋子.白子);
             this.white.GameStart(panel.Positions);
-            //bool canSend = black.IsHuman() || white.IsHuman();
+            bool canSend = black.IsHuman() || white.IsHuman();
             this.black.CanSend = true;
             this.white.CanSend = true;
+        }
+        public ChessPlayer GetWhite()
+        {
+            return white;
+        }
+        public ChessPlayer GetBlack()
+        {
+            return black;
+        }
+        public 棋子 GetTurn()
+        {
+            return turn;
         }
         public void Restart()
         {
@@ -80,7 +92,7 @@ namespace 五子棋
                         MessageBox.Show("Error！过程中出现错误！");
                         return;
                     }
-                    _MakeStep(side, x, y);
+                    MakeStep(side, x, y);
                     if (Judge(x, y, side))
                     {
                         Finish(side);
@@ -110,7 +122,7 @@ namespace 五子棋
         }
         public void FinishTurn(棋子 side, int x, int y)
         {
-            _MakeStep(side, x, y);
+            MakeStep(side, x, y);
 
             if (Judge(x, y, side))
             {
@@ -129,7 +141,7 @@ namespace 五子棋
                 }
             }
         }
-        private bool JudgeEqual()
+        public bool JudgeEqual()
         {
             ChessPannel panel = this.GetPanel();
             for (int i = 0; i < panel.Positions.Length; i++)
@@ -159,7 +171,7 @@ namespace 五子棋
                 turn = 棋子.黑子;
             }
         }
-        private void _MakeStep(棋子 side, int x, int y)
+        public void MakeStep(棋子 side, int x, int y)
         {
             if (panel.Has(x, y))
             {
@@ -180,7 +192,6 @@ namespace 五子棋
             {
                 Messager.Instance.SendMessageLater(MessageKey.Finish, side);
             }
-            
         }
 
         public bool Judge(int x, int y, 棋子 side)
