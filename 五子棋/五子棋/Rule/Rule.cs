@@ -32,8 +32,6 @@ namespace 五子棋
         {
             panel.Initialize(sizeX, sizeY);
             Messager.Instance.Register(MessageKey.MouseDown, this);
-            Messager.Instance.Register(MessageKey.NextTurn, this);
-            Messager.Instance.Register(MessageKey.MakeStep, this);
             Messager.Instance.Register(MessageKey.FinishTurn, this);
         }
         public void SetChessPlayers(ChessPlayer black, ChessPlayer white)
@@ -41,11 +39,9 @@ namespace 五子棋
             this.black = black;
             this.black.SetSide(棋子.黑子);
             this.black.GameStart(panel.Positions);
-            //this.black.Name = this.black.GetType().ToString();
             this.white = white;
             this.white.SetSide(棋子.白子);
             this.white.GameStart(panel.Positions);
-            //this.white.Name = this.white.GetType().ToString();
         }
         public void SetBlack(ChessPlayer player)
         {
@@ -64,22 +60,30 @@ namespace 五子棋
             if (turn == 棋子.黑子)
             {
                 ChessPannel panel = this.GetPanel();
-                black.OnYourTurn(panel.Positions, panel.BlackList,panel.WhiteList);
+                black.OnYourTurn(panel.Positions, panel.BlackList, panel.WhiteList);
             }
             else if (turn == 棋子.白子)
             {
                 ChessPannel panel = this.GetPanel();
                 white.OnYourTurn(panel.Positions, panel.BlackList, panel.WhiteList);
             }
-            
+
         }
         public void FinishTurn(棋子 side, int x, int y)
         {
+            if (panel.Has(x, y))
+            {
+                return;
+            }
+
+            panel.MakeStep(x, y, side);
+
+
             if (Judge(x, y, side))
             {
                 Finish(side);
             }
-            else if(JudgeEqual())
+            else if (JudgeEqual())
             {
                 Messager.Instance.SendMessageLater(MessageKey.Equal, null);
             }
@@ -87,18 +91,20 @@ namespace 五子棋
             {
                 if (turn != 棋子.无)
                 {
-                    Messager.Instance.SendMessageLater(MessageKey.NextTurn, null);
+                    //Messager.Instance.SendMessageLater(MessageKey.NextTurn, null);
+                    ChangeTurn();
+                    OnYourTurn();
                 }
             }
         }
         private bool JudgeEqual()
         {
             ChessPannel panel = this.GetPanel();
-            for(int i = 0; i < panel.Positions.Length; i ++)
+            for (int i = 0; i < panel.Positions.Length; i++)
             {
                 for (int j = 0; j < panel.Positions.Length; j++)
                 {
-                    if(panel.Positions[i][j] == 棋子.无)
+                    if (panel.Positions[i][j] == 棋子.无)
                     {
                         return false;
                     }
@@ -120,24 +126,15 @@ namespace 五子棋
             {
                 turn = 棋子.黑子;
             }
-
-            Messager.Instance.SendMessageLater(MessageKey.ChangeTurn, turn);
-        }
-        public void MakeStep(棋子 side, int x, int y)
-        {
-            Messager.Instance.SendMessageLater(MessageKey.MakeStep, new object[] { side, x, y });
         }
         private void _MakeStep(棋子 side, int x, int y)
         {
             if (panel.Has(x, y))
             {
-                //MessageBox.Show(string.Format("{2} 方输 ，({0},{1})处已经有子,或者出界了，将重新开始", x, y, turn));
-                //Messager.Instance.SendMessageLater(MessageKey.Restart, null);
                 return;
             }
 
             panel.MakeStep(x, y, side);
-            //FinishTurn(side, x, y);
         }
 
         public void Finish(棋子 side)
@@ -165,15 +162,15 @@ namespace 五子棋
             int y1 = y;
             int y2 = y;
 
-            while(true)
+            while (true)
             {
                 x1 -= deltaX;
                 y1 -= deltaY;
-                if(!Utility.IsInChess(x1, y1))
+                if (!Utility.IsInChess(x1, y1))
                 {
                     break;
                 }
-                if(panel.Positions[x1][y1] != side)
+                if (panel.Positions[x1][y1] != side)
                 {
                     break;
                 }
@@ -196,7 +193,7 @@ namespace 五子棋
 
         public void OnMessage(MessageKey name, object param)
         {
-            if(black == null || white == null || panel == null)
+            if (black == null || white == null || panel == null)
             {
                 return;
             }
@@ -204,7 +201,7 @@ namespace 五子棋
             {
                 case MessageKey.MouseDown:
                     {
-                        
+
                         int[] array = param as int[];
                         int x = array[0];
                         int y = array[1];
@@ -219,25 +216,10 @@ namespace 五子棋
                         {
                             white.OnMouseClick(x, y);
                         }
-                        else if(turn == 棋子.黑子)
+                        else if (turn == 棋子.黑子)
                         {
                             black.OnMouseClick(x, y);
                         }
-                    }
-                    break;
-                case MessageKey.MakeStep:
-                    {
-                        object[] os = param as object[];
-                        int x = (int)os[1];
-                        int y = (int)os[2];
-                        棋子 p = (棋子)os[0];
-                        _MakeStep(p, x, y);
-                    }
-                    break;
-                case MessageKey.NextTurn:
-                    {
-                        ChangeTurn();
-                        OnYourTurn();
                     }
                     break;
                 case MessageKey.FinishTurn:

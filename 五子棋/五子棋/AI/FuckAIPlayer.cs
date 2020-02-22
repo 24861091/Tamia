@@ -122,12 +122,10 @@ namespace 五子棋.AI
                         else if (deltaY == 0)
                         {
                             datas[i][j] = CalculateValue(i, j, positions, p, deltaX);
-                            //datas[i][j] += (5 - deltaX) * 50;
                         }
                         else if (deltaX == deltaY)
                         {
                             datas[i][j] = CalculateValue(i, j, positions, p, deltaX);
-                            //datas[i][j] += (5 - deltaX) * 50;
                         }
 
                     }

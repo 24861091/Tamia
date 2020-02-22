@@ -22,7 +22,7 @@ namespace 五子棋
         {
             Initialize();
         }
-        public void Initialize()
+        private void Initialize()
         {
             _rule = new Rule();
             _rule.Initialize(Utility.sizeX, Utility.sizeY);
@@ -43,49 +43,13 @@ namespace 五子棋
                 return _rule.GetPanel().Mark;
             }
         }
-        public void Restart(string black, string white)
-        {
-            _rule.Clear();
-            _rule.SetChessPlayers(CreatePlayer(black), CreatePlayer(white));
-            Messager.Instance.SendMessageLater(MessageKey.Restart, new string[] { black, white });
-            _rule.ChangeTurn();
-            _rule.OnYourTurn();
-            
-        }
         public void Restart(ChessPlayer black, ChessPlayer white)
         {
             _rule.Clear();
             _rule.SetChessPlayers(black, white);
-            Messager.Instance.SendMessageLater(MessageKey.Restart, new string[] { black.GetType().Name, white.GetType().Name });
+            Messager.Instance.SendMessageLater(MessageKey.Restart, new ChessPlayer[] { black, white });
             _rule.ChangeTurn();
             _rule.OnYourTurn();
         }
-
-        private ChessPlayer CreatePlayer(string typeName)
-        {
-            string[] s = typeName.Split('_');
-            if (s != null)
-            {
-                Type type = Type.GetType("五子棋.AI." + s[0]);
-                if (type != null)
-                {
-                    ChessPlayer player = Activator.CreateInstance(type) as ChessPlayer;
-                    if (s.Length == 2)
-                    {
-                        player.Name = s[1];
-                    }
-                    else
-                    {
-                        player.Name = s[0];
-                    }
-
-                    return player;
-                }
-
-            }
-            return null;
-
-        }
-
     }
 }

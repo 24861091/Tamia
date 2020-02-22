@@ -13,7 +13,7 @@ namespace 五子棋.AI
         {
             AIResult result = MakeTurn(positions, blacks, whites);
             result.Side = selfSide;
-            MakeStep(result.X, result.Y);
+            //MakeStep(result.X, result.Y);
             FinishTurn(result.X, result.Y);
         }
         
@@ -32,36 +32,4 @@ namespace 五子棋.AI
             Side = side;
         }
     }
-
-    //class AIPlayerExample1 : AIPlayer
-    //{
-    //    private int turn = 0;
-    //    public override AIResult MakeTurn(棋子[][] positions, List<Position> blacks, List<Position> whites)
-    //    {
-    //        MakeStep(turn, turn);
-    //        turn++;
-    //        return new AIResult(side, turn - 1, turn - 1);
-    //    }
-
-    //    public override void StartGame(棋子[][] positions)
-    //    {
-            
-    //    }
-    //}
-    //class AIPlayerExample2 : AIPlayer
-    //{
-    //    private int turn = 14;
-    //    public override AIResult MakeTurn(棋子[][] positions, List<Position> blacks, List<Position> whites)
-    //    {
-    //        MakeStep(turn, turn);
-    //        turn--;
-    //        return new AIResult(side,turn + 1, turn + 1);
-    //    }
-
-    //    public override void StartGame(棋子[][] positions)
-    //    {
-            
-    //    }
-    //}
-
 }

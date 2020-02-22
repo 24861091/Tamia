@@ -17,7 +17,10 @@ namespace 五子棋
 
         private MainFrame _main = MainFrame.Instance;
 
-        private int _times = 0;
+        private League league = new League();
+        private Form _mainForm = null;
+
+
         public void OnMessage(MessageKey name, object param)
         {
             switch (name)
@@ -31,24 +34,25 @@ namespace 五子棋
                     Finish(side);
                     break;
                 case MessageKey.Equal:
-                    MessageBox.Show(" Equal!");
-                    StartButton.Enabled = true;
+                    
+                    Finish(棋子.无);
+                    
                     break;
             }
         }
         private void Finish(棋子 side)
         {
-
-            //MessageBox.Show(side.ToString() + " Win!");
-            //StartButton.Enabled = true;
+            StartButton.Enabled = true;
         }
         private void StartChess(ChessPlayer black, ChessPlayer white)
         {
             
         }
 
-        public EvolvForm()
+        public EvolvForm(Form mainForm)
         {
+            _mainForm = mainForm;
+
             Messager.Instance.Register(MessageKey.Restart, this);
             Messager.Instance.Register(MessageKey.FinishTurn, this);
             Messager.Instance.Register(MessageKey.Finish, this);
@@ -59,14 +63,35 @@ namespace 五子棋
 
         private void StartButton_Click(object sender, EventArgs e)
         {
-            CreatePlayer();
+            _mainForm.Visible = false;
+            league.Initialize("league/generation1/children", 100);
             StartButton.Enabled = false;
+            league.OnFinish = OnFinish;
+            league.OnFinishOne = OnFinishOne;
+            league.Do();
         }
 
-        private void CreatePlayer()
+        private void OnFinishOne(棋子 side, int times)
         {
-            //_main.Restart(Utility.CreateDNAPlayer("1"), Utility.CreateDNAPlayer("2"));
+            DisplayLabel.Text = side.ToString() + "  " + times;
+        }
 
+        private void OnFinish(LeagueResult[][] result)
+        {
+            DisplayLabel.Text = "All Finished\n";
+            if(result != null)
+            {
+                for(int i = 0; i < result.Length; i ++)
+                {
+                    for(int j = 0; j < result[i].Length; j ++)
+                    {
+                        LeagueResult r = result[i][j];
+                        DisplayLabel.Text += r.Win + " " + r.Lose + " " + r.Equal+ " || ";
+                    }
+                    DisplayLabel.Text += "\n";
+                }
+            }
+            _mainForm.Visible = true;
         }
 
         private void EvolvForm_FormClosing(object sender, FormClosingEventArgs e)

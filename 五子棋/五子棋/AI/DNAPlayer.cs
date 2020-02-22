@@ -62,30 +62,6 @@ namespace 五子棋.AI
             AIResult result = new AIResult();
             List<KeyValuePair<int, int>> list = new List<KeyValuePair<int, int>>();
 
-
-            ///test
-            //positions[0][2] = 棋子.黑子;
-            //float val = ScanLine(0, 0,  棋子.黑子, positions, 0, 1, list);
-            //for(int i= 0; i < positions.Length; i ++)
-            //{
-            //    if(positions[1][i] == 棋子.无)
-            //    {
-            //        result.X = 1;
-            //        result.Y = i;
-            //        break;
-            //    }
-            //}
-            //positions[0][2] = 棋子.无;
-            //return result;
-            ///test
-
-
-
-
-
-
-
-
             float selfVal = 0f;
             float oppVal = 0f;
             selfVal = CalculateValue(positions, selfSide, list);

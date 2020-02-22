@@ -26,7 +26,6 @@ namespace 五子棋.AI
             }
             if(positions[x][y] == 棋子.无)
             {
-                MakeStep(x, y);
                 FinishTurn(x, y);
             }
         }

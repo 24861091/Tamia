@@ -90,9 +90,8 @@ namespace 五子棋
             this.DisplayLabel.ForeColor = System.Drawing.Color.Red;
             this.DisplayLabel.Location = new System.Drawing.Point(60, 254);
             this.DisplayLabel.Name = "DisplayLabel";
-            this.DisplayLabel.Size = new System.Drawing.Size(259, 20);
+            this.DisplayLabel.Size = new System.Drawing.Size(0, 20);
             this.DisplayLabel.TabIndex = 5;
-            this.DisplayLabel.Text = "1111111111111111111111111";
             // 
             // StartText
             // 

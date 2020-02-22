@@ -78,14 +78,8 @@ namespace 五子棋
             switch(name)
             {
                 case MessageKey.Restart:
-                    string[] players = param as string[];
-                    Initialize(players[0], players[1]);
-                    break;
-                case MessageKey.ChangeTurn:
-                    break;
-                case MessageKey.NextTurn:
-                    break;
-                case MessageKey.MakeStep:
+                    ChessPlayer[] players = param as ChessPlayer[];
+                    Initialize(players[0].GetType().Name, players[1].GetType().Name);
                     break;
                 case MessageKey.FinishTurn:
                     object[] os = param as object[];

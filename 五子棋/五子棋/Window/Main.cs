@@ -21,7 +21,6 @@ namespace 五子棋
 
         public int interval = 50;
 
-        //private Rule rule = null;
         private DebugForm debugForm = null;
 
         private Label[] leftLabels = new Label[Utility.sizeY];
@@ -30,10 +29,6 @@ namespace 五子棋
         private Label[] bottomLabels = new Label[Utility.sizeX];
 
         private MainFrame _main = MainFrame.Instance;
-        //private bool isFinished = false;
-        //private 棋子 winSide = 棋子.无;
-
-        //private Timer timer = new Timer();
         private 棋子[][] Chess
         {
             get
@@ -61,29 +56,13 @@ namespace 五子棋
             this.Width = left + sizeX * interval + interval * 2;
             this.Height = top + sizeY * interval + interval * 2;
 
-            Messager.Instance.Register(MessageKey.ChangeTurn, this);
+            Messager.Instance.Register(MessageKey.FinishTurn, this);
             Messager.Instance.Register(MessageKey.Finish, this);
-            Messager.Instance.Register(MessageKey.MakeStep, this);
             Messager.Instance.Register(MessageKey.Restart, this);
             Messager.Instance.Register(MessageKey.Equal, this);
 
-            //_main.Initialize();
             debugForm = new DebugForm();
-            //timer.Tick += new EventHandler(Tick);
-            //timer.Interval = 100;
-            //timer.Start();
         }
-
-        //private void Tick(object sender, EventArgs e)
-        //{
-        //    if(isFinished)
-        //    {
-        //        DisplayLabel.Text = winSide.ToString() + " Win!";
-        //        BlackPlayersBox.Enabled = true;
-        //        WhitePlayersBox.Enabled = true;
-        //        isFinished = false;
-        //    }
-        //}
 
         private void InitLabels()
         {
@@ -102,18 +81,11 @@ namespace 五子棋
             AI.Creater.Register("10岁AI", new AI.DNAPlayer());
         }
 
-        public void TakeTurn(棋子 side)
-        {
-
-        }
         public void Finish(棋子 side)
         {
             DisplayLabel.Text = side.ToString() + " Win!";
             BlackPlayersBox.Enabled = true;
             WhitePlayersBox.Enabled = true;
-
-            //isFinished = true;
-            //winSide = side;
         }
 
         private void DrawPanel(Graphics graphics)
@@ -201,8 +173,6 @@ namespace 五子棋
             }
 
             graphics.FillEllipse(brush, left + x * interval - interval * 0.4f, top + y * interval - interval * 0.4f, interval * 0.8f, interval * 0.8f);
-            //DrawMark(x, y, graphics);
-            //DrawBlank(x, y, graphics);
         }
         private void DrawMark(int x, int y, Graphics graphics)
         {
@@ -228,22 +198,19 @@ namespace 五子棋
             {
                 switch (name)
                 {
-                    case MessageKey.ChangeTurn:
-                        棋子 turn = (棋子)(param);
-                        TakeTurn(turn);
-                        break;
                     case MessageKey.Finish:
                         棋子 side = (棋子)(param);
                         Finish(side);
                         break;
-                    case MessageKey.MakeStep:
+                    case MessageKey.FinishTurn:
                         this.Invalidate();
                         break;
                     case MessageKey.Equal:
                         Finish(棋子.无);
                         break;
                     case MessageKey.Restart:
-                        this.Restart();
+                        ChessPlayer[] players = param as ChessPlayer[];
+                        this.Restart(players[0], players[1]);
                         break;
                 }
             }
@@ -267,9 +234,9 @@ namespace 五子棋
 
         private void OnClickStartButton(object sender, EventArgs e)
         {
-            _main.Restart(BlackPlayersBox.Text, WhitePlayersBox.Text);
+            _main.Restart(Utility.CreatePlayer(BlackPlayersBox.Text), Utility.CreatePlayer(WhitePlayersBox.Text));
         }
-        public void Restart()
+        public void Restart(ChessPlayer black, ChessPlayer white)
         {
             BlackPlayersBox.Enabled = false;
             WhitePlayersBox.Enabled = false;
@@ -282,8 +249,6 @@ namespace 五子棋
         }
         private void SetPlayersBox()
         {
-            //Register();
-
             BlackPlayersBox.Items.Clear();
             WhitePlayersBox.Items.Clear();
             Assembly assembly = Assembly.GetAssembly(typeof(ChessPlayer));
@@ -312,13 +277,6 @@ namespace 五子棋
                 }
             }
 
-            //Dictionary<string, ChessPlayer> dics = AI.Creater.Dics;
-            //foreach(KeyValuePair<string, ChessPlayer> pair in dics)
-            //{
-            //    BlackPlayersBox.Items.Add(pair.Key);
-            //    WhitePlayersBox.Items.Add(pair.Key);
-            //}
-
             if (BlackPlayersBox.Items.Count > 0)
             {
                 BlackPlayersBox.Text = typeof(AI.HumanChessPlayer).Name;/*BlackPlayersBox.Items[0].ToString();*/
@@ -331,14 +289,6 @@ namespace 五子棋
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //if(this.debugForm.IsDisposed)
-            //{
-                
-            //} 
-            //else
-            //{
-            //    this.debugForm.Show();
-            //}
             
         }
 
@@ -354,7 +304,7 @@ namespace 五子棋
 
         private void EvolvButton_Click(object sender, EventArgs e)
         {
-            EvolvForm form = new EvolvForm();
+            EvolvForm form = new EvolvForm(this);
             form.Show();
         }
     }

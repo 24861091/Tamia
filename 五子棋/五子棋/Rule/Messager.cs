@@ -11,7 +11,6 @@ namespace 五子棋
     {
         private static Messager instance = new Messager();
         private bool _isDealingMessage = false;
-        //private Timer timer = new Timer();
         public static Messager Instance
         {
             get
@@ -21,43 +20,10 @@ namespace 五子棋
         }
         private Messager()
         {
-            //timer.Elapsed += new ElapsedEventHandler(OnTimer);
-            //timer.Interval = 1000;
-            //timer.Start();
         }
 
-        //private void OnTimer(object sender, ElapsedEventArgs e)
-        //{
-        //    if(list.Count <= 0 )
-        //    {
-        //        return;
-        //    }
-        //    if(!lk)
-        //    {
-        //        lk = true;
-        //        for (int i = 0; i < list.Count; i++)
-        //        {
-        //            MessageKey name = list[i].Key;
-        //            object param = list[i].Value;
-
-        //            if (listeners.ContainsKey(name))
-        //            {
-        //                List<IListener> ls = listeners[name];
-        //                if (ls != null)
-        //                {
-        //                    foreach (IListener listener in ls)
-        //                    {
-        //                        listener.OnMessage(name, param);
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        list.Clear();
-        //    }
-        //}
-        //private bool lk = false;
+        
         private Dictionary<MessageKey, List<IListener>> listeners = new Dictionary<MessageKey, List<IListener>>();
-        //private List<KeyValuePair<MessageKey, object>> list = new List<KeyValuePair<MessageKey, object>>();
         private Queue<KeyValuePair<MessageKey, object>> stack = new Queue<KeyValuePair<MessageKey, object>>();
         private Queue<KeyValuePair<MessageKey, IListener>> unregisterQueue = new Queue<KeyValuePair<MessageKey, IListener>>();
         public void SendMessageLater(MessageKey name, object param)
@@ -68,7 +34,6 @@ namespace 五子棋
             }
             else
             {
-                //list.Add(new KeyValuePair<MessageKey, object>(name, param));
                 stack.Enqueue(new KeyValuePair<MessageKey, object>(name, param));
             }
             
@@ -146,12 +111,12 @@ namespace 五子棋
 
     public enum MessageKey
     {
-        ChangeTurn,
-        Finish,
+        //ChangeTurn,
+        Finish = 2,
         MouseDown,
-        MakeStep,
-        NextTurn,
-        Restart,
+        //MakeStep,
+        //NextTurn,
+        Restart = 6,
         FinishTurn,
         RefreshDebug,
         Equal,
