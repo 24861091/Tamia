@@ -48,8 +48,9 @@ namespace 五子棋
             _rule.Clear();
             _rule.SetChessPlayers(black, white);
             Messager.Instance.SendMessageLater(MessageKey.Restart, new ChessPlayer[] { black, white });
-            _rule.ChangeTurn();
-            _rule.OnYourTurn();
+            _rule.Restart();
+            //_rule.ChangeTurn();
+            //_rule.OnYourTurn();
         }
     }
 }

@@ -131,4 +131,20 @@ namespace 五子棋
             Y = y;
         }
     }
+    public struct ChessMove
+    {
+        public 棋子 Side;
+        public Position Position;
+        public ChessMove(棋子 s, Position p)
+        {
+            Side = s;
+            Position = p;
+        }
+        public ChessMove(棋子 s, int x, int y)
+        {
+            Side = s;
+            Position = new Position(x, y);
+        }
+
+    }
 }

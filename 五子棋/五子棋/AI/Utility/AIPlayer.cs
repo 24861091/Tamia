@@ -13,7 +13,6 @@ namespace 五子棋.AI
         {
             AIResult result = MakeTurn(positions, blacks, whites);
             result.Side = selfSide;
-            //MakeStep(result.X, result.Y);
             FinishTurn(result.X, result.Y);
         }
         
