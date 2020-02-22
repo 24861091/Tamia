@@ -12,10 +12,10 @@ namespace 五子棋
 {
     public partial class EvolvForm : Form, IListener
     {
-        private int _startGeneration = 0;
-        private int _lastGeneration = 1;
-        private float _evolvFactor = 1.0f;
-        private int _amount = 100;
+        //private int _startGeneration = 0;
+        //private int _lastGeneration = 1;
+        //private float _evolvFactor = 1.0f;
+        //private int _amount = 100;
 
         private MainFrame _main = MainFrame.Instance;
 
@@ -61,7 +61,7 @@ namespace 五子棋
             int from = 1;
             int to = 3;
             int topNum = 1;
-            Generator.Instance.Initialize(3,5,0.01f, 100f, 100000);
+            //Generator.Instance.Initialize(3,5,0.01f, 100f, 100000);
             for (int j = from; j < to; j++)
             {
                 Generator.Instance.Generate(j);

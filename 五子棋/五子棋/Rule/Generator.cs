@@ -22,10 +22,10 @@ namespace 五子棋
         {
 
         }
-        private int childrenNum = 100;
-        private int mutationRate = 1;
+        private int childrenNum = 5;
+        private int mutationRate = 50;
         private float mutationMin = 0.01f;
-        private float mutationMax = 100f;
+        private float mutationMax = 10f;
         private int generationFactor = 100000;
         
         public void Initialize(int childrenNum, int mutationRate, float mutationMin, float mutationMax, int generationFactor)
@@ -95,6 +95,10 @@ namespace 五子棋
 
                     foreach(KeyValuePair<string, float> pair in all)
                     {
+                        if(pair.Key == "e4e")
+                        {
+
+                        }
                         DNA chosen = Utility.RandomInt<DNA>(parents, rates);
                         float val = chosen.GetValue(pair.Key);
                         dna.SetValue(pair.Key, (float)Utility.RandomValue(val, mutationRate, mutationMin, mutationMax));

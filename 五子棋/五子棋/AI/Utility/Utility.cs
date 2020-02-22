@@ -16,6 +16,7 @@ namespace 五子棋
         public static int top = 50;
 
         public static int interval = 50;
+        public static int evoluteBase = 10000;
 
         private static Random random = new Random();
 
@@ -120,7 +121,7 @@ namespace 五子棋
         }
         public static double RandomValue(float source, int rate, float min, float max)
         {
-            bool change = RandomRate(rate, 100);
+            bool change = RandomRate(rate, evoluteBase);
             if(min >= 1f || max <= 1f)
             {
                 return 0f;

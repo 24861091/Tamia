@@ -164,7 +164,8 @@ namespace 五子棋.AI
                     }
                 }
             }
-            _DNAValues["f5"] = 9999999999f;
+            _DNAValues["f5"] = 100000f;
+            _DNAValues["e4e"] = 100000f;
         }
         private string Reverse(string source)
         {
