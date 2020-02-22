@@ -52,7 +52,17 @@ namespace 五子棋.AI
                 _generation = value;
             }
         }
-
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                _name = value;
+            }
+        }
         public float GetValue(string key)
         {
             if (_DNAValues.ContainsKey(key))

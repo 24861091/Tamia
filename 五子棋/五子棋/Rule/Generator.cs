@@ -23,7 +23,7 @@ namespace 五子棋
 
         }
         private int childrenNum = 100;
-        private int mutationRate = 5;
+        private int mutationRate = 1;
         private float mutationMin = 0.01f;
         private float mutationMax = 100f;
         private int generationFactor = 100000;
@@ -68,7 +68,18 @@ namespace 五子棋
                 Utility.ClearDirectory(Utility.CreateTargetPath(generation));
 
                 int num = parents.Length;
-                
+                for(int m = 0; m < num; m ++)
+                {
+                    DNA dna = new DNA(Path.Combine(Utility.CreateTargetPath(generation), parents[m].Name), parents[m].Name);
+                    Dictionary<string, float> all = parents[m].GetAll();
+                    foreach (KeyValuePair<string, float> pair in all)
+                    {
+                        dna.SetValue(pair.Key, pair.Value);
+                    }
+                    dna.Factor = parents[m].Factor;
+                    dna.Generation = parents[m].Generation;
+                    dna.Save();
+                }
                 for (int i = 0; i < childrenNum; i ++)
                 {
                     string name = (generation * generationFactor + i).ToString();
@@ -88,7 +99,7 @@ namespace 五子棋
                         float val = chosen.GetValue(pair.Key);
                         dna.SetValue(pair.Key, (float)Utility.RandomValue(val, mutationRate, mutationMin, mutationMax));
                     }
-                    dna.SetValue("generation", generation);
+                    dna.Generation = generation;
                     dna.Save();
                 }
             }
