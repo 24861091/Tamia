@@ -121,5 +121,6 @@ namespace 五子棋
         RefreshDebug,
         Equal,
         FinishLeague,
+        FinishArena,
     }
 }

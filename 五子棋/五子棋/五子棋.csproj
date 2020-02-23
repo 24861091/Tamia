@@ -72,6 +72,12 @@
     <Compile Include="Rule\Players.cs" />
     <Compile Include="Rule\棋子.cs" />
     <Compile Include="Rule\Rule.cs" />
+    <Compile Include="Window\ArenaForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Window\ArenaForm.Designer.cs">
+      <DependentUpon>ArenaForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Window\EvolvForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -88,6 +94,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Window\DebugForm.resx">
       <DependentUpon>DebugForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Window\ArenaForm.resx">
+      <DependentUpon>ArenaForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Window\EvolvForm.resx">
       <DependentUpon>EvolvForm.cs</DependentUpon>

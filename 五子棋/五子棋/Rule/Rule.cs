@@ -36,19 +36,19 @@ namespace 五子棋
         }
         public void SetChessPlayers(ChessPlayer black, ChessPlayer white)
         {
-            Logger.Log("SetChessPlayers 1");
+            //Logger.Log("SetChessPlayers 1");
             this.black = black;
             this.black.SetSide(棋子.黑子);
             this.black.GameStart(panel.Positions);
-            Logger.Log("SetChessPlayers 2");
+            //Logger.Log("SetChessPlayers 2");
             this.white = white;
             this.white.SetSide(棋子.白子);
             this.white.GameStart(panel.Positions);
-            Logger.Log("SetChessPlayers 3");
+            //Logger.Log("SetChessPlayers 3");
             bool canSend = black.IsHuman() || white.IsHuman();
             this.black.CanSend = true;
             this.white.CanSend = true;
-            Logger.Log("SetChessPlayers 3");
+            //Logger.Log("SetChessPlayers 3");
         }
         public ChessPlayer GetWhite()
         {
