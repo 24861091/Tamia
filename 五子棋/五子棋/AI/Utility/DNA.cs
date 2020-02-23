@@ -65,7 +65,7 @@ namespace 五子棋.AI
         }
         public float GetValue(string key)
         {
-
+            Keys.Instance.Record(key);
             if (_DNAValues.ContainsKey(key))
             {
                 return _DNAValues[key];

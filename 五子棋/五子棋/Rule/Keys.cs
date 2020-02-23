@@ -50,12 +50,16 @@ namespace 五子棋
             }
         }
 
-        public void Record(string code, string key)
+        public void Record(string key)
         {
-            if(startRecord.ContainsKey(code) && startRecord[code])
+            foreach(KeyValuePair<string, bool> pair in startRecord)
             {
-                Dictionary<string, byte> dic = dics[code];
-                dic[key] = 0;
+                string code = pair.Key;
+                if (startRecord[code])
+                {
+                    Dictionary<string, byte> dic = dics[code];
+                    dic[key] = 0;
+                }
             }
         }
         public string[] GetAllKeys(string code)
