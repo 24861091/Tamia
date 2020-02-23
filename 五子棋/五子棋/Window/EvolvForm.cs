@@ -49,13 +49,13 @@ namespace 五子棋
         }
         private void EvolvForm_Load(object sender, EventArgs e)
         {
-            FromText.Text = 1.ToString();
-            ToText.Text = 2.ToString();
+            FromText.Text = 13.ToString();
+            ToText.Text = 1000.ToString();
             TopNumText.Text = 3.ToString();
-            ChildrenNumText.Text = 10.ToString();
-            MutationRateText.Text = 50.ToString();
-            MutationMinText.Text = 0.05f.ToString();
-            MutationMaxText.Text = 10f.ToString();
+            ChildrenNumText.Text = 20.ToString();
+            MutationRateText.Text = 300.ToString();
+            MutationMinText.Text = 0.5f.ToString();
+            MutationMaxText.Text = 2f.ToString();
             GenerationFactorText.Text = 100000.ToString();
         }
 
