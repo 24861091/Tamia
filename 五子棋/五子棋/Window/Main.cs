@@ -307,5 +307,11 @@ namespace 五子棋
             EvolvForm form = new EvolvForm(this);
             form.Show();
         }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            ArenaForm form = new ArenaForm(this);
+            form.Show();
+        }
     }
 }

@@ -40,14 +40,6 @@ namespace 五子棋
         public void End(string code)
         {
             startRecord[code] = false;
-            if (!dics.ContainsKey(code))
-            {
-                dics[code] = new Dictionary<string, byte>();
-            }
-            else
-            {
-                dics[code].Clear();
-            }
         }
 
         public void Record(string key)
@@ -65,7 +57,7 @@ namespace 五子棋
         public string[] GetAllKeys(string code)
         {
             Dictionary<string, byte> dic = null;
-            if (!dics.ContainsKey(code))
+            if (dics.ContainsKey(code))
             {
                 dic = dics[code];
             }

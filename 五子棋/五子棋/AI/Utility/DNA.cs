@@ -63,6 +63,10 @@ namespace 五子棋.AI
                 _name = value;
             }
         }
+        public bool Has(string key)
+        {
+            return _DNAValues.ContainsKey(key);
+        }
         public float GetValue(string key)
         {
             Keys.Instance.Record(key);

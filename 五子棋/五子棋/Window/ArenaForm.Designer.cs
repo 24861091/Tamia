@@ -34,7 +34,7 @@ namespace 五子棋
             this.label2 = new System.Windows.Forms.Label();
             this.StartButton = new System.Windows.Forms.Button();
             this.DisplayLabel = new System.Windows.Forms.Label();
-            this.FromText = new System.Windows.Forms.TextBox();
+            this.TimesText = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.ChildrenNumText = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -56,6 +56,7 @@ namespace 五子棋
             this.label1.Size = new System.Drawing.Size(17, 12);
             this.label1.TabIndex = 0;
             this.label1.Text = "To";
+            this.label1.Visible = false;
             // 
             // ToText
             // 
@@ -63,6 +64,7 @@ namespace 五子棋
             this.ToText.Name = "ToText";
             this.ToText.Size = new System.Drawing.Size(100, 21);
             this.ToText.TabIndex = 1;
+            this.ToText.Visible = false;
             // 
             // TopNumText
             // 
@@ -70,6 +72,7 @@ namespace 五子棋
             this.TopNumText.Name = "TopNumText";
             this.TopNumText.Size = new System.Drawing.Size(100, 21);
             this.TopNumText.TabIndex = 3;
+            this.TopNumText.Visible = false;
             // 
             // label2
             // 
@@ -79,6 +82,7 @@ namespace 五子棋
             this.label2.Size = new System.Drawing.Size(41, 12);
             this.label2.TabIndex = 2;
             this.label2.Text = "TopNum";
+            this.label2.Visible = false;
             // 
             // StartButton
             // 
@@ -100,22 +104,23 @@ namespace 五子棋
             this.DisplayLabel.Name = "DisplayLabel";
             this.DisplayLabel.Size = new System.Drawing.Size(0, 20);
             this.DisplayLabel.TabIndex = 5;
+            this.DisplayLabel.Visible = false;
             // 
-            // FromText
+            // TimesText
             // 
-            this.FromText.Location = new System.Drawing.Point(135, 50);
-            this.FromText.Name = "FromText";
-            this.FromText.Size = new System.Drawing.Size(100, 21);
-            this.FromText.TabIndex = 7;
+            this.TimesText.Location = new System.Drawing.Point(135, 50);
+            this.TimesText.Name = "TimesText";
+            this.TimesText.Size = new System.Drawing.Size(100, 21);
+            this.TimesText.TabIndex = 7;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(58, 53);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(29, 12);
+            this.label3.Size = new System.Drawing.Size(35, 12);
             this.label3.TabIndex = 6;
-            this.label3.Text = "From";
+            this.label3.Text = "Times";
             // 
             // ChildrenNumText
             // 
@@ -123,6 +128,7 @@ namespace 五子棋
             this.ChildrenNumText.Name = "ChildrenNumText";
             this.ChildrenNumText.Size = new System.Drawing.Size(100, 21);
             this.ChildrenNumText.TabIndex = 9;
+            this.ChildrenNumText.Visible = false;
             // 
             // label4
             // 
@@ -132,6 +138,7 @@ namespace 五子棋
             this.label4.Size = new System.Drawing.Size(71, 12);
             this.label4.TabIndex = 8;
             this.label4.Text = "ChildrenNum";
+            this.label4.Visible = false;
             // 
             // label5
             // 
@@ -141,6 +148,7 @@ namespace 五子棋
             this.label5.Size = new System.Drawing.Size(71, 12);
             this.label5.TabIndex = 0;
             this.label5.Text = "MutationMin";
+            this.label5.Visible = false;
             // 
             // MutationMinText
             // 
@@ -148,6 +156,7 @@ namespace 五子棋
             this.MutationMinText.Name = "MutationMinText";
             this.MutationMinText.Size = new System.Drawing.Size(100, 21);
             this.MutationMinText.TabIndex = 1;
+            this.MutationMinText.Visible = false;
             // 
             // label6
             // 
@@ -157,6 +166,7 @@ namespace 五子棋
             this.label6.Size = new System.Drawing.Size(71, 12);
             this.label6.TabIndex = 2;
             this.label6.Text = "MutationMax";
+            this.label6.Visible = false;
             // 
             // MutationMaxText
             // 
@@ -164,6 +174,7 @@ namespace 五子棋
             this.MutationMaxText.Name = "MutationMaxText";
             this.MutationMaxText.Size = new System.Drawing.Size(100, 21);
             this.MutationMaxText.TabIndex = 3;
+            this.MutationMaxText.Visible = false;
             // 
             // label7
             // 
@@ -173,6 +184,7 @@ namespace 五子棋
             this.label7.Size = new System.Drawing.Size(77, 12);
             this.label7.TabIndex = 6;
             this.label7.Text = "MutationRate";
+            this.label7.Visible = false;
             // 
             // MutationRateText
             // 
@@ -180,6 +192,7 @@ namespace 五子棋
             this.MutationRateText.Name = "MutationRateText";
             this.MutationRateText.Size = new System.Drawing.Size(100, 21);
             this.MutationRateText.TabIndex = 7;
+            this.MutationRateText.Visible = false;
             // 
             // label8
             // 
@@ -189,6 +202,7 @@ namespace 五子棋
             this.label8.Size = new System.Drawing.Size(101, 12);
             this.label8.TabIndex = 8;
             this.label8.Text = "GenerationFactor";
+            this.label8.Visible = false;
             // 
             // GenerationFactorText
             // 
@@ -196,6 +210,7 @@ namespace 五子棋
             this.GenerationFactorText.Name = "GenerationFactorText";
             this.GenerationFactorText.Size = new System.Drawing.Size(100, 21);
             this.GenerationFactorText.TabIndex = 9;
+            this.GenerationFactorText.Visible = false;
             // 
             // ArenaForm
             // 
@@ -206,7 +221,7 @@ namespace 五子棋
             this.Controls.Add(this.label4);
             this.Controls.Add(this.MutationRateText);
             this.Controls.Add(this.label7);
-            this.Controls.Add(this.FromText);
+            this.Controls.Add(this.TimesText);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.DisplayLabel);
             this.Controls.Add(this.MutationMaxText);
@@ -234,7 +249,7 @@ namespace 五子棋
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button StartButton;
         private System.Windows.Forms.Label DisplayLabel;
-        private System.Windows.Forms.TextBox FromText;
+        private System.Windows.Forms.TextBox TimesText;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox ChildrenNumText;
         private System.Windows.Forms.Label label4;

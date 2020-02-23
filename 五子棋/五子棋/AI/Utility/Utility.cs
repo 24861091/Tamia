@@ -115,6 +115,10 @@ namespace 五子棋
             }
             return default(T);
         }
+        public static int RandomInt(int min , int max)
+        {
+            return random.Next(min, max);
+        }
         public static bool RandomRate(int rate, int total)
         {
             return random.Next(0, total) < rate;
@@ -172,6 +176,10 @@ namespace 五子棋
             {
                 Directory.CreateDirectory(path);
             }
+        }
+        public static string CreateArenaPath()
+        {
+            return @"arena";
         }
 
     }

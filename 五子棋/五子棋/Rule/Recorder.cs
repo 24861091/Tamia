@@ -17,6 +17,7 @@ namespace 五子棋
         private void Register()
         {
             Messager.Instance.Register(MessageKey.Finish, this);
+            Messager.Instance.Register(MessageKey.Equal, this);
             Messager.Instance.Register(MessageKey.FinishTurn, this);
             Messager.Instance.Register(MessageKey.Restart, this);
         }
@@ -24,6 +25,7 @@ namespace 五子棋
         private void UnRegister()
         {
             Messager.Instance.UnRegister(MessageKey.Finish, this);
+            Messager.Instance.UnRegister(MessageKey.Equal, this);
             Messager.Instance.UnRegister(MessageKey.FinishTurn, this);
             Messager.Instance.UnRegister(MessageKey.Restart, this);
         }

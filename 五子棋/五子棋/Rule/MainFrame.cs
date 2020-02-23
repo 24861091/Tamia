@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,62 +56,47 @@ namespace 五子棋
 
         public DNA[] StartLeague(int generation, int times, int topNum)
         {
-            //Logger.Log("StartLeague 1");
             string path = Utility.CreateTargetPath(generation);
-            //Logger.Log("StartLeague 2");
             League.Instance.Initialize(path, times);
-            //Logger.Log("StartLeague 3");
             League.Instance.Do();
-            //Logger.Log("StartLeague 4");
             bool can = true;
 
             while(can)
             {
-                //Logger.Log("StartLeague 5");
                 ChessPlayer black = League.Instance.GetBlack();
                 ChessPlayer white = League.Instance.GetWhite();
-                //Logger.Log("StartLeague 6");
                 _rule.Clear();
                 _rule.SetChessPlayers(black, white);
-                //Logger.Log("StartLeague 7");
+                Messager.Instance.SendMessageLater(MessageKey.Restart, new ChessPlayer[] { black, white });
                 ChessMove move = StartOneChess();
-                //Logger.Log("StartLeague 8");
                 can = League.Instance.Finish(move.Side);
-                //Logger.Log("StartLeague 9");
             }
-            //Logger.Log("StartLeague 10");
             Messager.Instance.SendMessageLater(MessageKey.FinishLeague, null);
             LeagueResult[][] result = League.Instance.Performance;
             List<DNAPlayer> players = League.Instance.GetPlayers();
-            //Logger.Log("StartLeague 11");
             return Calculate(result, players, topNum);
         }
 
         private DNA[] Calculate(LeagueResult[][] result, List<DNAPlayer> players, int topNum)
         {
-            //Logger.Log("Calculate 1");
             if (result == null || result.Length <= 0)
             {
                 return null;
             }
-            //Logger.Log("Calculate 2");
             LinkedList<KeyValuePair<int,int>> list = new LinkedList<KeyValuePair<int, int>>();
             for(int i = 0;  i < result.Length; i ++)
             {
-                //Logger.Log("Calculate 3");
                 KeyValuePair<int, int> pair = new KeyValuePair<int, int>();
                 for (int j = 0; j < result.Length; j ++)
                 {
                     if(i != j)
                     {
-                        pair = new KeyValuePair<int, int>(i, pair.Value + result[i][j].Win + result[j][i].Win);
+                        pair = new KeyValuePair<int, int>(i, pair.Value + result[i][j].Win * 2 + result[j][i].Lose * 2 + result[i][j].Equal + result[j][i].Equal);
                     }
                 }
                 LinkedListNode<KeyValuePair<int, int>> linkNode = list.First;
-                //Logger.Log("Calculate 4");
                 while (true)
                 {
-                    //Logger.Log("Calculate 5");
                     if (linkNode == null)
                     {
                         list.AddLast(pair);
@@ -125,11 +111,9 @@ namespace 五子棋
                 }
 
             }
-            //Logger.Log("Calculate 6");
             int n = Math.Min(topNum, list.Count);
             List<DNAPlayer> ps = new List<DNAPlayer>();
             LinkedListNode<KeyValuePair<int, int>> node = list.First;
-            //Logger.Log("Calculate 7");
             while (n > 0 && node != null)
             {
                 ps.Add(players[node.Value.Key]);
@@ -141,7 +125,6 @@ namespace 五子棋
             {
                 dnas[i] = ps[i].GetDNA();
             }
-            //Logger.Log("Calculate 8");
             return dnas;
         }
 
@@ -182,6 +165,94 @@ namespace 五子棋
                 {
                     _rule.Finish(棋子.无);
                     return new ChessMove(棋子.无, new Position(x, y));
+                }
+            }
+        }
+
+        public void StartArena(string black, string white)
+        {
+            string path = Utility.CreateArenaPath();
+
+            Keys.Instance.Begin("X");
+
+            string blackFullname = Path.Combine(path, black.ToString());
+            string whiteFullname = Path.Combine(path, white.ToString());
+            DNAPlayer blackPlayer = Utility.CreateDNAPlayer(blackFullname);
+            DNAPlayer whitePlayer = Utility.CreateDNAPlayer(whiteFullname);
+
+            int performance = 0;
+            _rule.Clear();
+            _rule.SetChessPlayers(blackPlayer, whitePlayer);
+            Messager.Instance.SendMessageLater(MessageKey.Restart, new ChessPlayer[] { blackPlayer, whitePlayer });
+            ChessMove blackMove = StartOneChess();
+            if(blackMove.Side == 棋子.黑子)
+            {
+                performance += 1;
+            }
+            else if(blackMove.Side == 棋子.白子)
+            {
+                performance += -1;
+            }
+
+
+            _rule.Clear();
+            _rule.SetChessPlayers(whitePlayer, blackPlayer);
+            Messager.Instance.SendMessageLater(MessageKey.Restart, new ChessPlayer[] { whitePlayer, blackPlayer });
+            ChessMove whiteMove = StartOneChess();
+
+            if (blackMove.Side == 棋子.黑子)
+            {
+                performance += -1;
+            }
+            else if (blackMove.Side == 棋子.白子)
+            {
+                performance += 1;
+            }
+
+            Keys.Instance.End("X");
+
+            DNA blackDNA = blackPlayer.GetDNA();
+            DNA whiteDNA = whitePlayer.GetDNA();
+            string[] keys = Keys.Instance.GetAllKeys("X");
+            if(keys == null)
+            {
+                return;
+            }
+            if(performance > 0)
+            {
+                for (int i = 0; i < keys.Length;i++)
+                {
+                    string key = keys[i];
+                    if(whiteDNA.Has(key) && blackDNA.Has(key))
+                    {
+                        whiteDNA.SetValue(key, blackDNA.GetValue(key));
+                    }
+                }
+            }
+            else if(performance < 0)
+            {
+                for (int i = 0; i < keys.Length; i++)
+                {
+                    string key = keys[i];
+                    if (whiteDNA.Has(key) && blackDNA.Has(key))
+                    {
+                        blackDNA.SetValue(key, whiteDNA.GetValue(key));
+                    }
+                }
+
+            }
+            else
+            {
+                for (int i = 0; i < keys.Length; i++)
+                {
+                    string key = keys[i];
+                    if (whiteDNA.Has(key) && blackDNA.Has(key))
+                    {
+                        float b = blackDNA.GetValue(key);
+                        float w = whiteDNA.GetValue(key);
+                        blackDNA.SetValue(key, (b + w) / 2f);
+                        whiteDNA.SetValue(key, (b + w) / 2f);
+                    }
                 }
             }
         }

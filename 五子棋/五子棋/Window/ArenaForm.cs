@@ -49,10 +49,10 @@ namespace 五子棋
         }
         private void ArenaForm_Load(object sender, EventArgs e)
         {
-            FromText.Text = 1.ToString();
-            ToText.Text = 2.ToString();
-            TopNumText.Text = 3.ToString();
-            ChildrenNumText.Text = 10.ToString();
+            TimesText.Text = 1000.ToString();
+            //ToText.Text = 2.ToString();
+            //TopNumText.Text = 3.ToString();
+            ChildrenNumText.Text = 1000.ToString();
             MutationRateText.Text = 50.ToString();
             MutationMinText.Text = 0.05f.ToString();
             MutationMaxText.Text = 10f.ToString();
@@ -61,49 +61,47 @@ namespace 五子棋
 
         private void StartButton_Click(object sender, EventArgs e)
         {
-
-
             _mainForm.Visible = false;
             StartButton.Enabled = false;
-            int from = int.Parse(FromText.Text);
-            int to = int.Parse(ToText.Text);
-            int topNum = int.Parse(TopNumText.Text);
-            int childrenNum = int.Parse(ChildrenNumText.Text);
-            int mutationRate = int.Parse(MutationRateText.Text);
-            float mutationMin = float.Parse(MutationMinText.Text);
-            float mutationMax = float.Parse(MutationMaxText.Text);
-            int generationFactor = int.Parse(GenerationFactorText.Text);
+            int times = int.Parse(TimesText.Text);
+            //int to = int.Parse(ToText.Text);
+            //int topNum = int.Parse(TopNumText.Text);
+            //int childrenNum = int.Parse(ChildrenNumText.Text);
+            //int mutationRate = int.Parse(MutationRateText.Text);
+            //float mutationMin = float.Parse(MutationMinText.Text);
+            //float mutationMax = float.Parse(MutationMaxText.Text);
+            //int generationFactor = int.Parse(GenerationFactorText.Text);
 
-            Generator.Instance.Initialize(childrenNum, mutationRate, mutationMin, mutationMax, generationFactor);
-            DateTime now = DateTime.Now;
-            //Logger.Begin();
-            for (int j = from; j < to; j++)
+            
+            int black = 0;
+            int white = 0;
+
+            string path = Utility.CreateArenaPath();
+            string[] files = Directory.GetFiles(path);
+            if(files != null)
             {
-                //Logger.Log("Generate 1");
-                Generator.Instance.Generate(j);
-                //Logger.Log("Generate 2");
-                DNA[] dnas = _main.StartLeague(j, 1, topNum);
-                //Logger.Log("Generate 3");
-                if (dnas != null)
+                int min = 0;
+                int max = files.Length;
+                for (int i = 0; i < times; i++)
                 {
-                    string parent = Utility.CreateSourcePath(j + 1);
-                    Utility.MakeSure(parent);
-                    Utility.ClearDirectory(parent);
+                    black = 0;
+                    white = 0;
 
-                    for (int i = 0; i < dnas.Length; i++)
+                    while (white == black)
                     {
-                        DNA dna = dnas[i];
-                        string source = dna.GetPath();
-                        string target = Path.Combine(parent, Path.GetFileName(dna.GetPath()));
-                        File.Copy(source, target);
+                        black = Utility.RandomInt(min, max);
+                        white = Utility.RandomInt(min, max);
                     }
+                    black = 2;
+                    white = 4;
+                    _main.StartArena(files[black], files[white]);
                 }
-                else
-                {
-                    MessageBox.Show("Error!没找到最优DNA");
-                }
-                Debug.WriteLine("4 Time:" + new TimeSpan(DateTime.Now.Ticks - now.Ticks).TotalSeconds.ToString());
             }
+            else
+            {
+                MessageBox.Show("Shit! No File!");
+            }
+
             MessageBox.Show("Done!");
         }
 
