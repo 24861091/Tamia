@@ -81,8 +81,11 @@ namespace 五子棋.AI
             if(_DNAValues != null)
             {
                 _DNAValues[key] = val;
-                key = Reverse(key);
-                _DNAValues[key] = val;
+                if(key != "f5")
+                {
+                    key = Reverse(key);
+                    _DNAValues[key] = val;
+                }
             }
         }
         public Dictionary<string, float> GetAll()
