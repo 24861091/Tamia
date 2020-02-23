@@ -53,15 +53,35 @@ namespace 五子棋
 
             InitializeComponent();
         }
+        private void EvolvForm_Load(object sender, EventArgs e)
+        {
+            FromText.Text = 1.ToString();
+            ToText.Text = 10000.ToString();
+            TopNumText.Text = 5.ToString();
+            ChildrenNumText.Text = 20.ToString();
+            MutationRateText.Text = 50.ToString();
+            MutationMinText.Text = 0.05f.ToString();
+            MutationMaxText.Text = 10f.ToString();
+            GenerationFactorText.Text = 100000.ToString();
+        }
 
         private void StartButton_Click(object sender, EventArgs e)
         {
+
+
             _mainForm.Visible = false;
             StartButton.Enabled = false;
-            int from = 1;
-            int to = 3;
-            int topNum = 1;
-            //Generator.Instance.Initialize(3,5,0.01f, 100f, 100000);
+            int from = int.Parse(FromText.Text);
+            int to = int.Parse(ToText.Text);
+            int topNum = int.Parse(TopNumText.Text);
+            int childrenNum = int.Parse(ChildrenNumText.Text);
+            int mutationRate = int.Parse(MutationRateText.Text);
+            float mutationMin = float.Parse(MutationMinText.Text);
+            float mutationMax = float.Parse(MutationMaxText.Text);
+            int generationFactor = int.Parse(GenerationFactorText.Text);
+
+            Generator.Instance.Initialize(childrenNum, mutationRate, mutationMin, mutationMax, generationFactor);
+
             for (int j = from; j < to; j++)
             {
                 Generator.Instance.Generate(j);
@@ -120,5 +140,6 @@ namespace 五子棋
             e.Cancel = true;
             this.Visible = false;
         }
+
     }
 }

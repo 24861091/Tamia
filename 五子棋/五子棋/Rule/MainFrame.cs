@@ -94,29 +94,30 @@ namespace 五子棋
                         pair = new KeyValuePair<int, int>(i, pair.Value + result[i][j].Win + result[j][i].Win);
                     }
                 }
-                LinkedListNode<KeyValuePair<int, int>> node = list.First;
+                LinkedListNode<KeyValuePair<int, int>> linkNode = list.First;
                 while (true)
                 {
-                    if (node == null)
+                    if (linkNode == null)
                     {
                         list.AddLast(pair);
                         break;
                     }
-                    if (pair.Value > node.Value.Value)
+                    if (pair.Value > linkNode.Value.Value)
                     {
-                        list.AddBefore(node, pair);
+                        list.AddBefore(linkNode, pair);
                         break;
                     }
-                    node = node.Next;
+                    linkNode = linkNode.Next;
                 }
 
             }
             int n = Math.Min(topNum, list.Count);
             List<DNAPlayer> ps = new List<DNAPlayer>();
-            while(n > 0)
+            LinkedListNode<KeyValuePair<int, int>> node = list.First;
+            while (n > 0 && node != null)
             {
-                LinkedListNode<KeyValuePair<int, int>> node = list.First;
                 ps.Add(players[node.Value.Key]);
+                node = node.Next;
                 n--;
             }
             DNA[] dnas = new DNA[ps.Count];

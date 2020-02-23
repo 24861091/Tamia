@@ -22,9 +22,9 @@ namespace 五子棋
         {
 
         }
-        private int childrenNum = 5;
+        private int childrenNum = 20;
         private int mutationRate = 50;
-        private float mutationMin = 0.01f;
+        private float mutationMin = 0.05f;
         private float mutationMax = 10f;
         private int generationFactor = 100000;
         
