@@ -89,7 +89,7 @@ namespace 五子棋
                     all.Remove("name");
                     all.Remove("generation");
                     all.Remove("f5");
-                    all.Remove("e4e");
+                    //all.Remove("e4e");
 
                     all["selfFactor"] = 1f;
 

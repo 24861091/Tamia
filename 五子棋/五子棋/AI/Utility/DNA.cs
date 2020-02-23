@@ -81,6 +81,8 @@ namespace 五子棋.AI
             if(_DNAValues != null)
             {
                 _DNAValues[key] = val;
+                key = Reverse(key);
+                _DNAValues[key] = val;
             }
         }
         public Dictionary<string, float> GetAll()
@@ -170,7 +172,7 @@ namespace 五子棋.AI
                 }
             }
             _DNAValues["f5"] = 100000f;
-            _DNAValues["e4e"] = 100000f;
+            //_DNAValues["e4e"] = 100000f;
         }
         private string Reverse(string source)
         {
