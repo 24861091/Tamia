@@ -55,37 +55,49 @@ namespace 五子棋
 
         public DNA[] StartLeague(int generation, int times, int topNum)
         {
+            Logger.Log("StartLeague 1");
             string path = Utility.CreateTargetPath(generation);
+            Logger.Log("StartLeague 2");
             League.Instance.Initialize(path, times);
+            Logger.Log("StartLeague 3");
             League.Instance.Do();
+            Logger.Log("StartLeague 4");
             bool can = true;
 
             while(can)
             {
+                Logger.Log("StartLeague 5");
                 ChessPlayer black = League.Instance.GetBlack();
                 ChessPlayer white = League.Instance.GetWhite();
-                
+                Logger.Log("StartLeague 6");
                 _rule.Clear();
                 _rule.SetChessPlayers(black, white);
-
+                Logger.Log("StartLeague 7");
                 ChessMove move = StartOneChess();
+                Logger.Log("StartLeague 8");
                 can = League.Instance.Finish(move.Side);
+                Logger.Log("StartLeague 9");
             }
+            Logger.Log("StartLeague 10");
             Messager.Instance.SendMessageLater(MessageKey.FinishLeague, null);
             LeagueResult[][] result = League.Instance.Performance;
             List<DNAPlayer> players = League.Instance.GetPlayers();
+            Logger.Log("StartLeague 11");
             return Calculate(result, players, topNum);
         }
 
         private DNA[] Calculate(LeagueResult[][] result, List<DNAPlayer> players, int topNum)
         {
-            if(result == null || result.Length <= 0)
+            Logger.Log("Calculate 1");
+            if (result == null || result.Length <= 0)
             {
                 return null;
             }
+            Logger.Log("Calculate 2");
             LinkedList<KeyValuePair<int,int>> list = new LinkedList<KeyValuePair<int, int>>();
             for(int i = 0;  i < result.Length; i ++)
             {
+                Logger.Log("Calculate 3");
                 KeyValuePair<int, int> pair = new KeyValuePair<int, int>();
                 for (int j = 0; j < result.Length; j ++)
                 {
@@ -95,8 +107,10 @@ namespace 五子棋
                     }
                 }
                 LinkedListNode<KeyValuePair<int, int>> linkNode = list.First;
+                Logger.Log("Calculate 4");
                 while (true)
                 {
+                    Logger.Log("Calculate 5");
                     if (linkNode == null)
                     {
                         list.AddLast(pair);
@@ -111,9 +125,11 @@ namespace 五子棋
                 }
 
             }
+            Logger.Log("Calculate 6");
             int n = Math.Min(topNum, list.Count);
             List<DNAPlayer> ps = new List<DNAPlayer>();
             LinkedListNode<KeyValuePair<int, int>> node = list.First;
+            Logger.Log("Calculate 7");
             while (n > 0 && node != null)
             {
                 ps.Add(players[node.Value.Key]);
@@ -125,6 +141,7 @@ namespace 五子棋
             {
                 dnas[i] = ps[i].GetDNA();
             }
+            Logger.Log("Calculate 8");
             return dnas;
         }
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Text;
@@ -56,9 +57,9 @@ namespace 五子棋
         private void EvolvForm_Load(object sender, EventArgs e)
         {
             FromText.Text = 1.ToString();
-            ToText.Text = 10000.ToString();
-            TopNumText.Text = 5.ToString();
-            ChildrenNumText.Text = 20.ToString();
+            ToText.Text = 2.ToString();
+            TopNumText.Text = 3.ToString();
+            ChildrenNumText.Text = 10.ToString();
             MutationRateText.Text = 50.ToString();
             MutationMinText.Text = 0.05f.ToString();
             MutationMaxText.Text = 10f.ToString();
@@ -81,11 +82,15 @@ namespace 五子棋
             int generationFactor = int.Parse(GenerationFactorText.Text);
 
             Generator.Instance.Initialize(childrenNum, mutationRate, mutationMin, mutationMax, generationFactor);
-
+            DateTime now = DateTime.Now;
+            Logger.Begin();
             for (int j = from; j < to; j++)
             {
+                Logger.Log("Generate 1");
                 Generator.Instance.Generate(j);
+                Logger.Log("Generate 2");
                 DNA[] dnas = _main.StartLeague(j, 1, topNum);
+                Logger.Log("Generate 3");
                 if (dnas != null)
                 {
                     for (int i = 0; i < dnas.Length; i++)
@@ -103,6 +108,7 @@ namespace 五子棋
                 {
                     MessageBox.Show("Error!没找到最优DNA");
                 }
+                Debug.WriteLine("4 Time:" + new TimeSpan(DateTime.Now.Ticks - now.Ticks).TotalSeconds.ToString());
             }
             MessageBox.Show("Done!");
         }

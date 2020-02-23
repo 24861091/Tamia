@@ -24,7 +24,7 @@ namespace 五子棋.AI
             {
                 InitDefaultValues();
             }
-            Save();
+            //Save();
         }
         public string GetPath()
         {

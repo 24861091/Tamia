@@ -95,10 +95,6 @@ namespace 五子棋
 
                     foreach(KeyValuePair<string, float> pair in all)
                     {
-                        if(pair.Key == "e4e")
-                        {
-
-                        }
                         DNA chosen = Utility.RandomInt<DNA>(parents, rates);
                         float val = chosen.GetValue(pair.Key);
                         dna.SetValue(pair.Key, (float)Utility.RandomValue(val, mutationRate, mutationMin, mutationMax));

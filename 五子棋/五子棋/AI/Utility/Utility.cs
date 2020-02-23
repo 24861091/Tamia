@@ -9,7 +9,7 @@ namespace 五子棋
 {
     public static class Utility
     {
-        public static bool IsDebugOpen = true;
+        public static bool IsDebugOpen = false;
         public static int sizeX = 15;
         public static int sizeY = 15;
         public static int left = 550;
