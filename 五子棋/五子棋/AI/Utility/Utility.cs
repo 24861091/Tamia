@@ -184,10 +184,6 @@ namespace 五子棋
         public static void Mute(AI.DNA dna, ICollection<string> keys, int rate, float min, float max)
         {
             string[] banned = new string[] { "f5", "name", "generation" };
-            if(!keys.Contains("selfFactor"))
-            {
-                keys.Add("keys");
-            }
             foreach (string key in keys)
             {
                 if (!string.IsNullOrEmpty(key))

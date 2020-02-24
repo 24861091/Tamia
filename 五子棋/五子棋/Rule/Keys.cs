@@ -65,6 +65,7 @@ namespace 五子棋
             {
                 return null;
             }
+            dic["selfFactor"] = 1;
             return dic.Keys.ToArray<string>();
         }
     }
