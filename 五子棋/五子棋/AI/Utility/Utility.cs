@@ -181,6 +181,34 @@ namespace 五子棋
         {
             return @"arena";
         }
+        public static void Mute(AI.DNA dna, ICollection<string> keys, int rate, float min, float max)
+        {
+            string[] banned = new string[] { "f5", "name", "generation" };
+            if(!keys.Contains("selfFactor"))
+            {
+                keys.Add("keys");
+            }
+            foreach (string key in keys)
+            {
+                if (!string.IsNullOrEmpty(key))
+                {
+                    bool ok = true;
+                    for(int i = 0; i < banned.Length;i++)
+                    {
+                        if(banned[i] == key)
+                        {
+                            ok = false;
+                            break;
+                        }
+                    }
+                    if(ok)
+                    {
+                        dna.SetValue(key, (float)Utility.RandomValue(dna.GetValue(key), rate, min, max));
+                    }
+                    
+                }
+            }
+        }
 
     }
 }

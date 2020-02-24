@@ -52,11 +52,11 @@ namespace 五子棋
             TimesText.Text = 1000.ToString();
             //ToText.Text = 2.ToString();
             //TopNumText.Text = 3.ToString();
-            ChildrenNumText.Text = 1000.ToString();
-            MutationRateText.Text = 50.ToString();
-            MutationMinText.Text = 0.05f.ToString();
-            MutationMaxText.Text = 10f.ToString();
-            GenerationFactorText.Text = 100000.ToString();
+            //ChildrenNumText.Text = 1000.ToString();
+            MutationRateText.Text = 300.ToString();
+            MutationMinText.Text = 0.5f.ToString();
+            MutationMaxText.Text = 2f.ToString();
+            //GenerationFactorText.Text = 100000.ToString();
         }
 
         private void StartButton_Click(object sender, EventArgs e)
@@ -67,12 +67,12 @@ namespace 五子棋
             //int to = int.Parse(ToText.Text);
             //int topNum = int.Parse(TopNumText.Text);
             //int childrenNum = int.Parse(ChildrenNumText.Text);
-            //int mutationRate = int.Parse(MutationRateText.Text);
-            //float mutationMin = float.Parse(MutationMinText.Text);
-            //float mutationMax = float.Parse(MutationMaxText.Text);
+            int mutationRate = int.Parse(MutationRateText.Text);
+            float mutationMin = float.Parse(MutationMinText.Text);
+            float mutationMax = float.Parse(MutationMaxText.Text);
             //int generationFactor = int.Parse(GenerationFactorText.Text);
 
-            
+
             int black = 0;
             int white = 0;
 
@@ -85,11 +85,11 @@ namespace 五子棋
             {
                 int min = 0;
                 int max = files.Length;
-                string f = Path.Combine(Directory.GetCurrentDirectory(), Path.Combine(path, "log/log.txt"));
+                string f = Path.Combine(Directory.GetCurrentDirectory(), Path.Combine(path, "t"+DateTime.Now.Ticks.ToString() + "/log/log.txt"));
                 Utility.MakeSure(Path.GetDirectoryName(f));
                 FileStream stream = File.OpenWrite(f);
                 StreamWriter writer = new StreamWriter(stream);
-
+                writer.WriteLine(times);
                 for (int i = 0; i < times; i++)
                 {
                     black = 0;
@@ -111,7 +111,7 @@ namespace 五子棋
                     }
                     whitePlayer = files[white];
                     writer.WriteLine("black: {0}  white: {1}.", blackPlayer, whitePlayer);
-                    blackPlayer = _main.StartArena(blackPlayer, whitePlayer);
+                    blackPlayer = _main.StartArena(blackPlayer, whitePlayer, mutationRate, mutationMin, mutationMax);
                     whitePlayer = "";
                     writer.WriteLine("winner: {0}", blackPlayer);
                 }
@@ -123,6 +123,7 @@ namespace 五子棋
                 MessageBox.Show("Shit! No File!");
             }
             StartButton.Enabled = true;
+            _mainForm.Visible = true;
             MessageBox.Show("Done!");
         }
 

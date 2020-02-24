@@ -220,6 +220,10 @@ namespace 五子棋.AI
                     if(startX >= 0)
                     {
                         int num = Math.Max(Math.Abs(endX - startX + 1), Math.Abs(endY - startY + 1));
+                        if(num > 5)
+                        {
+                            num = 5;
+                        }
                         int space = 5 - num;
                         builder.Clear();
                         FindCode(num, space, -1, startX, startY, xLength, yLength, deltaX, deltaY, side, positions, builder, list);

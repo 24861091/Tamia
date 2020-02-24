@@ -169,7 +169,7 @@ namespace 五子棋
             }
         }
 
-        public string StartArena(string black, string white)
+        public string StartArena(string black, string white, int rate, float min, float max)
         {
 
             Keys.Instance.Begin("X");
@@ -245,19 +245,11 @@ namespace 五子棋
             }
             else
             {
-                //for (int i = 0; i < keys.Length; i++)
-                //{
-                //    string key = keys[i];
-                //    if (whiteDNA.Has(key) && blackDNA.Has(key))
-                //    {
-                //        float b = blackDNA.GetValue(key);
-                //        float w = whiteDNA.GetValue(key);
-                //        blackDNA.SetValue(key, (b + w) / 2f);
-                //        whiteDNA.SetValue(key, (b + w) / 2f);
-                //    }
-                //}
-                //blackDNA.Save();
-                //whiteDNA.Save();
+                Utility.Mute(blackDNA, keys, rate, min, max);
+                Utility.Mute(whiteDNA, keys, rate, min, max);
+
+                blackDNA.Save();
+                whiteDNA.Save();
                 return "";
             }
         }
