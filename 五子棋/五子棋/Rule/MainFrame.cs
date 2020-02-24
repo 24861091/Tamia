@@ -61,7 +61,7 @@ namespace 五子棋
             League.Instance.Do();
             bool can = true;
 
-            while(can)
+            while (can)
             {
                 ChessPlayer black = League.Instance.GetBlack();
                 ChessPlayer white = League.Instance.GetWhite();
@@ -83,13 +83,13 @@ namespace 五子棋
             {
                 return null;
             }
-            LinkedList<KeyValuePair<int,int>> list = new LinkedList<KeyValuePair<int, int>>();
-            for(int i = 0;  i < result.Length; i ++)
+            LinkedList<KeyValuePair<int, int>> list = new LinkedList<KeyValuePair<int, int>>();
+            for (int i = 0; i < result.Length; i++)
             {
                 KeyValuePair<int, int> pair = new KeyValuePair<int, int>();
-                for (int j = 0; j < result.Length; j ++)
+                for (int j = 0; j < result.Length; j++)
                 {
-                    if(i != j)
+                    if (i != j)
                     {
                         pair = new KeyValuePair<int, int>(i, pair.Value + result[i][j].Win * 2 + result[j][i].Lose * 2 + result[i][j].Equal + result[j][i].Equal);
                     }
@@ -121,7 +121,7 @@ namespace 五子棋
                 n--;
             }
             DNA[] dnas = new DNA[ps.Count];
-            for(int i = 0; i < ps.Count; i ++)
+            for (int i = 0; i < ps.Count; i++)
             {
                 dnas[i] = ps[i].GetDNA();
             }
@@ -153,7 +153,7 @@ namespace 五子棋
                 else
                 {
                     MessageBox.Show("Error！过程中出现错误！");
-                    return new ChessMove(side, new Position(x,y));
+                    return new ChessMove(side, new Position(x, y));
                 }
                 _rule.MakeStep(side, x, y);
                 if (_rule.Judge(x, y, side))
@@ -169,29 +169,26 @@ namespace 五子棋
             }
         }
 
-        public void StartArena(string black, string white)
+        public string StartArena(string black, string white)
         {
-            string path = Utility.CreateArenaPath();
 
             Keys.Instance.Begin("X");
 
-            string blackFullname = Path.Combine(path, black.ToString());
-            string whiteFullname = Path.Combine(path, white.ToString());
-            DNAPlayer blackPlayer = Utility.CreateDNAPlayer(blackFullname);
-            DNAPlayer whitePlayer = Utility.CreateDNAPlayer(whiteFullname);
+            DNAPlayer blackPlayer = Utility.CreateDNAPlayer(black);
+            DNAPlayer whitePlayer = Utility.CreateDNAPlayer(white);
 
             int performance = 0;
             _rule.Clear();
             _rule.SetChessPlayers(blackPlayer, whitePlayer);
             Messager.Instance.SendMessageLater(MessageKey.Restart, new ChessPlayer[] { blackPlayer, whitePlayer });
             ChessMove blackMove = StartOneChess();
-            if(blackMove.Side == 棋子.黑子)
+            if (blackMove.Side == 棋子.黑子)
             {
-                performance += 1;
+                performance++;
             }
-            else if(blackMove.Side == 棋子.白子)
+            else if (blackMove.Side == 棋子.白子)
             {
-                performance += -1;
+                performance--;
             }
 
 
@@ -200,13 +197,13 @@ namespace 五子棋
             Messager.Instance.SendMessageLater(MessageKey.Restart, new ChessPlayer[] { whitePlayer, blackPlayer });
             ChessMove whiteMove = StartOneChess();
 
-            if (blackMove.Side == 棋子.黑子)
+            if (whiteMove.Side == 棋子.黑子)
             {
-                performance += -1;
+                performance--;
             }
-            else if (blackMove.Side == 棋子.白子)
+            else if (whiteMove.Side == 棋子.白子)
             {
-                performance += 1;
+                performance++;
             }
 
             Keys.Instance.End("X");
@@ -214,22 +211,25 @@ namespace 五子棋
             DNA blackDNA = blackPlayer.GetDNA();
             DNA whiteDNA = whitePlayer.GetDNA();
             string[] keys = Keys.Instance.GetAllKeys("X");
-            if(keys == null)
+            if (keys == null)
             {
-                return;
+                return "";
             }
-            if(performance > 0)
+            if (performance > 0)
             {
-                for (int i = 0; i < keys.Length;i++)
+                for (int i = 0; i < keys.Length; i++)
                 {
                     string key = keys[i];
-                    if(whiteDNA.Has(key) && blackDNA.Has(key))
+                    if (whiteDNA.Has(key) && blackDNA.Has(key))
                     {
                         whiteDNA.SetValue(key, blackDNA.GetValue(key));
                     }
                 }
+                blackDNA.Save();
+                whiteDNA.Save();
+                return black;
             }
-            else if(performance < 0)
+            else if (performance < 0)
             {
                 for (int i = 0; i < keys.Length; i++)
                 {
@@ -239,21 +239,26 @@ namespace 五子棋
                         blackDNA.SetValue(key, whiteDNA.GetValue(key));
                     }
                 }
-
+                blackDNA.Save();
+                whiteDNA.Save();
+                return white;
             }
             else
             {
-                for (int i = 0; i < keys.Length; i++)
-                {
-                    string key = keys[i];
-                    if (whiteDNA.Has(key) && blackDNA.Has(key))
-                    {
-                        float b = blackDNA.GetValue(key);
-                        float w = whiteDNA.GetValue(key);
-                        blackDNA.SetValue(key, (b + w) / 2f);
-                        whiteDNA.SetValue(key, (b + w) / 2f);
-                    }
-                }
+                //for (int i = 0; i < keys.Length; i++)
+                //{
+                //    string key = keys[i];
+                //    if (whiteDNA.Has(key) && blackDNA.Has(key))
+                //    {
+                //        float b = blackDNA.GetValue(key);
+                //        float w = whiteDNA.GetValue(key);
+                //        blackDNA.SetValue(key, (b + w) / 2f);
+                //        whiteDNA.SetValue(key, (b + w) / 2f);
+                //    }
+                //}
+                //blackDNA.Save();
+                //whiteDNA.Save();
+                return "";
             }
         }
     }

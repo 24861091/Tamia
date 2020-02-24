@@ -78,30 +78,51 @@ namespace 五子棋
 
             string path = Utility.CreateArenaPath();
             string[] files = Directory.GetFiles(path);
+
+            string blackPlayer = "";
+            string whitePlayer = "";
             if(files != null)
             {
                 int min = 0;
                 int max = files.Length;
+                string f = Path.Combine(Directory.GetCurrentDirectory(), Path.Combine(path, "log/log.txt"));
+                Utility.MakeSure(Path.GetDirectoryName(f));
+                FileStream stream = File.OpenWrite(f);
+                StreamWriter writer = new StreamWriter(stream);
+
                 for (int i = 0; i < times; i++)
                 {
                     black = 0;
                     white = 0;
 
-                    while (white == black)
+                    while (black == white || blackPlayer == whitePlayer)
                     {
-                        black = Utility.RandomInt(min, max);
+                        if(string.IsNullOrEmpty(blackPlayer))
+                        {
+                            black = Utility.RandomInt(min, max);
+                        }
+                        
                         white = Utility.RandomInt(min, max);
+                        whitePlayer = files[white];
                     }
-                    black = 2;
-                    white = 4;
-                    _main.StartArena(files[black], files[white]);
+                    if (string.IsNullOrEmpty(blackPlayer))
+                    {
+                        blackPlayer = files[black];
+                    }
+                    whitePlayer = files[white];
+                    writer.WriteLine("black: {0}  white: {1}.", blackPlayer, whitePlayer);
+                    blackPlayer = _main.StartArena(blackPlayer, whitePlayer);
+                    whitePlayer = "";
+                    writer.WriteLine("winner: {0}", blackPlayer);
                 }
+                writer.Close();
+                stream.Close();
             }
             else
             {
                 MessageBox.Show("Shit! No File!");
             }
-
+            StartButton.Enabled = true;
             MessageBox.Show("Done!");
         }
 
@@ -114,7 +135,6 @@ namespace 五子棋
 
             e.Cancel = true;
             this.Visible = false;
-
         }
     }
 }
