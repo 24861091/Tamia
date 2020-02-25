@@ -188,7 +188,11 @@ namespace 五子棋
             }
             else if (blackMove.Side == 棋子.白子)
             {
-                performance--;
+                performance -= 2;
+            }
+            else
+            {
+                performance --;
             }
 
 
@@ -199,9 +203,13 @@ namespace 五子棋
 
             if (whiteMove.Side == 棋子.黑子)
             {
-                performance--;
+                performance --;
             }
             else if (whiteMove.Side == 棋子.白子)
+            {
+                performance += 2;
+            }
+            else
             {
                 performance++;
             }
@@ -245,6 +253,7 @@ namespace 五子棋
             }
             else
             {
+
                 Utility.Mute(blackDNA, keys, rate, min, max);
                 Utility.Mute(whiteDNA, keys, rate, min, max);
 

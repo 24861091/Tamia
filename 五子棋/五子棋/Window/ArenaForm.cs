@@ -137,5 +137,10 @@ namespace 五子棋
             e.Cancel = true;
             this.Visible = false;
         }
+
+        private void ArenaForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this._mainForm.Visible = true;
+        }
     }
 }

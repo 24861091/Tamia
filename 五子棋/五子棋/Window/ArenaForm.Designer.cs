@@ -235,6 +235,7 @@ namespace 五子棋
             this.Controls.Add(this.label1);
             this.Name = "ArenaForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ArenaForm_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ArenaForm_FormClosed);
             this.Load += new System.EventHandler(this.ArenaForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
