@@ -93,12 +93,24 @@ namespace 五子棋
 
                     all["selfFactor"] = 1f;
 
-                    foreach(KeyValuePair<string, float> pair in all)
+                    foreach (KeyValuePair<string, float> pair in all)
                     {
+                        if (pair.Key == "rotcaFfles")
+                        {
+
+                        }
                         DNA chosen = Utility.RandomInt<DNA>(parents, rates);
                         float val = chosen.GetValue(pair.Key);
-                        dna.SetValue(pair.Key, (float)Utility.RandomValue(val, mutationRate, mutationMin, mutationMax));
+                        if (pair.Key == "selfFactor")
+                        {
+                            dna.Factor = (float)Utility.RandomValue(chosen.Factor, mutationRate, mutationMin, mutationMax);
+                        }
+                        else
+                        {
+                            dna.SetValue(pair.Key, (float)Utility.RandomValue(val, mutationRate, mutationMin, mutationMax));
+                        }
                     }
+                    
                     dna.Generation = generation;
                     dna.Save();
                 }
