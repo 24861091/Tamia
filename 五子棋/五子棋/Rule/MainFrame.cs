@@ -233,6 +233,7 @@ namespace 五子棋
                         whiteDNA.SetValue(key, blackDNA.GetValue(key));
                     }
                 }
+                whiteDNA.Factor = blackDNA.Factor;
                 blackDNA.Save();
                 whiteDNA.Save();
                 return black;
@@ -247,6 +248,7 @@ namespace 五子棋
                         blackDNA.SetValue(key, whiteDNA.GetValue(key));
                     }
                 }
+                blackDNA.Factor = whiteDNA.Factor;
                 blackDNA.Save();
                 whiteDNA.Save();
                 return white;
