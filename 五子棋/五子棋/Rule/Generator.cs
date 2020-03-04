@@ -55,6 +55,20 @@ namespace 五子棋
             }
             return null;
         }
+
+        private void CopyOrigin(Dictionary<string, float> all, int generation, DNA[] parents)
+        {
+            DNA dna = new DNA(Path.Combine(Utility.CreateTargetPath(generation), parents[0].Name), parents[0].Name);
+            //Dictionary<string, float> a = parents[0].GetAll();
+            foreach (KeyValuePair<string, float> pair in all)
+            {
+                dna.SetValue(pair.Key, pair.Value);
+            }
+            dna.Name = parents[0].Name;
+            dna.Factor = parents[0].Factor;
+            dna.Generation = parents[0].Generation;
+            dna.Save();
+        }
         public void Generate(int generation)
         {
             DNA[] parents = GetParents(generation);
@@ -68,24 +82,55 @@ namespace 五子棋
                 Utility.ClearDirectory(Utility.CreateTargetPath(generation));
 
                 int num = parents.Length;
-                for(int m = 0; m < num; m ++)
+                Dictionary<string, float> all = parents[0].GetAll();
+                if (num == 1)
                 {
-                    DNA dna = new DNA(Path.Combine(Utility.CreateTargetPath(generation), parents[m].Name), parents[m].Name);
-                    Dictionary<string, float> all = parents[m].GetAll();
-                    foreach (KeyValuePair<string, float> pair in all)
+                    CopyOrigin(all, generation, parents);
+                    all.Remove("name");
+                    all.Remove("generation");
+                    all.Remove("f5");
+                    //all.Remove("e4e");
+
+                    //all["selfFactor"] = 1f;
+
+                    for (int i = 0; i < childrenNum; i++)
                     {
-                        dna.SetValue(pair.Key, pair.Value);
+                        string name = (generation * generationFactor + i).ToString();
+                        DNA dna = new DNA(Path.Combine(Utility.CreateTargetPath(generation), name), name);
+                        dna.InitDefaultValues();
+                        int random = Utility.RandomInt(0, all.Count);
+                        string reverse = "";
+                        foreach (KeyValuePair<string, float> pair in all)
+                        {
+                            DNA chosen = parents[0];
+                            float val = chosen.GetValue(pair.Key);
+
+                            if (random == 0)
+                            {
+                                dna.SetValue(pair.Key, (float)Utility.RandomValue(val, mutationMin, mutationMax));
+                                reverse = Utility.Reverse(pair.Key);
+                            }
+                            else
+                            {
+                                if (pair.Key != reverse)
+                                {
+                                    dna.SetValue(pair.Key, val);
+                                }
+                            }
+                            random--;
+                        }
+                        dna.Factor = 1f;
+                        dna.Generation = generation;
+                        dna.Save();
                     }
-                    dna.Factor = parents[m].Factor;
-                    dna.Generation = parents[m].Generation;
-                    dna.Save();
                 }
-                for (int i = 0; i < childrenNum; i ++)
+                else
                 {
-                    string name = (generation * generationFactor + i).ToString();
-                    DNA dna = new DNA(Path.Combine(Utility.CreateTargetPath(generation), name), name);
-                    dna.InitDefaultValues();
-                    Dictionary<string, float> all = parents[0].GetAll();
+                    for (int m = 0; m < num; m++)
+                    {
+                        CopyOrigin(all, generation, parents);
+                    }
+
                     all.Remove("name");
                     all.Remove("generation");
                     all.Remove("f5");
@@ -93,26 +138,29 @@ namespace 五子棋
 
                     all["selfFactor"] = 1f;
 
-                    foreach (KeyValuePair<string, float> pair in all)
+                    for (int i = 0; i < childrenNum; i++)
                     {
-                        if (pair.Key == "rotcaFfles")
-                        {
+                        string name = (generation * generationFactor + i).ToString();
+                        DNA dna = new DNA(Path.Combine(Utility.CreateTargetPath(generation), name), name);
+                        dna.InitDefaultValues();
 
-                        }
-                        DNA chosen = Utility.RandomInt<DNA>(parents, rates);
-                        float val = chosen.GetValue(pair.Key);
-                        if (pair.Key == "selfFactor")
+                        foreach (KeyValuePair<string, float> pair in all)
                         {
-                            dna.Factor = (float)Utility.RandomValue(chosen.Factor, mutationRate, mutationMin, mutationMax);
+                            DNA chosen = Utility.RandomInt<DNA>(parents, rates);
+                            float val = chosen.GetValue(pair.Key);
+                            if (pair.Key == "selfFactor")
+                            {
+                                dna.Factor = (float)Utility.RandomValue(chosen.Factor, mutationRate, mutationMin, mutationMax);
+                            }
+                            else
+                            {
+                                dna.SetValue(pair.Key, (float)Utility.RandomValue(val, mutationRate, mutationMin, mutationMax));
+                            }
                         }
-                        else
-                        {
-                            dna.SetValue(pair.Key, (float)Utility.RandomValue(val, mutationRate, mutationMin, mutationMax));
-                        }
+                        dna.Generation = generation;
+                        dna.Save();
                     }
-                    
-                    dna.Generation = generation;
-                    dna.Save();
+
                 }
             }
         }

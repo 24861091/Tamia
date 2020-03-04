@@ -256,12 +256,12 @@ namespace 五子棋
             else
             {
 
-                Utility.Mute(blackDNA, keys, rate, min, max);
-                Utility.Mute(whiteDNA, keys, rate, min, max);
+                //Utility.Mute(blackDNA, keys, rate, min, max);
+                //Utility.Mute(whiteDNA, keys, rate, min, max);
 
-                blackDNA.Save();
-                whiteDNA.Save();
-                return "";
+                //blackDNA.Save();
+                //whiteDNA.Save();
+                return black;
             }
         }
     }

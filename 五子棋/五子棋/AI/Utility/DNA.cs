@@ -183,16 +183,7 @@ namespace 五子棋.AI
         }
         private string Reverse(string source)
         {
-            StringBuilder builder = new StringBuilder();
-            if(string.IsNullOrEmpty(source))
-            {
-                return "";
-            }
-            for(int i = source.Length - 1; i >= 0; i --)
-            {
-                builder.Append(source[i]);
-            }
-            return builder.ToString();
+            return Utility.Reverse(source);
         }
         private string Translate(int [] s)
         {

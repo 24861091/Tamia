@@ -123,6 +123,26 @@ namespace 五子棋
         {
             return random.Next(0, total) < rate;
         }
+        public static double RandomValue(float source, float min, float max)
+        {
+            if (min >= 1f || max <= 1f)
+            {
+                return source;
+            }
+
+
+            bool isMin = RandomRate(50, 100);
+            double d = random.NextDouble();
+            if (isMin)
+            {
+                return d * (source - min * source) + min * source;
+            }
+            else
+            {
+                return d * (max * source - source) + source;
+            }
+
+        }
         public static double RandomValue(float source, int rate, float min, float max)
         {
             bool change = RandomRate(rate, evoluteBase);
@@ -205,6 +225,20 @@ namespace 五子棋
                 }
             }
         }
+        public static string Reverse(string source)
+        {
+            StringBuilder builder = new StringBuilder();
+            if (string.IsNullOrEmpty(source))
+            {
+                return "";
+            }
+            for (int i = source.Length - 1; i >= 0; i--)
+            {
+                builder.Append(source[i]);
+            }
+            return builder.ToString();
+        }
+
 
     }
 }
