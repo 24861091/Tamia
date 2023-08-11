@@ -5,10 +5,11 @@ using UnityEngine;
 
 namespace 五子棋
 {
-    public class ChessPanel : MonoBehaviour
+    public static class ChessPanel
     {
-        private Grid _grid = new Grid();
-        private void Start()
+
+        private static Grid _grid = new Grid();
+        public static void DrawPanel()
         {
             _grid.Draw(10);
         }

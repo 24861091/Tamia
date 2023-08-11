@@ -9,7 +9,7 @@ namespace 五子棋
         private LineRenderer lineRenderer = new LineRenderer();
         private Vector3[] points;
         private Color color;
-        private float lineWidth = 0.01f;
+        private float lineWidth = 0.05f;
         private Material mateial;
         
         public Line(LineRenderer renderer, Vector3[] vs, Color color)

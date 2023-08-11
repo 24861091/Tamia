@@ -9,7 +9,6 @@ namespace 五子棋
     {
         private GameObject root;
 
-        private Terrain owner;
         private float z;
         private Color defaultColor;
         private Color axisColor;
@@ -44,7 +43,7 @@ namespace 五子棋
                 
                 start = new Vector3(start.x , start.y, z);
                 end = new Vector3(end.x, end.y, z);
-                CreateLine(start, end, i == 0);
+                CreateLine(start, end);
             }
             
             for (int i = -n; i <= n; i ++)
@@ -57,7 +56,7 @@ namespace 五子棋
                 
                 start = new Vector3(start.x, start.y, z);
                 end = new Vector3(end.x, end.y, z);
-                CreateLine(start, end, i == 0);
+                CreateLine(start, end);
             }
 
         }
