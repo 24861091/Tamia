@@ -11,7 +11,7 @@ namespace 五子棋
         private static Grid _grid = new Grid();
         public static void DrawPanel()
         {
-            _grid.Draw(10);
+            _grid.Draw(7);
         }
 
 
