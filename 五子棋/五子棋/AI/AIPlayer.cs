@@ -9,7 +9,7 @@ namespace 五子棋.AI
 
     public abstract class AIPlayer : ChessPlayer
     {
-        public override void OnYourTurn(棋子[][] positions, List<Position> blacks, List<Position> whites)
+        public override void TurnTo(棋子[][] positions, List<Position> blacks, List<Position> whites)
         {
             AIResult result = MakeTurn(positions, blacks, whites);
             result.Side = selfSide;
