@@ -136,7 +136,7 @@ namespace 五子棋
             while (true)
             {
                 _rule.ChangeTurn();
-                _rule.OnYourTurn();
+                _rule.DoTurn();
 
                 if (_rule.GetTurn() == 棋子.白子)
                 {

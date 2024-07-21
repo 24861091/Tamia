@@ -34,7 +34,7 @@ namespace 五子棋
             this.selfSide = side;
         }
         public abstract void GameStart(棋子[][] positions);
-        public abstract void OnYourTurn(棋子[][] positions, List<Position> blacks, List<Position> whites);
+        public abstract void TurnTo(棋子[][] positions, List<Position> blacks, List<Position> whites);
         protected void FinishTurn(int x, int y)
         {
             lastMove = new ChessMove(selfSide, x, y);
@@ -44,7 +44,7 @@ namespace 五子棋
             }
         }
         public string Name { get; set; }
-        public virtual void OnMouseClick(int x, int y)
+        public virtual void Put(int x, int y)
         {
 
         }

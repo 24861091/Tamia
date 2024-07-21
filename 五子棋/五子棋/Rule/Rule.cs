@@ -67,7 +67,7 @@ namespace 五子棋
             if(this.black.IsHuman() || this.white.IsHuman())
             {
                 this.ChangeTurn();
-                this.OnYourTurn();
+                this.DoTurn();
             }
             else
             {
@@ -77,7 +77,7 @@ namespace 五子棋
                 while (true)
                 {
                     this.ChangeTurn();
-                    this.OnYourTurn();
+                    this.DoTurn();
 
                     if(turn == 棋子.白子)
                     {
@@ -111,17 +111,17 @@ namespace 五子棋
 
             }
         }
-        public void OnYourTurn()
+        public void DoTurn()
         {
             if (turn == 棋子.黑子)
             {
                 ChessPannel panel = this.GetPanel();
-                black.OnYourTurn(panel.Positions, panel.BlackList, panel.WhiteList);
+                black.TurnTo(panel.Positions, panel.BlackList, panel.WhiteList);
             }
             else if (turn == 棋子.白子)
             {
                 ChessPannel panel = this.GetPanel();
-                white.OnYourTurn(panel.Positions, panel.BlackList, panel.WhiteList);
+                white.TurnTo(panel.Positions, panel.BlackList, panel.WhiteList);
             }
         }
         public void FinishTurn(棋子 side, int x, int y)
@@ -141,7 +141,7 @@ namespace 五子棋
                 if (turn != 棋子.无)
                 {
                     ChangeTurn();
-                    OnYourTurn();
+                    DoTurn();
                 }
             }
         }
@@ -271,11 +271,11 @@ namespace 五子棋
                         }
                         if (turn == 棋子.白子)
                         {
-                            white.OnMouseClick(x, y);
+                            white.Put(x, y);
                         }
                         else if (turn == 棋子.黑子)
                         {
-                            black.OnMouseClick(x, y);
+                            black.Put(x, y);
                         }
                     }
                     break;

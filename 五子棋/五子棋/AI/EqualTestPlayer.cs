@@ -13,7 +13,7 @@ namespace 五子棋.AI
 
         }
 
-        public override void OnYourTurn(棋子[][] positions, List<Position> blacks, List<Position> whites)
+        public override void TurnTo(棋子[][] positions, List<Position> blacks, List<Position> whites)
         {
             int pos = (int)selfSide % 2;
             for(int k = 0; k < 5; k ++)

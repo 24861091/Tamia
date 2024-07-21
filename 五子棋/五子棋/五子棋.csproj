@@ -46,16 +46,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AI\Utility\Creater.cs" />
-    <Compile Include="AI\Utility\DNA.cs" />
+    <Compile Include="AI\DNA.cs" />
     <Compile Include="AI\DNAPlayer.cs" />
-    <Compile Include="AI\Utility\AIPlayer.cs" />
+    <Compile Include="AI\AIPlayer.cs" />
     <Compile Include="AI\Utility\Utility.cs" />
     <Compile Include="AI\EqualTestPlayer.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Rule\ChessPannel.cs" />
     <Compile Include="Rule\ChessPlayer.cs" />
-    <Compile Include="AI\Utility\DNAFile.cs" />
-    <Compile Include="Rule\EveolProcessor.cs" />
+    <Compile Include="AI\DNAFile.cs" />
     <Compile Include="Rule\Generator.cs" />
     <Compile Include="Rule\Keys.cs" />
     <Compile Include="Rule\League.cs" />
